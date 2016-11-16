@@ -1,0 +1,271 @@
+/* CSS for Credit Card Payment form */
+.credit-card-box .panel-title {
+    display: inline;
+    font-weight: bold;
+}
+.credit-card-box .form-control.error {
+    border-color: red;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(255,0,0,0.6);
+}
+.credit-card-box label.error {
+  font-weight: bold;
+  color: red;
+  padding: 2px 8px;
+  margin-top: 2px;
+}
+.credit-card-box .payment-errors {
+  font-weight: bold;
+  color: red;
+  padding: 2px 8px;
+  margin-top: 2px;
+}
+.credit-card-box label {
+    display: block;
+}
+/* The old "center div vertically" hack */
+.credit-card-box .display-table {
+    display: table;
+}
+.credit-card-box .display-tr {
+    display: table-row;
+}
+.credit-card-box .display-td {
+    display: table-cell;
+    vertical-align: middle;
+    width: 50%;
+}
+/* Just looks nicer */
+.credit-card-box .panel-heading img {
+    min-width: 180px;
+}
+
+@media (min-width: 1200px){
+				.container {
+				  width: 97% !important;
+				}
+			}
+
+			.gallery .controls {
+				right: 0;
+			}
+
+			.clear{
+				clear: both;
+			}
+
+			.header2{
+				background: #0e1f40;
+  				color: #fff;
+
+			}
+
+			::-webkit-input-placeholder {
+			   color: #fff !important;
+			 }
+
+			:-moz-placeholder {
+			   color: #fff !important;
+			}
+
+			::-moz-placeholder {
+			   color: #fff !important;
+			}
+
+			:-ms-input-placeholder {  
+			   color: #fff !important;
+			}
+
+			.pesquisa{
+				background-color: RGBA(200,200,200,0.2) !important;
+			}
+
+			footer{
+				background: #212121;
+				height: 200px;
+				color: #FFF;
+				border-top: solid 10px #2a2a2a;
+				padding: 10px;
+			}
+
+			.footer{
+				background-color: #3c3c3c;
+				padding: 20px;
+				text-align: center;
+			}
+
+			.right{
+				float: right;
+			}
+
+			.center{
+				text-align: center;
+			}
+
+			.clear{
+				clear: both;
+			}
+
+			.produtos{
+				margin-bottom: 40px;
+			}
+
+			.produtoLink{
+				font-size: 10px;
+				text-transform: uppercase;
+				font-weight: bold;
+				color: #9EA09B;
+			}
+
+			.preco{
+				color: rgb(35, 105, 162);
+				font-weight: bolder;
+				font-size: 20px;
+			}
+
+			.parcela{
+				color: #945252;
+				font-weight: bolder;
+				font-size: 15px;
+			}			
+
+			.justify{
+				text-align: justify !important;
+			}
+
+			#carrinho2{
+				position: absolute;
+				z-index: 9999999999;
+				top: 35px;
+				right: 0px;
+				background: #E9F2F1;
+				padding: 20px;
+
+			}
+			.left{
+				float: left;
+			}
+			
+			.mMenu
+			{
+				    clear: both;
+					background-color: rgba(230, 230, 230, 0.34);
+			}
+
+			.menu{}
+
+			.menu li a{
+				color: #0e1f40;
+				font-weight: bold;
+				text-transform: uppercase;
+				font-size: 15px;
+				border-bottom: solid 5px transparent;
+			}
+			
+			.menu li a:hover{
+				background-color: #fff !important;
+				border-bottom: solid 5px #0e1f40;
+			}
+
+			.imagem{
+				width: 100%;
+				height: 100%;
+			}
+
+			.topo{
+				background-color: #9ac2E3;
+				background-size: cover;
+			}
+
+			.controls{
+				  background: rgba(255,255,255,0.2) !important;
+			}
+
+			.gallery .control-button:first-of-type, .gallery .control-operator:nth-of-type(1):target ~ .controls .control-button:nth-of-type(1), .gallery .control-operator:nth-of-type(2):target ~ .controls .control-button:nth-of-type(2), .gallery .control-operator:nth-of-type(3):target ~ .controls .control-button:nth-of-type(3), .gallery .control-operator:nth-of-type(4):target ~ .controls .control-button:nth-of-type(4), .gallery .control-operator:nth-of-type(5):target ~ .controls .control-button:nth-of-type(5){
+				color: rgba(0, 0, 0, 1) !important;
+			}
+			.gallery .control-operator:target ~ .controls .control-button {
+  				color: rgba(255, 255, 255, 1) !important;
+  			}
+  			.gallery{
+  				margin-bottom: 15px;
+  			}
+			body
+			{
+				background-color: #9ac2E3 !important;
+			}
+
+  			.menu1,
+			.sub-menu1 {
+			    margin: 0;
+			    padding: 0;
+			}
+			.clearfix:after{
+			    content: '.';
+			    display: block;
+			    clear: both;
+			    height: 0;
+			    line-height: 0;
+			    font-size: 0;
+			    visibility: hidden;
+			    overflow: hidden;
+			}
+			.menu1,
+			.sub-menu1 {
+			    list-style: none;			}
+			.sub-menu1 {
+			    background: #0e1f40;
+			}
+			.menu1 a {
+			    text-decoration: none;
+			    display: block;
+			    padding: 10px;
+			    color: #fff;
+			    font-family: sans-serif;
+			    font-size: 14px;
+			    text-transform: uppercase;
+			    font-weight: 700;
+			}
+
+			.menu a:hover{
+				 color: #fff;
+			}
+			.menu1 li {
+			    position: relative;
+			}
+			.menu1 > li {
+			    float: left;
+			}
+			.menu1 > li:hover {
+			}
+			.menu1 li:hover > .sub-menu {
+			    display: block;
+			}
+			.sub-menu1 {
+			    display: none;
+			    position: absolute;
+			    min-width: 150px;
+			    z-index: 9999;
+			}
+			.sub-menu1 li:hover {
+			    background: #0e1f40;
+			}
+			.sub-menu1 li:hover a {
+			    color: #fff;
+			}
+			.sub-menu1 .sub-menu1 {
+			    top: 0;
+			    left: 100%;
+			}
+			.fontea{
+				color: #fff;
+				font-size: 15pt;
+			}
+
+.carrinhoClass{
+			overflow: hidden;
+background: #fff;
+padding: 20px;
+position: absolute;
+z-index: 999;
+}
