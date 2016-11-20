@@ -1,18 +1,23 @@
 <?php
     include 'function.php';
     include 'classes/conecta_bancoAdmin.php';
+	$error = '';
 
     if(isset($_POST['enviar'])){
         
-		logarNoSistema($_POST['edtLogin'], $_POST['edtSenha']);
-		
+		$error = logarNoSistema($_POST['edtLogin'], $_POST['edtSenha']);
+		if ($error == LOGIN_SENHA_VALIDO){
+			header("Location: home.php");
+			exit;
+		}
+			
     } else if(isset($_POST['cadastro'])){
 		
-		header("Location: novoCadastro.php"); 
+		header("Location: novo-cadastro.php"); 
 		
 	} else if(isset($_POST['novaSenha'])){
 		
-		echo "Esquci minha senha";
+		header("Location: recuperar-senha.php");
 	}
 ?>
 <!DOCTYPE HTML>
@@ -32,23 +37,46 @@
 </head>
 
 <body>
-	<section class="container">
+		<section class="container">
+		
+		<div class="wrapper" style="padding: 80px">
+			<img src="demos/logo.png">
+		</div>
+		
 		<article class="col-sm-12">
-			<div class="col-sm-6 col-sm-offset-3 login">
-			<div class="topoLogin">Login</div>
-			<div class="">                    
-				<form action="" method="post"> 
-					<input type="text" name="edtLogin" class="form-control loginUser login-field" placeholder="Usuario"><br>
-					<input type="password" name="edtSenha" class="form-control loginPass login-field" placeholder="Senha"><br>
+			<div class="col-sm-4 col-sm-offset-4 login">
 					
-					<input type="submit" class="btn btn-danger btn-lg btn-block btnLogin"  value="Entrar" name="enviar" style="margin-bottom: 20px;"/>
-					<input type="submit" class="btn btn-success btn-lg btn-block btnCadastro"  value="Novo cadastro" name="cadastro" style="margin-bottom: 20px;"/>
-					<input type="submit" class="btn btn-info btn-lg btn-block btnNovaSenha"  value="Esqui minha senha" name="novaSenha"/>
+				<form action="" method="post">
+				
+					<div class="input-group-lg">
+						<input type="text" name="edtLogin" class="form-control" placeholder="Usuario"><br>
+						<input type="password" name="edtSenha" class="form-control" placeholder="Senha"><br>
+					</div>
+				
+					<input type="submit" class="btn btn-primary btn-lg btn-block btnLogin"  
+									value="Entrar" name="enviar" style="margin-bottom: 20px;"/>
+					<div class="btn-group btn-group-justified" role="group" aria-label="...">
+						<div class="btn-group" role="group">
+							<input type="submit" class="btn btn-info btn-lg" value="Novo cadastro" name="cadastro"/>
+						</div>
+
+						<div class="btn-group" role="group">
+							<input type="submit" class="btn btn-default btn-lg" value="Esqueci a senha" name="novaSenha"/>
+						</div>
+					</div>
 				</form>
 			</div>
-			</div>            
 		</article>
 	</section>
+<?php 
+	if ($error == LOGIN_SENHA_NULL || $error == LOGIN_SENHA_INVALIDO){ 
+?>
+		<div style="padding-top:50px;">
+			<div class="wrapper alert alert-warning" role="alert"><?php echo $error ?></div>
+		</div>
+<?php
+	}
+?>
 </body>
 
 </html>

@@ -1,6 +1,10 @@
 <?php
 include 'classes/conecta_bancoAdmin.php';
 
+define("LOGIN_SENHA_NULL",  "Por favor, preencha os campos Usuario e Senha.");
+define("LOGIN_SENHA_INVALIDO", "O Usuario ou Senha não foram validados. Por favor, verifique os dados digitados e tente novamente.");
+define("LOGIN_SENHA_VALIDO", "Login ok");
+
 function logarNoSistema($login, $senha){
     ob_start();
 
@@ -14,13 +18,13 @@ function logarNoSistema($login, $senha){
     $senhaTratado = md5(addslashes($senha));
     
     if (empty($login) OR empty($senha)) {
-        echo "Login e Senha Vazios";
+        return LOGIN_SENHA_NULL;
     }else{
         $sql = $dtibd->executarQuery("select","SELECT login, senha FROM usuario WHERE login = :login and senha = :senha limit 1",
         array(":login" => $loginTratado,":senha" => $senhaTratado));
 
         if (!$sql) {
-            echo "Login inválido!";
+            return LOGIN_SENHA_INVALIDO;
         } else {
             $buscarUsuario = $dtibd->executarQuery("select","SELECT * FROM usuario WHERE login = :nome",array(":nome" => $loginTratado));
             
@@ -33,10 +37,15 @@ function logarNoSistema($login, $senha){
                 $_SESSION['isAdmin'] = $resultado['isAdmin'];
             }
 
-            header("Location: home.php");
-            exit;
+			return LOGIN_SENHA_VALIDO;
         }
     }  
+}
+
+function validateAcess(){
+	if(!isset($_SESSION)){
+		header("Location: home.php");
+	}
 }
 
 function isAdministrador($isAdmin){
