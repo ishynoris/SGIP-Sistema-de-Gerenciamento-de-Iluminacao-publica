@@ -10,14 +10,14 @@
 	define("CAD_OCORRENCIA", "Cadastrar nova ocorrência");
 	define("PARQUE", "Parque de iluminação");
 	define("CAD_PONTOS", "Cadastrar pontos de iluminação");
-	define("MANUTENCAO", "Manutenção");
+	define("MANUTENCAO", "Lista de manutenções cadastrdas");
 	define("COMPONENTES", "Componentes");
-	define("USUARIOS", "Listagem de usaurios");
+	define("USUARIOS", "Lista de usaurios");
 	define("RELATORIOS", "Relatorios");
 	
 	if ($_SESSION['isAdmin'] == Usuario::ADMIN) {
 ?>
-<div class="col-sm-2" >
+<div class="col-sm-3" >
 
 	<div class="nav-side-menu">
 	

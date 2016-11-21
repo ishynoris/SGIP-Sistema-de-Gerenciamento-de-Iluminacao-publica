@@ -38,14 +38,13 @@
 
 <body>
 		<section class="container">
-		
 		<div class="wrapper" style="padding: 80px">
 			<img src="demos/logo.png">
 		</div>
 		
 		<article class="col-sm-12">
 			<div class="col-sm-4 col-sm-offset-4 login">
-					
+				
 				<form action="" method="post">
 				
 					<div class="input-group-lg">
@@ -72,7 +71,7 @@
 	if ($error == LOGIN_SENHA_NULL || $error == LOGIN_SENHA_INVALIDO){ 
 ?>
 		<div style="padding-top:50px;">
-			<div class="wrapper alert alert-warning" role="alert"><?php echo $error ?></div>
+			<div class="wrapper alert alert-warning" role="alert"><?php echo $error;?></div>
 		</div>
 <?php
 	}
