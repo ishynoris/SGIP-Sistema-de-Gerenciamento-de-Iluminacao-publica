@@ -66,8 +66,4 @@ function isEquipeTecnica(){
 
 }
 
-function generateProtocol(){
-	return 12345678;
-}
-
 ?>

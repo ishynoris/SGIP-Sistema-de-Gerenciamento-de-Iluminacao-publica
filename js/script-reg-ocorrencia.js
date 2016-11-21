@@ -84,8 +84,28 @@ function hide(flag, id){
 		}
 	}
 }
+
+function fillFields(){
+	
+	fillField("descricao");
+	fillField("rural");
+	fillField("cep");
+	fillField("logradouro");
+	fillField("numPredialProx");
+	fillField("complemento");
+	fillField("bairro");
+	fillField("cidade");
+	fillField("uf");
+	fillField("observacao");
+}
+
+function fillField(id){
+	input = document.getElementById(id + "-prev");
+	document.getElementById(id).value = input.value;
+}
 			
 function start(){
+	
 	
 	updateDivs();
 	updateClasses("btn-next", new Array("btn-primary"), new Array());
@@ -100,7 +120,6 @@ function start(){
 }
 
 function next(){
-	
 	updateClasses("li-" + (currentDiv++), new Array("disabled", "block-button", "btn-default"), new Array("active"));
 	updateClasses("li-" + currentDiv, new Array("active"), new Array("disabled", "block-button", "btn-default"));
 	
@@ -110,8 +129,8 @@ function next(){
 	if(currentDiv == 4){
 		hide(true, "btn-next");
 		hide(false, "btn-save");
+		fillFields();
 	}
-	
 	updateDivs();
 }
 

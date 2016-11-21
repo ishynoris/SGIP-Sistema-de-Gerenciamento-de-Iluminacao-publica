@@ -3,35 +3,29 @@
 	include ('classes/ocorrencia.class.php');
 	
 	validateAcess();
-	$protocol = generateProtocol();
+	$protocol = 2016 . rand(11111,99999);;
 	$currentDiv = 0;
-	
-	define("TIPO_MANUTENCAO", "manutencao");
-	define("DESCRICAO", "descricao");
-	define("RURAL", "area rural");
-	define("CEP", "CEP");
-	define("LOGRADOURO", "logradouro");
-	define("NUMERO", "numero");
-	define("COMPLEMENTO", "complemento");
-	define("BAIRRO", "bairro");
-	define("CIDADE", "cidade");
-	define("UF", "UF");
-	define("OBSERVACAO", "observacao");
-	
-	
+
 	if(isset($_POST['btn-save'])){
-		$endereco = $_POST['logradouro'] . "," . $_POST['numPredialProx'] . " - " . $_POST['bairro'] . " " . $_POST['complemento'] . $_POST['cidade'] . "/" . $_POST['uf'];
+		var_dump($_POST);
+		$endereco = $_POST["logradouro"] 
+				. $_POST["numPredialProx"]  
+				. $_POST['bairro'] . " " 
+				. $_POST['complemento'] 
+				. $_POST['cidade'] 
+				. "/" . $_POST['uf'];
+		
 		$ocorrencia = new ocorrencia;
-		$ocorrencia->numeroProtocolo = 2016 . rand(11111,99999);
-		$ocorrencia->status = "Aberta";
+		$ocorrencia->numeroProtocolo = $protocol; //OK
+		$ocorrencia->status = "Aberta"; //OK
 		$ocorrencia->data = date('d/m/Y'); 
-		$ocorrencia->prazo = date('d/m/Y', strtotime(' + 5 days'));
-		$ocorrencia->nomeMunicipe = $_POST['nomeMunicipe'];
-		$ocorrencia->contato = $_POST['contato'];
-		$ocorrencia->enderecoMunicipe = $endereco;
-		$ocorrencia->descricao = $_POST['descricaoOcorrencia'];
-		$ocorrencia->cpf = $_POST['cpf'];
-		$ocorrencia->email = $_POST['email'];
+		$ocorrencia->prazo = date('d/m/Y', strtotime(' + 5 days')); 
+		$ocorrencia->nomeMunicipe = $_SESSION['usuario']; //OK
+		// $ocorrencia->contato = $_POST['contato'];
+		$ocorrencia->enderecoMunicipe = $endereco; //OK
+		$ocorrencia->descricao = $_POST['descricao']; //OK
+		// $ocorrencia->cpf = $_POST['cpf'];
+		// $ocorrencia->email = $_POST['email'];
 		$ocorrencia->cadastrarOcorrencia();
 
 		if ($_SESSION['isAdmin'] != 0){ 
@@ -63,16 +57,14 @@
 
 		<div class="row col-sm-12" style="padding-left:0;">
 <?php 
-
 	include 'menu.php'; 
 ?>
 			<div class="col-sm-9" style="margin-top: 20px;">
-
-				<form class="bk clear" style="padding: 30px " method="POST" enctype="multipart/form-data">
+				<form class="bk clear" style="padding: 30px " method="post">
 					<fieldset>			
+											
 						<div class="col-sm-12" >
 							<legend style="margin-bottom: 50px">Cadastrar nova ocorrência</legend>
-							
 							<div class="alert" style="margin-bottom: 50px">
 								<div style="padding-left: 30px;">
 									<ul class="nav nav-pills" id="menu-list">
@@ -89,7 +81,6 @@
 								</div>
 							</div>
 							
-							
 							<!-- PASSO UM ------------------------------------------------------------------->
 							<div id="step-0" class="hide">
 								<div class="well well-lg">
@@ -98,18 +89,17 @@
 									<br/><br/>
 									Se necessário você pode entrar em contato pelo telefone *inserir aqui o telefone*.
 									<br/>
-									</h4>
+									</h4>									
 								</div>
 							</div>
-							
 							<!-- PASSO DOIS ------------------------------------------------------------------->
 							<div id="step-1" class="hide" >
 								<form class="form-horizontal">
 									<div class="form-group">
-										<div class="row"  style="padding-right: 30px"> 
+										<div class="row"  style="padding-right: 30px">
 											<label class="col-sm-3 text-right">Nome</label>
 											<div class="col-sm-9">
-												<input type="text" class="form-control" placeholder="<?php echo $_SESSION['usuario'] ?>" disabled>
+												<input type="text" class="form-control" placeholder="<?php echo $_SESSION['usuario'] ?>" disabled=true>
 											</div>
 										</div><br/>
 										<div class="row" style="padding-right: 30px"> 
@@ -132,84 +122,81 @@
 									</div>
 								</form>
 							</div>
-							
+								
 							<!-- PASSO Tres ------------------------------------------------------------------->
 							<div id="step-2" class="hide" >
-								<form class="form-horizontal">
-									<div class="form-group">
-										<div class="row"  style="padding-right: 40px"> 
-											<label class="col-sm-3 text-right">Numero de protocolo</label>
-											<div class="col-sm-9">
-												<input type="text" class="form-control" placeholder="<?php echo  "{$protocol} = function.php:generateProtocol()" ?>" disabled>
-											</div>
-										</div><br/>
-										<div class="row" style="padding-right: 40px"> 
-											<label class="col-sm-3 text-right">Descrição do problema</label>
-											<div class="col-sm-9">
-												<textarea name="DESCRICAO" class="form-control" rows="5"></textarea>
-											</div>
+								<div class="form-group">
+									<div class="row"  style="padding-right: 40px"> 
+										<label class="col-sm-3 text-right">Numero de protocolo</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" placeholder="<?php echo  $protocol ?>" disabled=true>
+										</div>
+									</div><br/>
+									<div class="row" style="padding-right: 40px"> 
+										<label class="col-sm-3 text-right">Descrição do problema</label>
+										<div class="col-sm-9">
+											<textarea id="descricao-prev" name="descricao" class="form-control" rows="5"></textarea>
 										</div>
 									</div>
-								</form>
+								</div>
 							</div>
 							<!-- PASSO QUATRO ------------------------------------------------------------------->
 							<div id="step-3" class="hide" >
-								<form class="form-horizontal">
-									<div class="row" style="padding-right: 30px"> 
-										<label class="col-sm-2 text-right">Área rural</label>
-										<div class="col-sm-4">
-											<input name="<?php RURAL ?>"type="text" class="form-control" >
-										</div>
-										<label class="col-sm-2 text-right">CEP</label>
-										<div class="col-sm-2">
-											<input name="<?php CEP ?>"type="text" class="form-control" >
-										</div>
-										<div class="col-sm-2" >
-											<h5><span class="label label-primary" ><a target='_blank' href="http://www.buscacep.correios.com.br/sistemas/buscacep/buscaCep.cfm">Consultar CEP</a></span></h5>
-										</div>
-									</div><br/>
-									
-									<div class="row" style="padding-right: 30px"> 
-										<label class="col-sm-2 text-right">Logradouro</label>
-										<div class="col-sm-6">
-											<input name="<?php LOGRADOURO ?>"type="text" class="form-control" >
-										</div>
-										<label class="col-sm-2 text-right"></label>
-										<div class="col-sm-2">
-											<input name="<?php echo NUMERO ?>"type="text" class="form-control" >
-										</div>
-									</div><br/>
-															
-									<div class="row" style="padding-right: 30px"> 
-										<label class="col-sm-2 text-right">Complemento</label>
-										<div class="col-sm-4">
-											<input name="<?php COMPLEMENTO ?>"type="text" class="form-control" >
-										</div>
-										<label class="col-sm-2 text-right">Bairro</label>
-										<div class="col-sm-4">
-											<input name="<?php BAIRRO ?>"type="text" class="form-control" >
-										</div>
-									</div><br/>
-									
-									<div class="row" style="padding-right: 30px"> 
-										<label class="col-sm-2 text-right">Cidade</label>
-										<div class="col-sm-6">
-											<input name="<?php CIDADE ?>"type="text" class="form-control" >
-										</div>
-										<label class="col-sm-2 text-right">UF</label>
-										<div class="col-sm-2">
-											<input name="<?php UF ?>"type="text" class="form-control" >
-										</div>
-									</div><br/>
-									
-									<div class="row" style="padding-right: 30px"> 
-										<label class="col-sm-3 text-right">Observação sobre o endereço</label>
-										<div class="col-sm-9">
-											<textarea name="<?php OBSERVACAO ?>"class="form-control" rows="3"></textarea>
-										</div>
-									</div><br/>
-								</form>
+								<div class="row" style="padding-right: 30px"> 
+									<label class="col-sm-2 text-right">Área rural</label>
+									<div class="col-sm-4">
+										<input type="text" id="rural-prev" name="rural" class="form-control" >
+									</div>
+									<label class="col-sm-2 text-right">CEP</label>
+									<div class="col-sm-2">
+										<input type="text" id="cep-prev"  name="cep" class="form-control" >
+									</div>
+									<div class="col-sm-2" >
+										<h5><span class="label label-primary" ><a target='_blank' href="http://www.buscacep.correios.com.br/sistemas/buscacep/buscaCep.cfm">Consultar CEP</a></span></h5>
+									</div>
+								</div><br/>
+								
+								<div class="row" style="padding-right: 30px"> 
+									<label class="col-sm-2 text-right">Logradouro</label>
+									<div class="col-sm-6">
+										<input type="text" id="logradouro-prev" name="logradouro" class="form-control">
+									</div>
+									<label class="col-sm-2 text-right">Numero</label>
+									<div class="col-sm-2">
+										<input id="numPredialProx-prev" name="numPredialProx"type="text" class="form-control" >
+									</div>
+								</div><br/>
+														
+								<div class="row" style="padding-right: 30px"> 
+									<label class="col-sm-2 text-right">Complemento</label>
+									<div class="col-sm-4">
+										<input type="text" id="complemento-prev" name="complemento" class="form-control" >
+									</div>
+									<label class="col-sm-2 text-right">Bairro</label>
+									<div class="col-sm-4">
+										<input type="text" id="bairro-prev"name="bairro" class="form-control" >
+									</div>
+								</div><br/>
+								
+								<div class="row" style="padding-right: 30px"> 
+									<label class="col-sm-2 text-right">Cidade</label>
+									<div class="col-sm-6">
+										<input type="text" id="cidade-prev"name="cidade" class="form-control" >
+									</div>
+									<label class="col-sm-2 text-right">UF</label>
+									<div class="col-sm-2">
+										<input type="text" id="uf-prev"name="uf" class="form-control" >
+									</div>
+								</div><br/>
+								
+								<div class="row" style="padding-right: 30px"> 
+									<label class="col-sm-3 text-right">Observação sobre o endereço</label>
+									<div class="col-sm-9">
+										<textarea id="observacao-prev"name="observacao"class="form-control" rows="3"></textarea>
+									</div>
+								</div><br/>							
 							</div>
+							
 							<!-- PASSO CINCO ------------------------------------------------------------------->
 							<div id="step-4" class="hide" >
 								<div class="alert alert-info" role="alert" style="padding: 40px; margin:40px;">
@@ -218,192 +205,136 @@
 								<div class="row"  style="padding-right: 30px"> 
 									<label class="col-sm-3 text-right">Protocolo</label>
 									<div class="col-sm-2">
-										<input type="text" class="form-control" placeholder="<?php echo "$protocol = function.php:generateProtocol()"?>" disabled>
+										<input type="text" class="form-control" placeholder="<?php echo $protocol?>" disabled=true>
 									</div>
 															
 									<label class="col-sm-2 text-right">Nome</label>
 									<div class="col-sm-5">
-										<input type="text" class="form-control" placeholder="<?php echo $_SESSION['usuario'] ?>" disabled>
+										<input type="text" class="form-control" placeholder="<?php echo $_SESSION['usuario'] ?>" disabled=true>
 									</div>
 								</div><br/>
 								
 								<div class="row"  style="padding-right: 30px"> 
 									<label class="col-sm-3 text-right">Manutenção</label>
 									<div class="col-sm-6">
-										<input type="text" class="form-control" placeholder="*Inserir o tipo de manutenção*" disabled>
+										<input type="text" id="manutenção" class="form-control" disabled=true>
 									</div>
 								</div><br/>
 								
 								<div class="row" style="padding-right: 30px"> 
 									<label class="col-sm-3 text-right">Descrição do problema</label>
 									<div class="col-sm-9">
-										<textarea class="form-control" rows="5" disabled>*Inserir descriçao do problema*</textarea>
+										<textarea id="descricao" class="form-control" rows="5" disabled=true></textarea>
 									</div>
 								</div><br/>
 								<div class="row" style="padding-right: 30px"> 
 									<label class="col-sm-3 text-right">Área rural</label>
 									<div class="col-sm-4">
-										<input type="text" class="form-control" placeholder="*Sim ou não*" disabled>
+										<input type="text" id="rural" class="form-control" disabled=true>
 									</div>
 									<label class="col-sm-2 text-right">CEP</label>
 									<div class="col-sm-3">
-										<input type="text" class="form-control" placeholder="*Inserir CEP*" disabled>
+										<input type="text" id="cep" class="form-control" disabled=true>
 									</div>
 								</div><br/>
 								
 								<div class="row" style="padding-right: 30px"> 
 									<label class="col-sm-3 text-right">Logradouro</label>
 									<div class="col-sm-5">
-										<input type="text" class="form-control" placeholder="*Inserir logradouro*" disabled>
+										<input type="text" id="logradouro" class="form-control" disabled=true>
 									</div>
 									<label class="col-sm-2 text-right">Numero</label>
 									<div class="col-sm-2">
-										<input type="text" class="form-control" placeholder="*Inserir numero*" disabled>
+										<input type="text" id="numPredialProx" class="form-control" disabled=true>
 									</div>
 								</div><br/>
 														
 								<div class="row" style="padding-right: 30px"> 
 									<label class="col-sm-3 text-right">Complemento</label>
 									<div class="col-sm-4">
-										<input type="text" class="form-control" placeholder="*Inserir complemento*" disabled>
+										<input type="text" id="complemento" class="form-control"disabled=true>
 									</div>
 									<label class="col-sm-2 text-right">Bairro</label>
 									<div class="col-sm-3">
-										<input type="text" class="form-control" placeholder="*Inserir bairro*" disabled>
+										<input type="text" id="bairro" class="form-control" disabled=true>
 									</div>
 								</div><br/>
 								
 								<div class="row" style="padding-right: 30px"> 
-									<label class="col-sm-3 text-right">Cidade</label>
+										<label class="col-sm-3 text-right">Cidade</label>
 									<div class="col-sm-5">
-										<input type="text" class="form-control" placeholder="*Inserir cidade*" disabled>
+										<input type="text" id="cidade" class="form-control" disabled=true>
 									</div>
 									<label class="col-sm-2 text-right">UF</label>
 									<div class="col-sm-2">
-										<input type="text" class="form-control" placeholder="*Inserir UF*" disabled>
+										<input type="text" id="uf" class="form-control" disabled=true>
 									</div>
 								</div><br/>
 								
 								<div class="row" style="padding-right: 30px"> 
 									<label class="col-sm-3 text-right">Observação sobre o endereço</label>
 									<div class="col-sm-9">
-										<textarea class="form-control" rows="3" disabled>*Inserir observação sobre o endereço*</textarea>
+										<textarea id="observacao" class="form-control" rows="3" disabled=true></textarea>
 									</div>
 								</div><br/>
-								
 							</div>
-							
-							<!-- MENU DE NAVEGAÇÃO------------------------------------------------------------------------------->
-							
-							<div class="row" style="margin-top: 50px; padding-left: 100px; padding-right: 100px;">
-								<ul class="nav nav-pills" id="menu-list">
-									<a href="javascript:previous()" id="btn-previous" class="btn btn-sm" style="float: left"> &laquo; Voltar</a>
-									<input type="submit" id="btn-save" name="btn-save" value="Registrar ocorrência"class="btn btn-sm btn-primary hide" style="float: right">
-									<a href="javascript:next()" id="btn-next" class="btn btn-sm btn-primary" style="float: right">Avançar &raquo;</a>
-								</ul>
-							</div>
-							
-							<!--
-							<div class="col-sm-8">
-								<label>Nome do Municípe</label><input type="text" name="nomeMunicipe" class="form-control " required/><br>	
-							</div>
-
-							<div class="col-sm-4">
-								<label>Contato</label><input type="text" name="contato" class="form-control " required/><br>	
-							</div>
-							
-							<div class="col-sm-3">
-								<label>Email</label><input type="text" name="email" class="form-control " /><br>
-							</div>
-							
-							<div class="col-sm-3">
-								<label>CPF</label><input type="text" name="cpf" class="form-control " required /><br>
-							</div>
-
-							<div class="col-sm-3">
-								<label>UF</label><select id="estado" name="uf" class="form-control " required/></select><br>
-							</div>
-
-							<div class="col-sm-3">
-								<label>Cidade</label><select id="cidade" name="cidade" class="form-control " required/></select><br>
-							</div>
-
-							<div class="col-sm-6">
-								<label>Rua</label><input type="text" name="logradouro" class="form-control " required/><br>
-							</div>
-
-							<div class="col-sm-1">
-								<label>Numero</label><input type="text" name="numPredialProx" class="form-control " required/><br>	
-							</div>
-
-							<div class="col-sm-3">
-								<label>Bairro</label><input type="text" name="bairro" class="form-control " required/><br>
-							</div>
-
-							<div class="col-sm-2">
-								<label>Complemento</label><input type="text" name="complemento" class="form-control "/><br>
-							</div>				
-
-							<div class="col-sm-12">
-								<label>Descrição da Ocorrência</label><textarea name="descricaoOcorrencia" class="form-control" style="height: 150px;width: 100%" ></textarea>
-							</div>
-							
-
-							<div class="col-sm-12" style="padding-top: 20px;">
-								<input type='submit' name='edtSalvar' style="float: right" value="Registrar Ocorrencia" class="btn btn-primary col-sm-4">
-							</div>
-							-->
 						</div>
-					</fieldset>
-				</form><br><br><br>
-
-				<?php if($_SESSION['isAdmin'] == 0){ ?>
-
-				<table id="tabela" class="bk" width="100%">
-					<tr>
-						<th>Protocolo</th>
-						<th>Status</th>
-						<th>Data</th>
-						<th>Prazo</th>
-						<th>Nome do Municípe</th>
-						<th>Endereco do Municípe</th>
-					</tr>
-
-					<tr>
-						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna1" placeholder="Filtrar por Protocolo"/></th>
-						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna2" placeholder="Filtrar por Status"/></th>
-						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna3" placeholder="Filtrar por Data"/></th>
-						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna4" placeholder="Filtrar por Prazo"/></th>
-						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna5" placeholder="Filtrar por Municipe"/></th>
-						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna6" placeholder="Filtrar por Endereco"/></th>
-						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "></th>
-					</tr>
-
-					<?php 
-					$buscarOcorrencia = $dtibd->executarQuery("select","SELECT * FROM ocorrencia");
-					
-					foreach ($buscarOcorrencia as $result) {	
-					?>
-
+						
+						<!-- MENU DE NAVEGAÇÃO------------------------------------------------------------------------------->
+						<div class="row" style="margin-top: 50px; padding-left: 100px; padding-right: 100px;">
+							<ul class="nav nav-pills">
+								<a href="javascript:previous()" id="btn-previous" class="btn btn-sm" style="float: left"> &laquo; Voltar</a>
+								<input type="submit" id="btn-save" name="btn-save" value="Registrar ocorrência"class="btn btn-sm btn-primary hide" style="float: right">
+								<a href="javascript:next()" id="btn-next" class="btn btn-sm btn-primary" style="float: right">Avançar &raquo;</a>
+							</ul>
+							
+						</div>
+					</fieldset>			
+				</form><br/><br/><br/>
+<?php 
+				if($_SESSION['isAdmin'] == 0){ 
+?>
+					<table id="tabela" class="bk" width="100%">
 						<tr>
-							<td class="tdPers"><?php echo $result['numeroProtocolo']; ?></td>
-							<td class="tdPers"><?php echo $result['status']; ?></td>
-							<td class="tdPers"><?php echo $result['data']; ?></td>
-							<td class="tdPers"><?php echo $result['prazo']; ?></td>
-							<td class="tdPers"><?php echo $result['nomeMunicipe']; ?></td>
-							<td class="tdPers"><?php echo $result['enderecoMunicipe']; ?></td>
+							<th>Protocolo</th>
+							<th>Status</th>
+							<th>Data</th>
+							<th>Prazo</th>
+							<th>Nome do Municípe</th>
+							<th>Endereco do Municípe</th>
 						</tr>
-						<?php 
-							}
-						?>
+						<tr>
+							<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna1" placeholder="Filtrar por Protocolo"/></th>
+							<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna2" placeholder="Filtrar por Status"/></th>
+							<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna3" placeholder="Filtrar por Data"/></th>
+							<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna4" placeholder="Filtrar por Prazo"/></th>
+							<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna5" placeholder="Filtrar por Municipe"/></th>
+							<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna6" placeholder="Filtrar por Endereco"/></th>
+							<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "></th>
+						</tr>
+<?php 
+						$buscarOcorrencia = $dtibd->executarQuery("select","SELECT * FROM ocorrencia");						
+						foreach ($buscarOcorrencia as $result) {	
+?>
+
+							<tr>
+								<td class="tdPers"><?php echo $result['numeroProtocolo']; ?></td>
+								<td class="tdPers"><?php echo $result['status']; ?></td>
+								<td class="tdPers"><?php echo $result['data']; ?></td>
+								<td class="tdPers"><?php echo $result['prazo']; ?></td>
+								<td class="tdPers"><?php echo $result['nomeMunicipe']; ?></td>
+								<td class="tdPers"><?php echo $result['enderecoMunicipe']; ?></td>
+							</tr>
+<?php 
+						}
+?>
 					</table>
-				<?php } ?>
-				</form>
+
+<?php 
+				} 
+?>
+				
 			</div>
 		</div>
-
-<?php
-	include 'footer.php';
-?>
 	</body>
 </html>
