@@ -7,7 +7,7 @@
 	$currentDiv = 0;
 
 	if(isset($_POST['btn-save'])){
-		var_dump($_POST);
+
 		$endereco = $_POST["logradouro"] 
 				. $_POST["numPredialProx"]  
 				. $_POST['bairro'] . " " 
@@ -49,9 +49,25 @@
 			}
 		</style>
 		
+		<link rel="stylesheet" href="css/chosen.min.css">
+		
 		<script type="text/javascript" src="js/jquery.js"></script>
 	 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/chosen.jquery.min.js"></script>
 		<script type="text/javascript" src="js/script-reg-ocorrencia.js"/></script>
+		
+		<script type="text/javascript">
+			$(function() {
+				$("select").chosen({
+					width: "100%",
+					no_results_text: "Nenhum resulado encontrado para: "
+				});
+			});
+			
+			$(function(){
+				$(".nav-pills li").addClass("block-button");
+			});
+		</script>
 	</head>
 	<body onLoad="start()">
 
@@ -68,15 +84,15 @@
 							<div class="alert" style="margin-bottom: 50px">
 								<div style="padding-left: 30px;">
 									<ul class="nav nav-pills" id="menu-list">
-										<li role="presentation" id="li-0"><a href="">Passo 1</a></li>
-										<li role="presentation" id="li-1"><a href="">Passo 2</a></li>
-										<li role="presentation" id="li-2"><a href="">Passo 3</a></li>
-										<li role="presentation" id="li-3"><a href="">Passo 4</a></li>
-										<li role="presentation" id="li-4"><a href="">Final</a></li>
+										<li role="presentation" id="li-0" ><a href="">Passo 1</a></li>
+										<li role="presentation" id="li-1" ><a href="">Passo 2</a></li>
+										<li role="presentation" id="li-2" ><a href="">Passo 3</a></li>
+										<li role="presentation" id="li-3" ><a href="">Passo 4</a></li>
+										<li role="presentation" id="li-4" ><a href="">Final</a></li>
 									</ul>
 								</div>
 								<div class="progress" style="margin: 40px; margin-bottom: 20px">
-									<div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
+									<div id="progress-bar" class="progress-bar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
 									</div>
 								</div>
 							</div>
@@ -93,34 +109,32 @@
 								</div>
 							</div>
 							<!-- PASSO DOIS ------------------------------------------------------------------->
-							<div id="step-1" class="hide" >
-								<form class="form-horizontal">
-									<div class="form-group">
-										<div class="row"  style="padding-right: 30px">
-											<label class="col-sm-3 text-right">Nome</label>
-											<div class="col-sm-9">
-												<input type="text" class="form-control" placeholder="<?php echo $_SESSION['usuario'] ?>" disabled=true>
-											</div>
-										</div><br/>
-										<div class="row" style="padding-right: 30px"> 
-											<label class="col-sm-3 text-right">Tipo de manutenção</label>
-											<div class="dropdown col-sm-9">
-												<!--name="TIPO_MANUTENCAO";-->
-												<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-													Dropdown
-													<span class="caret"></span>
-												</button>
-												<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-													<li><a href="#">Action</a></li>
-													<li><a href="#">Another action</a></li>
-													<li><a href="#">Something else here</a></li>
-													<li role="separator" class="divider"></li>
-													<li><a href="#">Separated link</a></li>
-												</ul>
-											</div>
+							<div id="step-1" class="hide" >								
+								<div class="form-group">
+									<div class="row"  style="padding-right: 30px">
+										<label class="col-sm-3 text-right">Nome</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" placeholder="<?php echo $_SESSION['usuario'] ?>" disabled=true>
+										</div>
+									</div><br/>
+									<div class="row" style="padding-right: 30px"> 
+										<label class="col-sm-3 text-right">Tipo de manutenção</label>
+										<div class="col-sm-9">
+		
+											<select id="manutencao-prev" name="uf" class="caret"/>
+												<option class="form-control" value="LÂMPADA PISCANTE">LÂMPADA PISCANTE</option>
+												<option class="form-control" value="LÂMPADA ACESA">LÂMPADA ACESA</option>
+												<option class="form-control" value="LÂMPADA APAGADA">LÂMPADA APAGADA</option>
+												<option class="form-control" value="LÂMPADA QUEBRADA">LÂMPADA QUEBRADA</option>
+												<option class="form-control" value="LÂMPADA INTERMITENTE">LÂMPADA INTERMITENTE</option>
+												<option class="form-control" value="BRAÇO DE ILUMINAÇÃO PÚBLICA QUEBRADO" >BRAÇO DE ILUMINAÇÃO PÚBLICA QUEBRADO</option>
+												<option class="form-control" value="POSTE EXCLUSIVO IP">POSTE EXCLUSIVO IP</option>
+												<option class="form-control" value="LUMINÁRIA QUEBRADA">LUMINÁRIA QUEBRADA</option>
+												<option class="form-control" value="LUMINÁRIA SUJA">LUMINÁRIA SUJA</option>
+											</select>
 										</div>
 									</div>
-								</form>
+								</div>
 							</div>
 								
 							<!-- PASSO Tres ------------------------------------------------------------------->
@@ -132,9 +146,10 @@
 											<input type="text" class="form-control" placeholder="<?php echo  $protocol ?>" disabled=true>
 										</div>
 									</div><br/>
+									
 									<div class="row" style="padding-right: 40px"> 
 										<label class="col-sm-3 text-right">Descrição do problema</label>
-										<div class="col-sm-9">
+										<div class="col-sm-9" style="float: right">
 											<textarea id="descricao-prev" name="descricao" class="form-control" rows="5"></textarea>
 										</div>
 									</div>
@@ -144,11 +159,15 @@
 							<div id="step-3" class="hide" >
 								<div class="row" style="padding-right: 30px"> 
 									<label class="col-sm-2 text-right">Área rural</label>
-									<div class="col-sm-4">
-										<input type="text" id="rural-prev" name="rural" class="form-control" >
+									
+									<div class="col-sm-2">
+										<select id="rural-prev" name="uf" class="form-control "/>
+											<option class="form-control" value="SIM" >SIM</option>
+											<option class="form-control" value="NÃO" selected>NÃO</option>
+										</select>
 									</div>
 									<label class="col-sm-2 text-right">CEP</label>
-									<div class="col-sm-2">
+									<div class="col-sm-3">
 										<input type="text" id="cep-prev"  name="cep" class="form-control" >
 									</div>
 									<div class="col-sm-2" >
@@ -185,14 +204,18 @@
 									</div>
 									<label class="col-sm-2 text-right">UF</label>
 									<div class="col-sm-2">
-										<input type="text" id="uf-prev"name="uf" class="form-control" >
+										<select id="uf-prev" name="uf" class="form-control"/>
+											<option class="form-control" value="SE" selected>SE</option>
+											<option class="form-control" value="--" >--</option>
+										</select>
 									</div>
 								</div><br/>
 								
 								<div class="row" style="padding-right: 30px"> 
-									<label class="col-sm-3 text-right">Observação sobre o endereço</label>
-									<div class="col-sm-9">
-										<textarea id="observacao-prev"name="observacao"class="form-control" rows="3"></textarea>
+								
+									<label class="col-sm-2 text-right">Observação sobre o endereço</label>
+									<div class="col-sm-10" style="float: right">
+										<textarea id="observacao-prev"name="observacao"class="form-control" rows="5"></textarea>
 									</div>
 								</div><br/>							
 							</div>
@@ -217,14 +240,14 @@
 								<div class="row"  style="padding-right: 30px"> 
 									<label class="col-sm-3 text-right">Manutenção</label>
 									<div class="col-sm-6">
-										<input type="text" id="manutenção" class="form-control" disabled=true>
+										<input type="text" id="manutencao" class="form-control" disabled=true>
 									</div>
 								</div><br/>
 								
 								<div class="row" style="padding-right: 30px"> 
 									<label class="col-sm-3 text-right">Descrição do problema</label>
 									<div class="col-sm-9">
-										<textarea id="descricao" class="form-control" rows="5" disabled=true></textarea>
+										<textarea id="descricao" class="form-control" rows="4" disabled=true></textarea>
 									</div>
 								</div><br/>
 								<div class="row" style="padding-right: 30px"> 
@@ -270,25 +293,21 @@
 										<input type="text" id="uf" class="form-control" disabled=true>
 									</div>
 								</div><br/>
-								
+
 								<div class="row" style="padding-right: 30px"> 
 									<label class="col-sm-3 text-right">Observação sobre o endereço</label>
 									<div class="col-sm-9">
-										<textarea id="observacao" class="form-control" rows="3" disabled=true></textarea>
+										<textarea id="observacao" class="form-control" rows="4" disabled=true></textarea>
 									</div>
 								</div><br/>
 							</div>
-						</div>
-						
-						<!-- MENU DE NAVEGAÇÃO------------------------------------------------------------------------------->
-						<div class="row" style="margin-top: 50px; padding-left: 100px; padding-right: 100px;">
-							<ul class="nav nav-pills">
+							<!-- MENU DE NAVEGAÇÃO------------------------------------------------------------------------------->
+							<div class="row" style="margin-top: 50px; padding-left: 100px; padding-right: 100px;">
 								<a href="javascript:previous()" id="btn-previous" class="btn btn-sm" style="float: left"> &laquo; Voltar</a>
 								<input type="submit" id="btn-save" name="btn-save" value="Registrar ocorrência"class="btn btn-sm btn-primary hide" style="float: right">
-								<a href="javascript:next()" id="btn-next" class="btn btn-sm btn-primary" style="float: right">Avançar &raquo;</a>
-							</ul>
-							
-						</div>
+								<a href="javascript:next()" id="btn-next" class="btn btn-sm " style="float: right">Avançar &raquo;</a>
+							</div>
+						</div>						
 					</fieldset>			
 				</form><br/><br/><br/>
 <?php 

@@ -61,6 +61,7 @@ function updateDivs(){
 			hide(true, "step-4");
 		break;
 		case 4:
+			
 			updateProgressBar("progress-bar", "100%");
 			hide(true, "step-0");
 			hide(true, "step-1");
@@ -87,6 +88,7 @@ function hide(flag, id){
 
 function fillFields(){
 	
+	fillField("manutencao");
 	fillField("descricao");
 	fillField("rural");
 	fillField("cep");
@@ -106,25 +108,24 @@ function fillField(id){
 			
 function start(){
 	
-	
 	updateDivs();
 	updateClasses("btn-next", new Array("btn-primary"), new Array());
-	updateClasses("btn-previous", new Array("btn-default", "disabled", "block-button"), new Array());
+	updateClasses("btn-previous", new Array("btn-default", "disabled"), new Array());
 	
 	var nLi = $(".nav-pills li").length;
 	
 	updateClasses("li-" + currentDiv, new Array("active"), new Array());
 	for(var i = 1; i < nLi; i++){
-		updateClasses("li-" + i, new Array("disabled", "block-button", "btn-default"), new Array());
+		updateClasses("li-" + i, new Array("disabled", "btn-default"), new Array());
 	}
 }
 
 function next(){
-	updateClasses("li-" + (currentDiv++), new Array("disabled", "block-button", "btn-default"), new Array("active"));
-	updateClasses("li-" + currentDiv, new Array("active"), new Array("disabled", "block-button", "btn-default"));
+	updateClasses("li-" + (currentDiv++), new Array("disabled", "btn-default"), new Array("active"));
+	updateClasses("li-" + currentDiv, new Array("active"), new Array("disabled", "btn-default"));
 	
 	if(currentDiv > 0){
-		updateClasses("btn-previous", new Array("btn-primary"), new Array("disabled", "block-button", "btn-default"));
+		updateClasses("btn-previous", new Array("btn-primary"), new Array("disabled",  "btn-default"));
 	}
 	if(currentDiv == 4){
 		hide(true, "btn-next");
@@ -135,17 +136,16 @@ function next(){
 }
 
 function previous(){
-	updateClasses("li-" + (currentDiv--), new Array("disabled", "block-button", "btn-default"), new Array("active"));
-	updateClasses("li-" + currentDiv, new Array("active"), new Array("disabled", "block-button", "btn-default"));
+	updateClasses("li-" + (currentDiv--), new Array("disabled", "btn-default"), new Array("active"));
+	updateClasses("li-" + currentDiv, new Array("active"), new Array("disabled", "btn-default"));
 	
 	if(currentDiv == 0){
-		updateClasses("btn-previous", new Array("disabled", "block-button", "btn-default"), new Array("btn-primary"));
+		updateClasses("btn-previous", new Array("disabled", "btn-default"), new Array("btn-primary"));
 	}
 	
 	if(currentDiv < 5){
 		hide(false, "btn-next");
 		hide(true, "btn-save");
 	}
-	
 	updateDivs();
 }
