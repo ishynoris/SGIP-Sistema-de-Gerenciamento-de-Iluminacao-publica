@@ -7,7 +7,6 @@
 <?php 
 
 include 'menu.php'; 
-
 if ($_SESSION['isAdmin'] == 2) {
 
 ?>

@@ -1,10 +1,11 @@
 <?php
+
+	require('./inc/Config.inc.php');
+	
 	if(!isset($_SESSION)){
 		header("Location: 404.php");
 		exit;
 	}
-	
-	include 'classes/usuario.class.php';
 
 	define("HOME",  "Pagina inicial");
 	define("CAD_OCORRENCIA", "Cadastrar nova ocorrência");

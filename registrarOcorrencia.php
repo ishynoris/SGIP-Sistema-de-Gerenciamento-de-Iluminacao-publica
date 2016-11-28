@@ -1,36 +1,15 @@
 <?php 
 	include 'header.php'; 
-	include ('classes/ocorrencia.class.php');
+	include 'controller/OcorrenciaController.class.php';
 	
 	validateAcess();
-	$protocol = 2016 . rand(11111,99999);;
-	$currentDiv = 0;
+	$protocol = 2016 . rand(11111,99999);
 
 	if(isset($_POST['btn-save'])){
-
-		$endereco = $_POST["logradouro"] 
-				. $_POST["numPredialProx"]  
-				. $_POST['bairro'] . " " 
-				. $_POST['complemento'] 
-				. $_POST['cidade'] 
-				. "/" . $_POST['uf'];
 		
-		$ocorrencia = new ocorrencia;
-		$ocorrencia->numeroProtocolo = $protocol; //OK
-		$ocorrencia->status = "Aberta"; //OK
-		$ocorrencia->data = date('d/m/Y'); 
-		$ocorrencia->prazo = date('d/m/Y', strtotime(' + 5 days')); 
-		$ocorrencia->nomeMunicipe = $_SESSION['usuario']; //OK
-		// $ocorrencia->contato = $_POST['contato'];
-		$ocorrencia->enderecoMunicipe = $endereco; //OK
-		$ocorrencia->descricao = $_POST['descricao']; //OK
-		// $ocorrencia->cpf = $_POST['cpf'];
-		// $ocorrencia->email = $_POST['email'];
-		$ocorrencia->cadastrarOcorrencia();
-
-		if ($_SESSION['isAdmin'] != 0){ 
-			echo "<script type='text/javascript'> alert('Seu Atendimento foi Registrado com Sucesso. Seu numero de Protocolo é $ocorrencia->numeroProtocolo');</script>";
-		}
+		$ocorrenciaController = new OcorrenciaController;
+		$ocorrenciaController->protocol = $protocol;
+		$ocorrenciaController->extractData();
 	}
 ?>
 <html>
@@ -40,6 +19,7 @@
 			<meta http-equiv="Refresh" content="2; url=http://www.google.com.br">
 		</noscript>
 		-->
+		<link rel="stylesheet" href="css/chosen.min.css">
 		<style>
 			.hide{
 				display: none;
@@ -49,24 +29,14 @@
 			}
 		</style>
 		
-		<link rel="stylesheet" href="css/chosen.min.css">
-		
 		<script type="text/javascript" src="js/jquery.js"></script>
 	 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/chosen.jquery.min.js"></script>
 		<script type="text/javascript" src="js/script-reg-ocorrencia.js"/></script>
-		
 		<script type="text/javascript">
-			$(function() {
-				$("select").chosen({
-					width: "100%",
-					no_results_text: "Nenhum resulado encontrado para: "
-				});
-			});
-			
-			$(function(){
-				$(".nav-pills li").addClass("block-button");
-			});
+			function addOcorrencia(){
+				alert("addOcorrencia");
+			}
 		</script>
 	</head>
 	<body onLoad="start()">
@@ -110,24 +80,38 @@
 							</div>
 							<!-- PASSO DOIS ------------------------------------------------------------------->
 							<div id="step-1" class="hide" >								
-								<div class="form-group">
+								<div class="form-group.required">
 									<div class="row"  style="padding-right: 30px">
-										<label class="col-sm-3 text-right">Nome</label>
-										<div class="col-sm-9">
-											<input type="text" class="form-control" placeholder="<?php echo $_SESSION['usuario'] ?>" disabled=true>
+										<label class="col-sm-2 text-right">Nome</label>
+										<div class="col-sm-6">
+											<input type="text" class="form-control" value="<?php echo $_SESSION['usuario'] ?>" disabled=true>
+										</div>
+										<label class="col-sm-1 text-right">CPF</label>
+										<div class="col-sm-3">
+											<input type="text" id="cpf-prev" name="cpf" class="form-control">
+										</div>
+									</div><br/>
+									<div class="row"  style="padding-right: 30px">
+										<label class="col-sm-2 text-right">E-mail</label>
+										<div class="col-sm-5">
+											<input type="text" id="email-prev" name="email" class="form-control">
+										</div>
+										<label class="col-sm-2 text-right">Contato</label>
+										<div class="col-sm-3">
+											<input type="text" id="contato-prev" name="contato" class="form-control">
 										</div>
 									</div><br/>
 									<div class="row" style="padding-right: 30px"> 
-										<label class="col-sm-3 text-right">Tipo de manutenção</label>
-										<div class="col-sm-9">
+										<label class="col-sm-2 text-right">Manutenção</label>
+										<div class="col-sm-10">
 		
-											<select id="manutencao-prev" name="uf" class="caret"/>
+											<select id="manutencao-prev" name="manutencao"/>
 												<option class="form-control" value="LÂMPADA PISCANTE">LÂMPADA PISCANTE</option>
 												<option class="form-control" value="LÂMPADA ACESA">LÂMPADA ACESA</option>
 												<option class="form-control" value="LÂMPADA APAGADA">LÂMPADA APAGADA</option>
 												<option class="form-control" value="LÂMPADA QUEBRADA">LÂMPADA QUEBRADA</option>
 												<option class="form-control" value="LÂMPADA INTERMITENTE">LÂMPADA INTERMITENTE</option>
-												<option class="form-control" value="BRAÇO DE ILUMINAÇÃO PÚBLICA QUEBRADO" >BRAÇO DE ILUMINAÇÃO PÚBLICA QUEBRADO</option>
+												<option class="form-control" value="BRAÇO DE ILUMINAÇÃO PÚBLICA QUEBRADO">BRAÇO DE ILUMINAÇÃO PÚBLICA QUEBRADO</option>
 												<option class="form-control" value="POSTE EXCLUSIVO IP">POSTE EXCLUSIVO IP</option>
 												<option class="form-control" value="LUMINÁRIA QUEBRADA">LUMINÁRIA QUEBRADA</option>
 												<option class="form-control" value="LUMINÁRIA SUJA">LUMINÁRIA SUJA</option>
@@ -143,7 +127,7 @@
 									<div class="row"  style="padding-right: 40px"> 
 										<label class="col-sm-3 text-right">Numero de protocolo</label>
 										<div class="col-sm-9">
-											<input type="text" class="form-control" placeholder="<?php echo  $protocol ?>" disabled=true>
+											<input type="text" class="form-control" value="<?php echo  $protocol ?>" disabled=true>
 										</div>
 									</div><br/>
 									
@@ -158,17 +142,17 @@
 							<!-- PASSO QUATRO ------------------------------------------------------------------->
 							<div id="step-3" class="hide" >
 								<div class="row" style="padding-right: 30px"> 
-									<label class="col-sm-2 text-right">Área rural</label>
-									
+								
+									<label class="col-sm-2 text-right">Área rural</label>	
 									<div class="col-sm-2">
-										<select id="rural-prev" name="uf" class="form-control "/>
+										<select id="rural-prev" name="rural" class="form-control "/>
 											<option class="form-control" value="SIM" >SIM</option>
 											<option class="form-control" value="NÃO" selected>NÃO</option>
 										</select>
 									</div>
-									<label class="col-sm-2 text-right">CEP</label>
-									<div class="col-sm-3">
-										<input type="text" id="cep-prev"  name="cep" class="form-control" >
+									<label class="col-sm-1 text-right">CEP</label>
+									<div class="col-sm-2">
+										<input type="text" id="cep-prev" name="cep" class="form-control" >
 									</div>
 									<div class="col-sm-2" >
 										<h5><span class="label label-primary" ><a target='_blank' href="http://www.buscacep.correios.com.br/sistemas/buscacep/buscaCep.cfm">Consultar CEP</a></span></h5>
@@ -177,10 +161,10 @@
 								
 								<div class="row" style="padding-right: 30px"> 
 									<label class="col-sm-2 text-right">Logradouro</label>
-									<div class="col-sm-6">
+									<div class="col-sm-7">
 										<input type="text" id="logradouro-prev" name="logradouro" class="form-control">
 									</div>
-									<label class="col-sm-2 text-right">Numero</label>
+									<label class="col-sm-1 text-right">Numero</label>
 									<div class="col-sm-2">
 										<input id="numPredialProx-prev" name="numPredialProx"type="text" class="form-control" >
 									</div>
@@ -188,21 +172,21 @@
 														
 								<div class="row" style="padding-right: 30px"> 
 									<label class="col-sm-2 text-right">Complemento</label>
-									<div class="col-sm-4">
+									<div class="col-sm-5">
 										<input type="text" id="complemento-prev" name="complemento" class="form-control" >
 									</div>
-									<label class="col-sm-2 text-right">Bairro</label>
+									<label class="col-sm-1 text-right">Bairro</label>
 									<div class="col-sm-4">
-										<input type="text" id="bairro-prev"name="bairro" class="form-control" >
+										<input type="text" id="bairro-prev" name="bairro" class="form-control" >
 									</div>
 								</div><br/>
 								
 								<div class="row" style="padding-right: 30px"> 
 									<label class="col-sm-2 text-right">Cidade</label>
-									<div class="col-sm-6">
-										<input type="text" id="cidade-prev"name="cidade" class="form-control" >
+									<div class="col-sm-7">
+										<input type="text" id="cidade-prev" name="cidade" class="form-control" >
 									</div>
-									<label class="col-sm-2 text-right">UF</label>
+									<label class="col-sm-1 text-right">UF</label>
 									<div class="col-sm-2">
 										<select id="uf-prev" name="uf" class="form-control"/>
 											<option class="form-control" value="SE" selected>SE</option>
@@ -215,9 +199,9 @@
 								
 									<label class="col-sm-2 text-right">Observação sobre o endereço</label>
 									<div class="col-sm-10" style="float: right">
-										<textarea id="observacao-prev"name="observacao"class="form-control" rows="5"></textarea>
+										<textarea id="observacao-prev" name="observacao" class="form-control" rows="5"></textarea>
 									</div>
-								</div><br/>							
+								</div><br/>	
 							</div>
 							
 							<!-- PASSO CINCO ------------------------------------------------------------------->
@@ -225,21 +209,38 @@
 								<div class="alert alert-info" role="alert" style="padding: 40px; margin:40px;">
 									Por favor, verifique todos os campos antes de prosseguir.
 								</div>
+								
 								<div class="row"  style="padding-right: 30px"> 
-									<label class="col-sm-3 text-right">Protocolo</label>
-									<div class="col-sm-2">
-										<input type="text" class="form-control" placeholder="<?php echo $protocol?>" disabled=true>
-									</div>
-															
-									<label class="col-sm-2 text-right">Nome</label>
+								
+									<label class="col-sm-3 text-right">Nome</label>
 									<div class="col-sm-5">
-										<input type="text" class="form-control" placeholder="<?php echo $_SESSION['usuario'] ?>" disabled=true>
+										<input type="text" class="form-control" value="<?php echo $_SESSION['usuario'] ?>" disabled=true>
+									</div>
+									<label class="col-sm-1 text-right">CPF</label>
+									<div class="col-sm-3">
+										<input type="text" id="cpf" class="form-control" disabled=true>
+									</div>
+								</div><br/>
+								<div class="row"  style="padding-right: 30px"> 
+								
+									<label class="col-sm-3 text-right">E-mail</label>
+									<div class="col-sm-5">
+										<input type="text" id="email" class="form-control"  disabled=true>
+									</div>
+									<label class="col-sm-1 text-right">Contato</label>
+									<div class="col-sm-3">
+										<input type="text" id="contato" class="form-control" disabled=true>
 									</div>
 								</div><br/>
 								
 								<div class="row"  style="padding-right: 30px"> 
-									<label class="col-sm-3 text-right">Manutenção</label>
-									<div class="col-sm-6">
+								
+									<label class="col-sm-3 text-right">Protocolo</label>
+									<div class="col-sm-2">
+										<input type="text" class="form-control" value="<?php echo $protocol?>" disabled=true>
+									</div>
+									<label class="col-sm-2 text-right">Manutenção</label>
+									<div class="col-sm-5">
 										<input type="text" id="manutencao" class="form-control" disabled=true>
 									</div>
 								</div><br/>
@@ -303,7 +304,7 @@
 							</div>
 							<!-- MENU DE NAVEGAÇÃO------------------------------------------------------------------------------->
 							<div class="row" style="margin-top: 50px; padding-left: 100px; padding-right: 100px;">
-								<a href="javascript:previous()" id="btn-previous" class="btn btn-sm" style="float: left"> &laquo; Voltar</a>
+								<a href="javascript:back()" id="btn-back" class="btn btn-sm" style="float: left"> &laquo; Voltar</a>
 								<input type="submit" id="btn-save" name="btn-save" value="Registrar ocorrência"class="btn btn-sm btn-primary hide" style="float: right">
 								<a href="javascript:next()" id="btn-next" class="btn btn-sm " style="float: right">Avançar &raquo;</a>
 							</div>
@@ -311,48 +312,48 @@
 					</fieldset>			
 				</form><br/><br/><br/>
 <?php 
-				if($_SESSION['isAdmin'] == 0){ 
+			if($_SESSION['isAdmin'] == 0){ 
 ?>
-					<table id="tabela" class="bk" width="100%">
-						<tr>
-							<th>Protocolo</th>
-							<th>Status</th>
-							<th>Data</th>
-							<th>Prazo</th>
-							<th>Nome do Municípe</th>
-							<th>Endereco do Municípe</th>
-						</tr>
-						<tr>
-							<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna1" placeholder="Filtrar por Protocolo"/></th>
-							<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna2" placeholder="Filtrar por Status"/></th>
-							<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna3" placeholder="Filtrar por Data"/></th>
-							<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna4" placeholder="Filtrar por Prazo"/></th>
-							<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna5" placeholder="Filtrar por Municipe"/></th>
-							<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna6" placeholder="Filtrar por Endereco"/></th>
-							<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "></th>
-						</tr>
+		
+				<button onclick="addOcorrencia()" class="btn btn-danger btn-lg" style="margin: 40px; float: right">Adicionar nova ocorrência</button>
+				<table id="tabela" class="bk" width="100%">
+					<tr>
+						<th>Protocolo</th>
+						<th>Status</th>
+						<th>Data</th>
+						<th>Prazo</th>
+						<th>Nome do Municípe</th>
+						<th>Endereco do Municípe</th>
+					</tr>
+					<tr>
+						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna1" placeholder="Filtrar por Protocolo"/></th>
+						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna2" placeholder="Filtrar por Status"/></th>
+						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna3" placeholder="Filtrar por Data"/></th>
+						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna4" placeholder="Filtrar por Prazo"/></th>
+						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna5" placeholder="Filtrar por Municipe"/></th>
+						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna6" placeholder="Filtrar por Endereco"/></th>
+						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "></th>
+					</tr>
 <?php 
-						$buscarOcorrencia = $dtibd->executarQuery("select","SELECT * FROM ocorrencia");						
-						foreach ($buscarOcorrencia as $result) {	
+					$buscarOcorrencia = $dtibd->executarQuery("select","SELECT * FROM ocorrencia");						
+					foreach ($buscarOcorrencia as $result) {	
 ?>
 
-							<tr>
-								<td class="tdPers"><?php echo $result['numeroProtocolo']; ?></td>
-								<td class="tdPers"><?php echo $result['status']; ?></td>
-								<td class="tdPers"><?php echo $result['data']; ?></td>
-								<td class="tdPers"><?php echo $result['prazo']; ?></td>
-								<td class="tdPers"><?php echo $result['nomeMunicipe']; ?></td>
-								<td class="tdPers"><?php echo $result['enderecoMunicipe']; ?></td>
-							</tr>
+						<tr>
+							<td class="tdPers"><?php echo $result['numeroProtocolo']; ?></td>
+							<td class="tdPers"><?php echo $result['status']; ?></td>
+							<td class="tdPers"><?php echo $result['data']; ?></td>
+							<td class="tdPers"><?php echo $result['prazo']; ?></td>
+							<td class="tdPers"><?php echo $result['nomeMunicipe']; ?></td>
+							<td class="tdPers"><?php echo $result['enderecoMunicipe']; ?></td>
+						</tr>
 <?php 
-						}
+					}
 ?>
-					</table>
-
+				</table>
 <?php 
-				} 
+			} 
 ?>
-				
 			</div>
 		</div>
 	</body>

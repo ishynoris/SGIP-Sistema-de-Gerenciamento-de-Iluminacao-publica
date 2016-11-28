@@ -19,6 +19,7 @@
 		<meta charset="utf-8">
 
 		<!-- Estilos -->
+		
 		<link rel="stylesheet" type="text/css" href="css/adminStyle.css">
 		<link rel="stylesheet" type="text/css" media="print" href="css/adminStyle.css">
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">

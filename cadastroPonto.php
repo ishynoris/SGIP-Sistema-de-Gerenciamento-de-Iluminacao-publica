@@ -40,18 +40,38 @@
 	}
 ?>
 
+<html>
+	<head>
+		<script>
+			$(function(){
+				$(".nav-pills li").addClass("block-button");
+			});
+		</script>
+	</head>
 <div class="row col-sm-12" style="padding-left:0;">
 
 <?php 
 	include 'menu.php'; 
 ?>
 
-	<div class="col-sm-10" style="margin-right: 0;margin-top: 20px">
-		<form action="" class="bk clear"  style="padding: 20px " method="POST" enctype="multipart/form-data">
-			<h1>Cadastrar Ponto de Iluminação</h1>
+	<div class="col-sm-9" style="margin-top: 20px;">
+		<form class="bk clear" style="padding: 30px " method="post">
 			<fieldset>
 				<div class="col-sm-12" style="margin: 0 auto">
-					<legend>Informações</legend>
+				
+					<legend style="margin-bottom: 50px">Cadastrar Ponto de Iluminação</legend>
+					
+					<div class="alert" style="margin-bottom: 50px">
+						<div style="padding-left: 30px;">
+							<ul class="nav nav-pills" id="menu-list">
+								<li role="presentation" id="li-0" ><a href="">Informações gerais</a></li>
+								<li role="presentation" id="li-1" ><a href="">Caracteristicas do poste</a></li>
+							</ul>
+						</div>
+					</div>
+
+
+					
 					<div class="col-sm-6">
 						<label>UF</label><select id="estado" name="uf" class="form-control " required/></select><br>
 					</div>

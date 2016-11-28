@@ -12,22 +12,32 @@ class usuario{
 	private $Login;
 	private $Pass;
 	private $Admin;
+	private $DataNascimento;
+	private $Sexo;
+	private $Email;
+	private $Telefone;
+	private $Endereco;
+	private $EnderecoObs;
 
 	public function __set($atrib, $value){
-      	$this->$atrib = $value;
+		if(!isset($atrib)){
+			$this->$atrib = $value;
+			echo $this->$atrib;
+		}
   	}
-
-    public function __get($atrib){
-        return $this->$atrib;
-    }   
-
-	public function cadastrarUsuario()
-	{
+	
+	public static function tipoUsuario($tipo){
+		switch($tipo){
+			case 0: return "Administrador";
+			case 1: return "Equipe técnica";
+			case 2: return "Usuário comum";
+		}
+	}
+	
+	public function saveDB($dtibd){
 		try{
-    		$dtibd = new DTIDb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
-
 			
-			$dtibd->executarQuery("insert",
+			$flag = $dtibd->executarQuery("insert",
 			"INSERT INTO usuario (usuario,login,senha,isAdmin) 
 			VALUES (:usuario,:login,:pass,:admin)",
 				array(
@@ -37,18 +47,12 @@ class usuario{
 					":admin"=>$this->Admin
 					
 			));
+			return $flag;
     	}catch(PDOException $e){
 			echo "Erro ao Inserir: " . $e->getMessage() . "\n";
         	die();
 		}
-	}
-	
-	public static function tipoUsuario($tipo){
-		switch($tipo){
-			case 0: return "Administrador";
-			case 1: return "Equipe técnica";
-			case 2: return "Usuário comum";
-		}
+		return false;
 	}
 }
 ?>

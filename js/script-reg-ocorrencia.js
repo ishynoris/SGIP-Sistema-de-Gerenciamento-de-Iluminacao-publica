@@ -1,5 +1,18 @@
 
 /*! Script usado no arquivo registarOcorrencia.php */
+
+// Aplica a biblioteca chosen em todos os selects 
+$(function() {
+	$("select").chosen({
+		width: "100%",
+		no_results_text: "Nenhum resulado encontrado para: "
+	});
+});
+// Bloqueia todas as abas do cabeçalho da página
+$(function(){
+	$(".nav-pills li").addClass("block-button");
+});
+
 var currentDiv = 0;
 
 function updateProgressBar(id, value){
@@ -87,7 +100,9 @@ function hide(flag, id){
 }
 
 function fillFields(){
-	
+	fillField("cpf");
+	fillField("email");
+	fillField("contato");
 	fillField("manutencao");
 	fillField("descricao");
 	fillField("rural");
@@ -110,7 +125,7 @@ function start(){
 	
 	updateDivs();
 	updateClasses("btn-next", new Array("btn-primary"), new Array());
-	updateClasses("btn-previous", new Array("btn-default", "disabled"), new Array());
+	updateClasses("btn-back", new Array("btn-default", "disabled"), new Array());
 	
 	var nLi = $(".nav-pills li").length;
 	
@@ -125,7 +140,7 @@ function next(){
 	updateClasses("li-" + currentDiv, new Array("active"), new Array("disabled", "btn-default"));
 	
 	if(currentDiv > 0){
-		updateClasses("btn-previous", new Array("btn-primary"), new Array("disabled",  "btn-default"));
+		updateClasses("btn-back", new Array("btn-primary"), new Array("disabled",  "btn-default"));
 	}
 	if(currentDiv == 4){
 		hide(true, "btn-next");
@@ -135,12 +150,12 @@ function next(){
 	updateDivs();
 }
 
-function previous(){
+function back(){
 	updateClasses("li-" + (currentDiv--), new Array("disabled", "btn-default"), new Array("active"));
 	updateClasses("li-" + currentDiv, new Array("active"), new Array("disabled", "btn-default"));
 	
 	if(currentDiv == 0){
-		updateClasses("btn-previous", new Array("disabled", "btn-default"), new Array("btn-primary"));
+		updateClasses("btn-back", new Array("disabled", "btn-default"), new Array("btn-primary"));
 	}
 	
 	if(currentDiv < 5){

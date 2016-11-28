@@ -48,6 +48,15 @@ function validateAcess(){
 	}
 }
 
+function searchCEP($cep){
+	// $resultado = @file_get_contents('http://republicavirtual.com.br/web_cep.php?cep='.urlencode($cep).'&formato=xml');  
+    // if(!$resultado){  
+        // $resultado = "&resultado=0&resultado_txt=erro+ao+buscar+cep";  
+    // }  
+    // parse_str($	, $retorno);
+    // return $retorno; 
+}
+
 function isAdministrador($isAdmin){
     if($isAdmin == 0){
         return true;

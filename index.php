@@ -25,6 +25,7 @@
 <html lang="pt-br">
 <head>
  	<meta charset="UTF-8">
+	
     <link rel="stylesheet" type="text/css" href="css/adminLogin.css">
  	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
  	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
@@ -44,13 +45,13 @@
 		
 		<article class="col-sm-12">
 			<div class="col-sm-4 col-sm-offset-4 login">
-				
+						
 				<form action="" method="post">
-				
+					
 					<div class="input-group-lg">
-						<input type="text" name="edtLogin" class="form-control" placeholder="Usuario"><br>
-						<input type="password" name="edtSenha" class="form-control" placeholder="Senha"><br>
-					</div>
+						<input type="password" name="edtSenha" class="form-control" placeholder="Senha" value="admin"/><br>
+						<input type="text" name="edtLogin" class="form-control" placeholder="Usuario" value="admin"/>
+					</div><br>
 				
 					<input type="submit" class="btn btn-primary btn-lg btn-block btnLogin"  
 									value="Entrar" name="enviar" style="margin-bottom: 20px;"/>
@@ -58,7 +59,6 @@
 						<div class="btn-group" role="group">
 							<input type="submit" class="btn btn-info btn-lg" value="Novo cadastro" name="cadastro"/>
 						</div>
-
 						<div class="btn-group" role="group">
 							<input type="submit" class="btn btn-default btn-lg" value="Esqueci a senha" name="novaSenha"/>
 						</div>
@@ -71,7 +71,7 @@
 	if ($error == LOGIN_SENHA_NULL || $error == LOGIN_SENHA_INVALIDO){ 
 ?>
 		<div style="padding-top:50px;">
-			<div class="wrapper alert alert-warning" role="alert"><?php echo $error;?></div>
+			<div class="wrapper alert alert-danger" role="alert"><?php echo $error;?></div>
 		</div>
 <?php
 	}
