@@ -21,11 +21,6 @@ function logarNoSistema($login, $senha){
         return LOGIN_SENHA_NULL;
     }else{
 
-        var_dump($login, $senha);
-        echo  "<br><br>";
-        var_dump($loginTratado, $senhaTratado);
-        echo  "<br><br>";
-
         $sql = $dtibd->executarQuery("select","SELECT login, senha FROM usuario WHERE login = :login and senha = :senha limit 1",
         array(
 			":login" => $loginTratado,
