@@ -1,6 +1,6 @@
 <?php 
 	include 'header.php'; 
-	include 'controller/OcorrenciaController.class.php';
+	include 'controller/RegistrarOcorrenciaController.class.php';
 	
 	validateAcess();
 	$protocol = 2016 . rand(11111,99999);

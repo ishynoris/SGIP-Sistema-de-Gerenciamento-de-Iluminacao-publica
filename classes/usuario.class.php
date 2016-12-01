@@ -8,6 +8,7 @@ class usuario{
 	const TECNICO = 1;
 	const USUARIO = 2;
 
+	private $id;
 	private $Usuario;
 	private $Login;
 	private $Pass;
@@ -16,17 +17,14 @@ class usuario{
 	private $Sexo;
 	private $Email;
 	private $Telefone;
-	private $Endereco;
-	private $EnderecoObs;
 
-	public function __set($atrib, $value){
-		if(!isset($atrib)){
-			$this->$atrib = $value;
-			echo $this->$atrib;
-		}
+    public function __set($atrib, $value)
+    {
+        $this->$atrib = $value;
   	}
 	
-	public static function tipoUsuario($tipo){
+	public static function tipoUsuario($tipo)
+    {
 		switch($tipo){
 			case 0: return "Administrador";
 			case 1: return "Equipe técnica";
@@ -34,25 +32,44 @@ class usuario{
 		}
 	}
 	
-	public function saveDB($dtibd){
+	public function saveDB($dtibd)
+    {
+        $this->prepareData();
+
 		try{
-			
-			$flag = $dtibd->executarQuery("insert",
-			"INSERT INTO usuario (usuario,login,senha,isAdmin) 
-			VALUES (:usuario,:login,:pass,:admin)",
+
+			$this->id = $dtibd->executarQuery("insert",
+			"INSERT INTO usuario (usuario, login, senha, isAdmin, dataNascimento, sexo, email, telefone) 
+			VALUES (:usuario, :login, :senha, :isAdmin, :dataNascimento, :sexo, :email, :telefone)",
 				array(
 					":usuario"=>$this->Usuario, 
-					":login"=>$this->Login, 
-					":pass"=>$this->Pass, 
-					":admin"=>$this->Admin
-					
+					":login"=>$this->Login,
+					":senha"=>$this->Pass,
+					":isAdmin"=>$this->Admin,
+                    ":dataNascimento"=>$this->DataNascimento,
+					":sexo"=>$this->Sexo,
+					":email"=>$this->Email,
+                    ":telefone"=>$this->Telefone
 			));
-			return $flag;
-    	}catch(PDOException $e){
+
+			return $this->id;
+
+    	} catch (PDOException $e){
 			echo "Erro ao Inserir: " . $e->getMessage() . "\n";
         	die();
 		}
-		return false;
+        return false;
 	}
+
+	private function prepareData()
+    {
+        $this->Usuario = addslashes($this->Usuario);
+        $this->Login = md5(addslashes($this->Login));
+        $this->Pass = md5(addslashes($this->Pass));
+        $this->Admin = addslashes($this->Admin);
+        $this->DataNascimento = addslashes($this->DataNascimento);
+        $this->Sexo = addslashes($this->Sexo);
+        $this->Email = addslashes($this->Email);
+        $this->Telefone = md5(addslashes($this->Telefone));
+    }
 }
-?>

@@ -1,20 +1,32 @@
-
 /*! Script usado no arquivo novo-contato.php */
 
-// Aplica a biblioteca chosen em todos os selects 
+// Realiza algumas configurações aplicando máscaras e a biblioteca chosen nos selects
+
 $(function() {
+    $("[data-toggle='tooltip']").tooltip();
 	$("select").chosen({
 		width: "100%",
 		no_results_text: "Nenhum resulado encontrado para: "
 	});
 });
 
+// Ao submeter o formulário, é necessário habilitar alguns campos ou método post nao pode acessá-los
+$(function(){
+    $( "#myform" ).submit(function( event ) {
+
+        disabled(false, 'tipo-usuario');
+        disabled(false, 'logradouro');
+        disabled(false, 'bairro');
+        disabled(false, 'cidade');
+        disabled(false, 'uf');
+    });
+})
+
 function searchCEP(cep){
-	// alert(cep);
-	// cep = cep.replace(".", "").replace("-", "");
-	alert(cep);
+	
+	cep = cep.replace(".", "").replace("-", "");
 	if(cep == ''){
-		alert("Por favor, informe um CEP  sfgh sfghsdfh sd h");
+		alert("Por favor, informe um CEP válido.");
 	} else {
 		var script = document.createElement("script");
 		script.src = '//viacep.com.br/ws/'+ cep + '/json/?callback=fillFields'

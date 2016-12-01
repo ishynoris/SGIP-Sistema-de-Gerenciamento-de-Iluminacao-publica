@@ -1,6 +1,6 @@
 <?php 
 	include 'header.php';
-	include 'controller/UsuarioController.class.php';	
+	include 'controller/NovoUsuarioController.class.php';
 	
 	$controller = new UsuarioController;
 	$controller->activePost(array('edtSalvar'));
@@ -15,7 +15,7 @@
 		<script type="text/javascript" src="js/jquery.js"></script>
 		<script type="text/javascript" src="js/chosen.jquery.min.js"></script>
 		<script type="text/javascript" src="js/jquery.mask.js"></script>
-		<script type="text/javascript" src="js/script-novo-cadastro.js"></script>
+		<script type="text/javascript" src="js/script.novo.cadastro.js"></script>
 		<script>
 			$(document).ready(function(){
 				var html = $("#novo-cadastro").load("novo-cadastro.php #form-novo-cadastro");

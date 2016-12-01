@@ -14,21 +14,31 @@ function logarNoSistema($login, $senha){
         session_destroy();
     }    
 
-    $loginTratado = addslashes($login);
+    $loginTratado = md5(addslashes($login));
     $senhaTratado = md5(addslashes($senha));
     
     if (empty($login) OR empty($senha)) {
         return LOGIN_SENHA_NULL;
     }else{
+
+        var_dump($login, $senha);
+        echo  "<br><br>";
+        var_dump($loginTratado, $senhaTratado);
+        echo  "<br><br>";
+
         $sql = $dtibd->executarQuery("select","SELECT login, senha FROM usuario WHERE login = :login and senha = :senha limit 1",
-        array(":login" => $loginTratado,":senha" => $senhaTratado));
+        array(
+			":login" => $loginTratado,
+			":senha" => $senhaTratado)
+		);
 
         if (!$sql) {
             return LOGIN_SENHA_INVALIDO;
         } else {
-            $buscarUsuario = $dtibd->executarQuery("select","SELECT * FROM usuario WHERE login = :nome",array(":nome" => $loginTratado));
+            $buscarUsuario = $dtibd->executarQuery("select","SELECT * FROM usuario WHERE login = :nome",
+                array(":nome" => $loginTratado));
             
-	    ob_start();
+			ob_start();
             session_start();
 
             foreach ($buscarUsuario as $resultado) {
@@ -46,15 +56,6 @@ function validateAcess(){
 	if(!isset($_SESSION)){
 		header("Location: home.php");
 	}
-}
-
-function searchCEP($cep){
-	// $resultado = @file_get_contents('http://republicavirtual.com.br/web_cep.php?cep='.urlencode($cep).'&formato=xml');  
-    // if(!$resultado){  
-        // $resultado = "&resultado=0&resultado_txt=erro+ao+buscar+cep";  
-    // }  
-    // parse_str($	, $retorno);
-    // return $retorno; 
 }
 
 function isAdministrador($isAdmin){

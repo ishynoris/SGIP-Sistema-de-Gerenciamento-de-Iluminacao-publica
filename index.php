@@ -49,8 +49,8 @@
 				<form action="" method="post">
 					
 					<div class="input-group-lg">
-						<input type="password" name="edtSenha" class="form-control" placeholder="Senha" value="admin"/><br>
-						<input type="text" name="edtLogin" class="form-control" placeholder="Usuario" value="admin"/>
+                        <input type="text" name="edtLogin" class="form-control" placeholder="CPF" value="admin"/><br>
+						<input type="password" name="edtSenha" class="form-control" placeholder="Senha" value="admin"/>
 					</div><br>
 				
 					<input type="submit" class="btn btn-primary btn-lg btn-block btnLogin"  

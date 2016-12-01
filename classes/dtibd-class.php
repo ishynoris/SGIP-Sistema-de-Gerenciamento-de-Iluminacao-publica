@@ -34,6 +34,7 @@ class DTIDb {
 		
         // Preparar e executar a query
         $query_resource = $this->active_connection->prepare($sql);
+
         if($query_resource){
             if($params){
                 $query_execute_return = $query_resource->execute($params);

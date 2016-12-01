@@ -217,6 +217,30 @@ INSERT INTO `pontosmapa` (`id`, `name`, `address`, `lat`, `lng`, `type`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `pontosmapa`
+--
+
+CREATE TABLE IF NOT EXISTS `endereco` (
+  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `cep` int(8) NOT NULL,
+  `logradouro` varchar(60) NOT NULL,
+  `numPredialProx` int(5) NOT NULL,
+  `complemento` varchar(100),
+  `bairro` varchar(60) NOT NULL,
+  `cidade` varchar(30) NOT NULL,
+  `uf` varchar(2) NOT NULL,
+  `observacao` varchar(100) NOT NULL
+)
+
+--
+-- Extraindo dados da tabela `endereco`
+--
+
+INSERT INTO `endereco` (`id`, `cep`, `logradouro`, `numPredialProx`, `complemento`, `bairro`, `cidade`, `uf`, `observacao`) VALUES
+	(1, 49015330, 'Rua Zaquel Brandão', 23, 'ÚNICO ALIMENTOS, ZAQUEU BRANDÃO,23 49015-330 ARACAJU-SERGIPE BRASIL', 'Grageru', 'Aracaju', 'SE', 'Registro inserido como teste');
+
+---------------------------------------------------------------------------
+--
 -- Estrutura da tabela `usuario`
 --
 
@@ -291,8 +315,15 @@ ALTER TABLE `usuario`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `usuario`
+--
+ALTER TABLE `endereco`
+  ADD PRIMARY KEY (`id`);
+  
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
 
 --
 -- AUTO_INCREMENT for table `caracteristicaspontoiluminacao`
@@ -328,6 +359,7 @@ ALTER TABLE `pontosmapa`
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
+  -- ADD dataNascimento date
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

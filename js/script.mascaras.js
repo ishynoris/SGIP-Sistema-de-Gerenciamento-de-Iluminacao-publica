@@ -1,10 +1,23 @@
 /*! Script used to validates the masks on form novo-cadastro.php (and maybe others)*/
 // Refatore or don't change ids
 
-$('document').ready(function(){
+$("document").ready(function(){
 	$("#cpf").mask("999.999.999-99");
 	$("#nascimento").mask("99/99/9999");
 	$("#cep").mask("99.999-999");
+    $("#telefone").mask("(99) 9999-9999?9")
+    $("#telefone").focusout(function (event) {
+        var target, phone, element;
+        target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+        phone = target.value.replace(/\D/g, '');
+        element = $(target);
+        element.unmask();
+        if(phone.length > 10) {
+            element.mask("(99) 99999-999?9");
+        } else {
+            element.mask("(99) 9999-9999?9");
+        }
+    });
 });	
 
 function validateCPF(cpf){
@@ -15,7 +28,7 @@ function validateCPF(cpf){
 	var soma1 = 0, soma2 = 0;
 	var vlr = 11;
 
-	for(i=0; i < 9; i++){
+	for(var i = 0; i < 9; i++){
 		soma1 += eval(cpf.charAt(i) * (vlr-1));
 		soma2 += eval(cpf.charAt(i) * vlr);
 		vlr--;
@@ -24,25 +37,27 @@ function validateCPF(cpf){
 	soma1 = (((soma1*10)%11)==10 ? 0:((soma1*10)%11));
 	soma2=(((soma2+(2*soma1))*10)%11);
 
-	var digitoGerado=(soma1*10)+soma2;
+	var digitoGerado = (soma1 * 10) + soma2;
 	if(digitoGerado != digitoDigitado){
-		alert('CPF Invalido!');      
+		alert('CPF Invalido!');
 	}
 }
 
 function validateData(date){
-	
+
 	var exp = /\d{2}\/\d{2}\/\d{4}/
+	
 	if(!exp.test(date)){
 		alert('Informe uma data no formato dd/mm/aaaa.');
 	} else {
-	
+
+		var currentYear = new Date().getFullYear();
 		var splitDate = date.split("/");
 		if( (splitDate[0] < 1) || (splitDate[0] > 31) //DAY
 			|| (splitDate[1] < 1) || (splitDate[1] > 12)  //MONTH
-			|| (splitDate[2] < 1)){ //YEAR
-		
-			alert('Data Invalida!');
+			|| (splitDate[2] < 1) || splitDate[2] >= currentYear){ //YEAR
+
+			alert('Data invalida!');
 		}
 	}
 }
