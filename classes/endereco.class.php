@@ -1,6 +1,6 @@
 <?php
 
-class endereco{
+class Endereco{
     private $id;
     private $cep;
     private $logradouro;
@@ -11,18 +11,26 @@ class endereco{
     private $uf;
     private $observacao;
 
-    public function __set($atrib, $value){
-
-        $this->$atrib = $value;
+    public function __construct($cep, $logradouro, $numPredialProx, $complemento, $bairro, $cidade, $uf, $observacao)
+    {
+        $this->id = -1;
+        $this->cep = $cep;
+        $this->logradouro = $logradouro;
+        $this->numPredialProx = $numPredialProx;
+        $this->complemento = $complemento;
+        $this->bairro = $bairro;
+        $this->cidade = $cidade;
+        $this->uf = $uf;
+        $this->observacao = $observacao;
     }
 
-    public function saveDB($idUsuario, $dtibd){
+    public function saveDB($dtibd){
 
         try{
 
             $this->id = $dtibd->executarQuery("insert",
-                "INSERT INTO endereco (cep, logradouro, numPredialProx, complemento, bairro, cidade, uf, observacao, usuario_id) 
-			    VALUES (:cep, :logradouro, :numPredialProx, :complemento, :bairro, :cidade, :uf, :observacao, :usuario_id)",
+                "INSERT INTO endereco (cep, logradouro, numPredialProx, complemento, bairro, cidade, uf, observacao) 
+			    VALUES (:cep, :logradouro, :numPredialProx, :complemento, :bairro, :cidade, :uf, :observacao)",
                 array(
                     ":cep"=>$this->cep,
                     ":logradouro"=>$this->logradouro,
@@ -31,8 +39,7 @@ class endereco{
                     ":bairro"=>$this->bairro,
                     ":cidade"=>$this->cidade,
                     ":uf"=>$this->uf,
-                    ":observacao"=>$this->observacao,
-                    ":usuario_id"=>$idUsuario
+                    ":observacao"=>$this->observacao
                 ));
 
             return $this->id;

@@ -35,11 +35,14 @@ function logarNoSistema($login, $senha){
             
 			ob_start();
             session_start();
-
+            var_dump($buscarUsuario);
             foreach ($buscarUsuario as $resultado) {
+
                 $_SESSION['usuario'] = $resultado['usuario'];
                 $_SESSION['login'] = $resultado['login'];
+                $_SESSION['id'] = $resultado['id'];
                 $_SESSION['isAdmin'] = $resultado['isAdmin'];
+
             }
 
 			return LOGIN_SENHA_VALIDO;

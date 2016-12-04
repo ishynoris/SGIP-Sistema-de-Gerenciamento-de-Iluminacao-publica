@@ -12,7 +12,7 @@ $(function() {
 
 // Ao submeter o formulário, é necessário habilitar alguns campos ou método post nao pode acessá-los
 $(function(){
-    $( "#myform" ).submit(function( event ) {
+    $("#myform").submit(function() {
 
         disabled(false, 'tipo-usuario');
         disabled(false, 'logradouro');

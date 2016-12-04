@@ -37,7 +37,7 @@
 			<ul id="menu-content" class="menu-content out" >
 				<li><a href="home.php">
 					<i class="fa fa-tachometer" aria-hidden="true"></i><?php echo HOME?></a></li>             
-				<li><a class="links" href="registrarOcorrencia.php">
+				<li><a class="links" href="nova-ocorrenca.php">
 					<i class="fa fa-users" aria-hidden="true"></i><?php echo CAD_OCORRENCIA?></a></li>
 				<li><a class="links" href="parquedeiluminacao.php">
 					<i class="fa fa-lightbulb-o" aria-hidden="true"></i><?php echo PARQUE?></a></li>
@@ -114,7 +114,7 @@
 			<ul id="menu-content" class="menu-content out" >
 				<li><a href="home.php">
 					<i class="fa fa-tachometer" aria-hidden="true"></i><?php echo HOME?></a></li>             
-				<li><a class="links" href="registrarOcorrencia.php">
+				<li><a class="links" href="nova-ocorrenca.php">
 					<i class="fa fa-users" aria-hidden="true"></i><?php echo CAD_OCORRENCIA?></a></li>
 				<li><a class="links" href="parquedeiluminacao.php">
 					<i class="fa fa-lightbulb-o" aria-hidden="true"></i><?php echo PARQUE?> </a></li>

@@ -1,17 +1,38 @@
 
 /*! Script usado no arquivo registarOcorrencia.php */
 
-// Aplica a biblioteca chosen em todos os selects 
 $(function() {
+    // Bloqueia todas as abas do cabeçalho da página
+    $(".nav-pills li").addClass("block-button");
+    // Aplica a biblioteca chosen em todos os selects
 	$("select").chosen({
 		width: "100%",
 		no_results_text: "Nenhum resulado encontrado para: "
 	});
 });
-// Bloqueia todas as abas do cabeçalho da página
+
 $(function(){
-	$(".nav-pills li").addClass("block-button");
-});
+
+    $("#form").submit(function() {
+
+        disabled('cep', false);
+        disabled('logradouro', false);
+        disabled('numPredialProx', false);
+        disabled('complemento', false);
+        disabled('bairro', false);
+        disabled('cidade', false);
+        disabled('uf', false);
+        disabled('observacao', false);
+        disabled('manutencao', false);
+        disabled('descricao', false);
+        disabled('rural', false);
+    });
+})
+
+function disabled(id, flag){
+    document.getElementById(id).disabled = flag;
+    document.getElementById(id).readOnly = !flag;
+}
 
 var currentDiv = 0;
 
@@ -46,11 +67,11 @@ function updateDivs(){
 	
 	switch(currentDiv){
 		case 0:
-			updateProgressBar("progress-bar", "20%");
-			hide(true, "step-1");
-			hide(true, "step-2");
-			hide(true, "step-3");
-			hide(true, "step-4");
+            updateProgressBar("progress-bar", "20%");
+            hide(true, "step-1");
+            hide(true, "step-2");
+            hide(true, "step-3");
+            hide(true, "step-4");
 		break;
 		case 1:
 			updateProgressBar("progress-bar", "40%");
@@ -100,9 +121,7 @@ function hide(flag, id){
 }
 
 function fillFields(){
-	fillField("cpf");
-	fillField("email");
-	fillField("contato");
+
 	fillField("manutencao");
 	fillField("descricao");
 	fillField("rural");
@@ -117,8 +136,8 @@ function fillFields(){
 }
 
 function fillField(id){
-	input = document.getElementById(id + "-prev");
-	document.getElementById(id).value = input.value;
+	var input = document.getElementById(id + "-prev").value;
+	document.getElementById(id).value = input;
 }
 			
 function start(){

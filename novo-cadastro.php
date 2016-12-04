@@ -1,8 +1,8 @@
 <?php
 	require('./inc/Config.inc.php');
-	include 'controller/NovoUsuarioController.class.php';
+	include 'controller/NovoCadastroController.class.php';
 	
-	$controller = new UsuarioController;
+	$controller = new NovoCadastroController();
 	$controller->activePost(array('btn-back', 'btn-save'));
 ?>
 
@@ -16,9 +16,32 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="http://digitalbush.com/wp-content/uploads/2014/10/jquery.maskedinput.js"></script>
 
-        <script type="text/javascript" src="js/script.mascaras.js"></script>
+        <script type="text/javascript" src="js/script.validar.mascaras.js"></script>
         <script type="text/javascript" src="js/script.novo.cadastro.js"></script>
         <script type="text/javascript" src="js/chosen.jquery.min.js"></script>
+
+        <script>
+            $("document").ready(function(){
+
+                $("#cpf").mask("999.999.999-99");
+                $("#nascimento").mask("99/99/9999");
+                $("#cep").mask("99.999-999");
+                $("#telefone").mask("(99) 9999-9999?9")
+                $("#telefone").focusout(function (event) {
+                    var target, phone, element;
+                    target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                    phone = target.value.replace(/\D/g, '');
+                    element = $(target);
+                    element.unmask();
+                    if(phone.length > 10) {
+                        element.mask("(99) 99999-999?9");
+                    } else {
+                        element.mask("(99) 9999-9999?9");
+                    }
+                });
+            });
+        </script>
+
 	</head>
 	
 	<body>
@@ -28,7 +51,7 @@
 				<div id="form-novo-cadastro" class="form-group">
 				<legend style="padding-bottom: 10px;"><span class="label label-default">+</span>&nbsp;&nbsp;Novo cadastro </legend>
 				
-					<div class="row"  >
+					<div class="row">
 						<label class="col-sm-2 text-right">Tipo de usuário</label>
 						<div class="col-sm-2">
 							<select id="tipo-usuario" name="tipo-usuario" disabled>
@@ -44,7 +67,7 @@
 							<input type="text" name='nome' class="form-control" data-toggle="tooltip" data-placement="top" title="Oi eu sou o goku">
 						</div>
 					</div><br/>
-					<div class="row"  >
+					<div class="row">
 						<label class="col-sm-2 text-right">CPF</label>
 						<div class="col-sm-2">
 							<input onblur="validateCPF(this.value)" type="text" id="cpf" name="cpf" value="03539933522" class="form-control" >
@@ -81,8 +104,7 @@
 							<input onblur="searchCEP(this.value)" type="text" id="cep" name="cep" value="49503429" class="form-control"/>
 						</div>
 						<div class="col-sm-1">
-							<h5><span class="label label-primary" >
-								<a target='_blank' href="http://www.buscacep.correios.com.br/sistemas/buscacep/buscaCep.cfm">Consultar CEP</a></span></h5>
+                            <a target='_blank' href="http://www.buscacep.correios.com.br/sistemas/buscacep/buscaCep.cfm" class="btn btn-primary btn-xs">Consultar CEP</span></a>
 						</div>
 						<label class="col-sm-2 text-right">Logradouro</label>
 						<div class="col-sm-5">

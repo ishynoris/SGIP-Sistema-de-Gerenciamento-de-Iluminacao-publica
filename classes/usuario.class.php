@@ -2,7 +2,7 @@
 
 include 'conecta_bancoAdmin.php';
 
-class usuario{
+class Usuario{
 
 	const ADMIN = 0;
 	const TECNICO = 1;
@@ -18,12 +18,21 @@ class usuario{
 	private $Email;
 	private $Telefone;
 
-    public function __set($atrib, $value)
+    function __construct($Usuario, $Login, $Pass, $Admin,
+                         $DataNascimento, $Sexo, $Email, $Telefone)
     {
-        $this->$atrib = $value;
-  	}
-	
-	public static function tipoUsuario($tipo)
+        $this->id = -1;
+        $this->Usuario = $Usuario;
+        $this->Login = $Login;
+        $this->Pass = $Pass;
+        $this->Admin = $Admin;
+        $this->DataNascimento = $DataNascimento;
+        $this->Sexo = $Sexo;
+        $this->Email = $Email;
+        $this->Telefone = $Telefone;
+    }
+
+    public static function tipoUsuario($tipo)
     {
 		switch($tipo){
 			case 0: return "Administrador";
@@ -32,15 +41,15 @@ class usuario{
 		}
 	}
 	
-	public function saveDB($dtibd)
+	public function saveDB($idEndereco, $dtibd)
     {
         $this->prepareData();
 
 		try{
 
 			$this->id = $dtibd->executarQuery("insert",
-			"INSERT INTO usuario (usuario, login, senha, isAdmin, dataNascimento, sexo, email, telefone) 
-			VALUES (:usuario, :login, :senha, :isAdmin, :dataNascimento, :sexo, :email, :telefone)",
+			"INSERT INTO usuario (usuario, login, senha, isAdmin, dataNascimento, sexo, email, telefone, id_endereco) 
+			VALUES (:usuario, :login, :senha, :isAdmin, :dataNascimento, :sexo, :email, :telefone, :id_endereco)",
 				array(
 					":usuario"=>$this->Usuario, 
 					":login"=>$this->Login,
@@ -49,8 +58,12 @@ class usuario{
                     ":dataNascimento"=>$this->DataNascimento,
 					":sexo"=>$this->Sexo,
 					":email"=>$this->Email,
-                    ":telefone"=>$this->Telefone
+                    ":telefone"=>$this->Telefone,
+                    ":id_endereco"=>$idEndereco
 			));
+
+			var_dump($this);
+			echo "<br><br>";
 
 			return $this->id;
 

@@ -6,8 +6,8 @@
 
 <?php 
 
-include 'menu.php'; 
-if ($_SESSION['isAdmin'] == 2) {
+include 'menu.php';
+if ($_SESSION['isAdmin'] == Usuario::USUARIO) {
 
 ?>
 
@@ -22,50 +22,48 @@ if ($_SESSION['isAdmin'] == 2) {
 			</div>
 		</form>
 
-		<?php 
+<?php
+        if(isset($_POST['edtPesquisar'])){
 
-			if(isset($_POST['edtPesquisar'])){
-				@$numProtocolo = $_POST['numProtocolo'];
+            @$numProtocolo = $_POST['numProtocolo'];
+            $buscarOcorrencia = $dtibd->executarQuery("select",	"SELECT * FROM ocorrencia where numeroProtocolo =  $numProtocolo");
 
-				$buscarOcorrencia = $dtibd->executarQuery("select",	"SELECT * FROM ocorrencia where numeroProtocolo =  $numProtocolo");
+            foreach ($buscarOcorrencia as $key) {
+?>
+            <div class="col-sm-12 bk" style="margin-top: 20px; padding: 20px">
+                <div class="col-sm-3">
+                    <label>Numero Protocolo</label><input type="text" value="<?php echo $key['numeroProtocolo']; ?>" name="edtnumeroProtocolo" class="form-control" readonly><br>
+                </div>
 
-				foreach ($buscarOcorrencia as $key) {
-		?>	
-			<div class="col-sm-12 bk" style="margin-top: 20px; padding: 20px">
-				<div class="col-sm-3">
-					<label>Numero Protocolo</label><input type="text" value="<?php echo $key['numeroProtocolo']; ?>" name="edtnumeroProtocolo" class="form-control" readonly><br>
-				</div>
+                <div class="col-sm-3">
+                    <label>Status</label><input type="text" value="<?php echo $key['status']; ?>" name="edtstatus" class="form-control" readonly><br>
+                </div>
 
-				<div class="col-sm-3">
-					<label>Status</label><input type="text" value="<?php echo $key['status']; ?>" name="edtstatus" class="form-control" readonly><br>
-				</div>
+                <div class="col-sm-3">
+                    <label>Data</label><input type="text" value="<?php echo $key['data']; ?>" name="edtdata" class="form-control" readonly><br>
+                </div>
 
-				<div class="col-sm-3">
-					<label>Data</label><input type="text" value="<?php echo $key['data']; ?>" name="edtdata" class="form-control" readonly><br>
-				</div>
+                <div class="col-sm-3">
+                    <label>Prazo</label><input type="text" value="<?php echo $key['prazo']; ?>" name="edtprazo" class="form-control" readonly><br>
+                </div>
 
-				<div class="col-sm-3">
-					<label>Prazo</label><input type="text" value="<?php echo $key['prazo']; ?>" name="edtprazo" class="form-control" readonly><br>
-				</div>
-				
-				<div class="col-sm-4">
-					<label>Nome Municipe</label><input type="text" value="<?php echo $key['nomeMunicipe']; ?>" name="edtnomeMunicipe" class="form-control" readonly><br>
-				</div>
+                <div class="col-sm-4">
+                    <label>Nome Municipe</label><input type="text" value="<?php echo $key['nomeMunicipe']; ?>" name="edtnomeMunicipe" class="form-control" readonly><br>
+                </div>
 
-				<div class="col-sm-4">
-					<label>Endereco</label><input type="text" value="<?php echo $key['enderecoMunicipe']; ?>" name="edtenderecoMunicipe" class="form-control" readonly><br>
-				</div>
+                <div class="col-sm-4">
+                    <label>Endereco</label><input type="text" value="<?php echo $key['enderecoMunicipe']; ?>" name="edtenderecoMunicipe" class="form-control" readonly><br>
+                </div>
 
-				<div class="col-sm-4">
-					<label>Descricao</label><input type="text" value="<?php echo $key['descricao']; ?>" name="edtdescricao" class="form-control" readonly>
-				</div>
-			</div>
+                <div class="col-sm-4">
+                    <label>Descricao</label><input type="text" value="<?php echo $key['descricao']; ?>" name="edtdescricao" class="form-control" readonly>
+                </div>
+            </div>
 
-		<?php 
-				}
-			}
-
-		?>
+<?php
+            }
+        }
+?>
 
 </div>
 
@@ -85,19 +83,16 @@ if ($_SESSION['isAdmin'] == 2) {
 			<div class="table-responsive box-relatorio">
 				<table class="bk" width="100%" id="tabela">
 					<legend class="legend">Ultimos Pontos Cadastrados</legend>
-
-					<?php 
+<?php
 					$buscaProdutos = $dtibd->executarQuery("select","SELECT * FROM pontoiluminacao order by id desc Limit 5");
-
-				
 					foreach ((array) $buscaProdutos as $result) {
-					?>
-					<tr>
-						<td class="tdPers"><?php echo $result['logradouro']; ?></td>
-					</tr>
-					<?php 
+?>
+                        <tr>
+                            <td class="tdPers"><?php echo $result['logradouro']; ?></td>
+                        </tr>
+<?php
 						}
-					?>
+?>
 				</table>
 			</div>
 		</div>
@@ -106,19 +101,17 @@ if ($_SESSION['isAdmin'] == 2) {
 			<div class="table-responsive box-relatorio">		
 				<table class="bk" width="100%">
 					<legend class="legend">Ultimos Usuarios Cadastrados</legend>
-
-					<?php 
+<?php
 					$buscarUsuario = $dtibd->executarQuery("select","SELECT * FROM usuario order by id desc Limit 5");
-					
 					foreach ($buscarUsuario as $result) {	
-					?>
+?>
 
 						<tr>
 							<td class="tdPers"><?php echo $result['usuario']; ?></td>
 						</tr>
-					<?php 
+<?php
 						}
-					?>
+?>
 				</table>
 			</div>
 		</div>
