@@ -34,9 +34,6 @@ class Ocorrencia{
         $this->rural = $rural;
     }
 
-    /**
-     * @return mixed
-     */
     public function getProtocolo()
     {
         return $this->protocolo;
@@ -47,19 +44,19 @@ class Ocorrencia{
         try{
 
             $this->id = $dtibd->executarQuery("insert",
-                "INSERT INTO ocorrencia (numeroProtocolo, status, data_inicio, prazo, descricao, manutencao, rural, prioridade, id_endereco, id_usuario)
-                VALUES (:numeroProtocolo, :status, :data_inicio, :prazo, :descricao, :manutencao, :rural, :prioridade, :id_endereco, :id_usuario)",
+                "INSERT INTO ocorrencia (status, data_inicio, prazo, protocolo, manutencao, prioridade, rural, descricao, id_endereco, id_usuario)
+                VALUES (:status, :data_inicio, :prazo, :protocolo, :manutencao, :prioridade, :rural, :descricao, :id_endereco, :id_usuario)",
                 array(
-                    ":numeroProtocolo"=>$this->protocolo,
-                    ":status"=>$this->status,
-                    ":data_inicio"=>$this->data,
-                    ":prazo"=>$this->prazo,
-                    ":descricao"=>$this->descricao,
-                    ":manutencao"=>$this->manutencao,
-                    ":rural"=>$this->rural,
-                    ":prioridade"=>$this->prioridade,
-                    ":id_endereco"=>$idEndereco,
-                    ":id_usuario"=>$idUsuario
+                    ":status"=> $this->status,
+                    ":data_inicio"=> $this->data,
+                    ":prazo"=> $this->prazo,
+                    ":protocolo"=> $this->protocolo,
+                    ":manutencao" => $this->manutencao,
+                    ":prioridade" => $this->prioridade,
+                    ":rural" => $this->rural,
+                    ":descricao" => $this->descricao,
+                    ":id_endereco" => $idEndereco,
+                    ":id_usuario" => $idUsuario
                 ));
 
             return $this->id;

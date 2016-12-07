@@ -3,7 +3,12 @@
 	include 'controller/NovoCadastroController.class.php';
 	
 	$controller = new NovoCadastroController();
-	$controller->activePost(array('btn-back', 'btn-save'));
+	$error = $controller->triggerInput($controller->getInputAction());
+
+    if ($error == IndexController::LOGIN_SENHA_VALIDO){
+        header("Location: home.php");
+        exit;
+    }
 ?>
 
 <html>
@@ -41,15 +46,17 @@
                 });
             });
         </script>
-
 	</head>
 	
 	<body>
-		<div class="col-sm-12">
+		<div class="">
 			<form id="myform" class="bk clear" style="padding: 30px; margin:50px" method="post">
-				
+
 				<div id="form-novo-cadastro" class="form-group">
-				<legend style="padding-bottom: 10px;"><span class="label label-default">+</span>&nbsp;&nbsp;Novo cadastro </legend>
+
+				    <legend style="padding-bottom: 10px; margin-bottom: 50px">
+                        Novo cadastro&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span>
+                    </legend>
 				
 					<div class="row">
 						<label class="col-sm-2 text-right">Tipo de usuário</label>
@@ -158,8 +165,8 @@
 						</div>
 					</div><br/>
 					<div class="row" style="margin-top: 20px; padding-left: 200px; padding-right: 200px;">
-						<input type="submit" name="btn-back" value="Voltar" class="btn btn-lg btn-primary" style="float: left">
-						<input type="submit" name="btn-save" value="Salvar" class="btn btn-lg btn-primary" style="float: right">
+						<input type="submit" name="<?php echo NovoCadastroController::BTN_BACK?>" value="Voltar" class="btn btn-lg btn-primary" style="float: left">
+						<input type="submit" name="<?php echo NovoCadastroController::BTN_SAVE?>" value="Salvar" class="btn btn-lg btn-primary" style="float: right">
 					</div>
 				</div>
 			</form>

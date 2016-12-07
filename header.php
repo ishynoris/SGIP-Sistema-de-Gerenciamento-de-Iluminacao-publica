@@ -2,15 +2,11 @@
     session_start();
     ob_start();
 
-	if (!$_SESSION['login']) {
+	if (!$_SESSION['id']) {
         session_destroy();
         header("Location: index.php"); 
         exit;
     }
-
-	include 'function.php';
-	$dtibd = new DTIDb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
-
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -19,7 +15,8 @@
 		<meta charset="utf-8">
 
 		<!-- Estilos -->
-		
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="css/adminStyle.css">
 		<link rel="stylesheet" type="text/css" media="print" href="css/adminStyle.css">
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
@@ -32,8 +29,9 @@
 		<link rel="stylesheet" href="//js.arcgis.com/3.10/js/esri/css/esri.css">		
     	<link rel="stylesheet" href="//esri.github.io/bootstrap-map-js/src/css/bootstrapmap.css">
 
-		<!-- Javascript -->		
-	 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<!-- Javascript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="vendor/terraformer/terraformer.min.js"></script>
 		<script type="text/javascript" src="vendor/terraformer-arcgis-parser/terraformer-arcgis-parser.min.js"></script>
 		<script type="text/javascript" src="http://js.arcgis.com/3.10"></script>
@@ -86,7 +84,6 @@
 	</head>
 
     <body>
-        <h1>-------------------------------------------Menu flutuante.......</h1>
     </body>
  <body>
 

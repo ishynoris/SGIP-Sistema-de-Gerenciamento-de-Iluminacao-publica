@@ -15,17 +15,18 @@ $(function(){
 
     $("#form").submit(function() {
 
-        disabled('cep', false);
-        disabled('logradouro', false);
-        disabled('numPredialProx', false);
-        disabled('complemento', false);
-        disabled('bairro', false);
-        disabled('cidade', false);
-        disabled('uf', false);
-        disabled('observacao', false);
-        disabled('manutencao', false);
-        disabled('descricao', false);
-        disabled('rural', false);
+		disabled('cep', false);
+		disabled('logradouro', false);
+		disabled('numPredialProx', false);
+		disabled('complemento', false);
+		disabled('bairro', false);
+		disabled('cidade', false);
+		disabled('uf', false);
+		disabled('observacao', false);
+        disabled('protocolo', false);
+		disabled('manutencao', false);
+		disabled('descricao', false);
+		disabled('rural', false);
     });
 })
 

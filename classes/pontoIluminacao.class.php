@@ -36,7 +36,7 @@ class pontoiluminacao{
     public function pontosmapa($lat,$lng,$type)
     {
     	try{
-    		$dtibd = new DTIDb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
+    		$dtibd = new Dtidb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
 			
 			$dtibd->executarQuery("insert","INSERT INTO pontosmapa(name,address,lat,lng,type) 
 								VALUES(:name,:address,:lat,:lng,:type)",
@@ -56,7 +56,7 @@ class pontoiluminacao{
     public function salvarCaracteristicasPontoIluminacao($id)
     {
     	try{
-	    	$dtibd = new DTIDb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
+	    	$dtibd = new Dtidb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
 
 	    	$dtibd->executarQuery("insert",
 			"INSERT INTO caracteristicaspontoiluminacao (tamanhoDoPoste,refrator,tipoReator,potenciaDoReator,
@@ -89,7 +89,7 @@ class pontoiluminacao{
 	public function salvarPontoIluminacao()
 	{
 		try{
-			$dtibd = new DTIDb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
+			$dtibd = new Dtidb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
 						
 			$lastInsertId = $dtibd->executarQuery("insert",
 			"INSERT INTO pontoiluminacao(logradouro,statusConservacao,numeroDaPlaca)
@@ -113,7 +113,7 @@ class pontoiluminacao{
 	public function editarPI($id)
 	{
 		try{
-			$dtibd = new DTIDb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
+			$dtibd = new Dtidb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
 
 			$lastInsertId = $dtibd->executarQuery("update",
 			"UPDATE caracteristicaspontoiluminacao SET

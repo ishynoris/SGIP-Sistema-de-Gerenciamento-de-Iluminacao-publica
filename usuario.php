@@ -1,9 +1,9 @@
 <?php 
 	include 'header.php';
-	include 'controller/NovoUsuarioController.class.php';
+	include 'controller/NovoCadastroController.class.php';
 	
-	$controller = new UsuarioController;
-	$controller->activePost(array('edtSalvar'));
+	//$controller = new NovoCadastroController();
+	//$controller->activePost(array('edtSalvar'));
 ?>
 
 <html>
@@ -18,7 +18,7 @@
 		<script type="text/javascript" src="js/script.novo.cadastro.js"></script>
 		<script>
 			$(document).ready(function(){
-				var html = $("#novo-cadastro").load("novo-cadastro.php #form-novo-cadastro");
+				//$("#novo-cadastro").load("novo-cadastro.php #form-novo-cadastro");
 			});
 		</script>
 	<head>
@@ -26,12 +26,11 @@
 <div class="row col-sm-12" style="padding-left:0;">
 
 <?php 
-	include 'menu.php'; 
+	//include 'menu.php';
 ?>
 	<div class="col-sm-9" style="margin-top: 20px;">
 		<form class="bk clear" style="padding: 30px " method="post">
-	
-			<div id="novo-cadastro"></div><br>
+
 			
 		</form><br/><br/><br/>
 		<table class="bk" width="100%">

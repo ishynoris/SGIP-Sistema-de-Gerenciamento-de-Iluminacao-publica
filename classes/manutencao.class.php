@@ -24,7 +24,7 @@ class manutencao{
 
     public function inserirManutencao(){
     	try{
-    		$dtibd = new DTIDb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
+    		$dtibd = new Dtidb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
 			
 			$dtibd->executarQuery("insert",
 			"INSERT INTO manutencao (localdePartida,nomeSolicitante, contato, email, tipoServico, prioridade, observacoes, localdeDestino,ocorrencia)
@@ -48,7 +48,7 @@ class manutencao{
 
     public function atualizarOcorrencia($num){
     	try{
-    		$dtibd = new DTIDb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
+    		$dtibd = new Dtidb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
 			
 			$dtibd->executarQuery("update",
 			"UPDATE ocorrencia SET status = :status WHERE numeroProtocolo = :ocorrencia",

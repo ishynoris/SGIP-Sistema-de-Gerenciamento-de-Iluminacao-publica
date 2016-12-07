@@ -1,16 +1,16 @@
-<?php 
-	include 'header.php';
-    include './classes/Usuario.class.php';
+<?php
+	include './header.php';
+    include './menu.php';
 	include './controller/NovaOcorrenciaController.class.php';
-	
-	validateAcess();
+
+    if(!isset($_SESSION)){
+        header("Location: home.php");
+    }
 	$protocol = 2016 . rand(11111,99999);
 
-    $ocorrenciaController = new NovaOcorrenciaController($protocol);
+    $controller = new NovaOcorrenciaController();
+    $controller->triggerInput($controller->getInputAction());
 
-	if(isset($_POST['btn-save'])){
-		$ocorrenciaController->activePost(array('btn-save'));
-	}
 ?>
 <html>
 	<head>
@@ -22,10 +22,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/chosen.min.css">
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="http://digitalbush.com/wp-content/uploads/2014/10/jquery.maskedinput.js"></script>
-
         <script type="text/javascript" src="js/script.validar.mascaras.js"></script>
         <script type="text/javascript" src="js/script.nova.ocorrencia.js"></script>
         <script type="text/javascript" src="js/chosen.jquery.min.js"></script>
@@ -42,14 +39,11 @@
 	</head>
 	<body onLoad="start()">
 
-		<div class="row col-sm-12" style="padding-left:0;">
-<?php 
-	include 'menu.php';
-?>
-			<div class="col-sm-9" style="margin-top: 20px;">
+		<div class="row" style="padding-left:0;">
+			<div class="row" style="margin: 50px;">
 				<form id="form" class="bk clear" style="padding: 30px " method="post">
                     <div class="form-group" >
-                        <legend style="margin-bottom: 50px"><span class="label label-default">+</span>&nbsp;&nbsp;Cadastrar nova ocorrência</legend>
+                        <legend style="padding-bottom:10px; margin-bottom: 50px">Cadastrar nova ocorrência&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></legend>
                         <div class="row" style="margin-bottom: 50px">
                             <div style="padding-left: 30px;">
                                 <ul class="nav nav-pills" id="menu-list">
@@ -218,7 +212,7 @@
                             <div class="row"  style="padding-right: 30px">
                                 <label class="col-sm-2 text-right">Protocolo</label>
                                 <div class="col-sm-2">
-                                    <input type="text" class="form-control" value="<?php echo $protocol?>" disabled>
+                                    <input type="text" id="protocolo" name="protocolo" class="form-control" value="<?php echo $protocol?>" disabled>
                                 </div>
                                 <label class="col-sm-2 text-right">Manutenção</label>
                                 <div class="col-sm-6">
@@ -286,14 +280,12 @@
                         <!-- MENU DE NAVEGAÇÃO------------------------------------------------------------------------------->
                         <div class="row" style="margin-top: 50px; padding-left: 100px; padding-right: 100px;">
                             <a href="javascript:back()" id="btn-back" class="btn btn-sm" style="float: left"> &laquo; Voltar</a>
-                            <input type="submit" id="btn-save" name="btn-save" value="Registrar ocorrência"class="btn btn-sm btn-primary hide" style="float: right">
+                            <input type="submit" id="btn-save" name="<?php echo NovaOcorrenciaController::BTN_SAVE?>" value="Registrar ocorrência"class="btn btn-sm btn-primary hide" style="float: right">
                             <a href="javascript:next()" id="btn-next" class="btn btn-sm " style="float: right">Avançar &raquo;</a>
                         </div>
                     </div>
 				</form><br/><br/><br/>
-<?php 
-			    if($_SESSION['isAdmin'] == Usuario::ADMIN)
-			    {
+<?php           if($_SESSION['isAdmin'] == Usuario::ADMIN) {
 ?>
 				<button onclick="addOcorrencia()" class="btn btn-danger btn-lg" style="margin: 40px; float: right">Adicionar nova ocorrência</button>
 				<table id="tabela" class="bk table table-striped" width="100%">
@@ -314,9 +306,9 @@
 						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna6" placeholder="Filtrar por endereco"/></th>
 						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "></th>
 					</tr>
-<?php
-                    $buscarOcorrencia = $ocorrenciaController->getAll();
-                    $ocorrenciaController->getAll();
+
+<?php               $buscarOcorrencia = $controller->getAll();
+                    $controller->getAll();
 
 					foreach ($buscarOcorrencia as $result)
 					{
@@ -325,19 +317,17 @@
                             . " - " . $result['uf'];
 ?>
 						<tr>
-							<td class="tdPers"><?php echo $result['numeroProtocolo']; ?></td>
+							<td class="tdPers"><?php echo $result['protocolo']; ?></td>
 							<td class="tdPers"><?php echo $result['status']; ?></td>
 							<td class="tdPers"><?php echo $result['data_inicio']; ?></td>
 							<td class="tdPers"><?php echo $result['prazo']; ?></td>
 							<td class="tdPers"><?php echo $result['usuario']; ?></td>
 							<td class="tdPers"><?php echo $endereco; ?></td>
 						</tr>
-<?php
-					}
+<?php               }
 ?>
 				</table>
-<?php 
-			    }
+<?php           }
 ?>
 			</div>
 		</div>

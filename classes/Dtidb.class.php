@@ -1,6 +1,12 @@
 <?php 
 
-class DTIDb {
+class Dtidb{
+
+    const HOST = "localhost";
+    const DB_NAME = "viare024_temp";
+    const USER_NAME = "viare024_sip";
+    const PASSWORD = "iwd5QplD?$(9";
+
     private $host = "localhost";
 	private $dbname = "dewol059_sip";
 	private $username = "dewol059_sip";
@@ -17,8 +23,11 @@ class DTIDb {
     
     private function conectar(){
         try{
+
             $this->active_connection = new PDO("mysql:host=".$this->host.";dbname=".$this->dbname, $this->username, $this->password);
             $this->active_connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+            $this->active_connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
         }catch(PDOException $e){
             echo "Falha: " . $e->getMessage() . "\n";
             die();
@@ -45,20 +54,21 @@ class DTIDb {
             switch($type){
                 case "select":
                     $return_data = $query_resource->fetchAll();
-                    break;
+                break;
 
                 case "insert":
                     $return_data = $this->active_connection->lastInsertId();
-                    break;
+                break;
 
                 case "exec":
                 case "update":
                 case "delete":
                     $return_data = $query_execute_return;
-                    break;
+                break;
             }
 
             $this->fecharConexao();
+
             return $return_data;
 
         }else{

@@ -1,135 +1,200 @@
 <?php 
 	include 'header.php';
+    include 'menu.php';
+    include './controller/NovaOcorrenciaController.class.php';
+    include './controller/HomeController.class.php'
 ?>
 
-<div class="row">
 
-<?php 
-
-include 'menu.php';
-if ($_SESSION['isAdmin'] == Usuario::USUARIO) {
-
-?>
-
-<div class="col-sm-9"> 
-
-	<h1 class="legend" style="font-size: 30px;">Sistema de Gerenciamento de Iluminação Publica</h1>
-		<form method="POST" action="">
-			<div class="col-sm-12">
-				<label>Numero do Protocolo</label>
-				<input type="text" name="numProtocolo" class="form-control" placeholder="Digite aqui o numero de Protocolo a ser Pesquisado">
-				<input type="submit" value="Pesquisar" class="btn btn-success" name="edtPesquisar">				
-			</div>
-		</form>
 
 <?php
-        if(isset($_POST['edtPesquisar'])){
-
-            @$numProtocolo = $_POST['numProtocolo'];
-            $buscarOcorrencia = $dtibd->executarQuery("select",	"SELECT * FROM ocorrencia where numeroProtocolo =  $numProtocolo");
-
-            foreach ($buscarOcorrencia as $key) {
+    if ($_SESSION['isAdmin'] == Usuario::USUARIO) {
 ?>
-            <div class="col-sm-12 bk" style="margin-top: 20px; padding: 20px">
-                <div class="col-sm-3">
-                    <label>Numero Protocolo</label><input type="text" value="<?php echo $key['numeroProtocolo']; ?>" name="edtnumeroProtocolo" class="form-control" readonly><br>
-                </div>
 
-                <div class="col-sm-3">
-                    <label>Status</label><input type="text" value="<?php echo $key['status']; ?>" name="edtstatus" class="form-control" readonly><br>
-                </div>
-
-                <div class="col-sm-3">
-                    <label>Data</label><input type="text" value="<?php echo $key['data']; ?>" name="edtdata" class="form-control" readonly><br>
-                </div>
-
-                <div class="col-sm-3">
-                    <label>Prazo</label><input type="text" value="<?php echo $key['prazo']; ?>" name="edtprazo" class="form-control" readonly><br>
-                </div>
-
-                <div class="col-sm-4">
-                    <label>Nome Municipe</label><input type="text" value="<?php echo $key['nomeMunicipe']; ?>" name="edtnomeMunicipe" class="form-control" readonly><br>
-                </div>
-
-                <div class="col-sm-4">
-                    <label>Endereco</label><input type="text" value="<?php echo $key['enderecoMunicipe']; ?>" name="edtenderecoMunicipe" class="form-control" readonly><br>
-                </div>
-
-                <div class="col-sm-4">
-                    <label>Descricao</label><input type="text" value="<?php echo $key['descricao']; ?>" name="edtdescricao" class="form-control" readonly>
+    <div class="row" style="padding-left:0;">
+        <form class="bk clear" style="padding: 30px; margin:50px"  method="post">
+            <legend style="padding-bottom:10px; margin-bottom: 50px">Pesquisar ocorrência&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-search"></span></legend>
+            <div class="form-group">
+                <div class="row">
+                    <label class="col-sm-2 text-right">Protocolo</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="protocolo" class="form-control" value="201659715" placeholder="Digite aqui o número do protocolo">
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="submit" name="<?php echo NovaOcorrenciaController::BTN_SEARCH?>" class="btn btn-primary">Pesquisar</button>
+                    </div>
                 </div>
             </div>
+        </form>
 
+
+<?php   $controller = new NovaOcorrenciaController();
+        $buscarOcorrencia = $controller->triggerInput($controller->getInputAction());
+
+        if(!is_null($buscarOcorrencia)) {
+
+            if(empty($buscarOcorrencia)) {
+?>
+                <form class="bk clear" style="margin: 50px; padding: 30px">
+                    <legend style="padding-bottom:10px; margin-bottom: 50px">Nenhuma ocorrencia encontrada&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-remove"></span></legend>
+                </form>
+
+<?php       } else {
+                foreach ($buscarOcorrencia as $key) {
+?>
+                <form class="bk clear" style="margin: 50px; padding: 30px">
+                    <legend style="padding-bottom:10px; margin-bottom: 50px">Ocorrencia encontrada&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-ok"></span></legend>
+
+                    <!-- Detalhes do munícipe -->
+                    <div class="row" style="padding-right: 30px">
+                        <label class="col-sm-2 text-right">Nome</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" value="<?php echo $key['usuario']; ?>" disabled>
+                        </div>
+                    </div><br/>
+
+                    <!-- Descriçao da ocorrência -->
+                    <div class="row" style="padding-right: 30px">
+                        <label class="col-sm-2 text-right">Protocolo</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" value="<?php echo $key['protocolo']; ?>" disabled>
+                        </div>
+                        <label class="col-sm-2 text-right">Manutenção</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" value="<?php echo $key['manutencao']; ?>" disabled>
+                        </div>
+                    </div><br/>
+                    <div class="row" style="padding-right: 30px">
+                        <label class="col-sm-2 text-right">Status</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" value="<?php echo $key['status']; ?>" disabled>
+                        </div>
+                        <label class="col-sm-2 text-right">Data de registro</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" value="<?php echo $key['data_inicio']; ?>" disabled>
+                        </div>
+                        <label class="col-sm-2 text-right">Prazo final</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" value="<?php echo $key['prazo']; ?>" disabled>
+                        </div>
+                    </div><br/>
+                    <div class="row" style="padding-right: 30px">
+                        <label class="col-sm-2 text-right">Descrição do problema</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" rows="4" disabled><?php echo $key['descricao']?></textarea>
+                        </div>
+                    </div><br/>
+
+                    <!-- Descriçao da endereço -->
+                    <div class="row" style="padding-right: 30px">
+                        <label class="col-sm-2 text-right">CEP</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" value="<?php echo $key['cep']; ?>" disabled>
+                        </div>
+                        <label class="col-sm-2 text-right">Logradouro</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" value="<?php echo $key['logradouro']; ?>" disabled>
+                        </div>
+                    </div><br/>
+                    <div class="row" style="padding-right: 30px">
+                        <label class="col-sm-2 text-right">Numero</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" value="<?php echo $key['numPredialProx']; ?>" disabled>
+                        </div>
+                        <label class="col-sm-2 text-right">Complemento</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" value="<?php echo $key['complemento']; ?>" disabled>
+                        </div>
+                    </div><br/>
+                    <div class="row" style="padding-right: 30px">
+                        <label class="col-sm-2 text-right">Bairro</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" value="<?php echo $key['bairro']; ?>" disabled>
+                        </div>
+                        <label class="col-sm-1 text-right">Cidade</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" value="<?php echo $key['cidade']; ?>" disabled>
+                        </div>
+                        <label class="col-sm-1 text-right">UF</label>
+                        <div class="col-sm-1">
+                            <input type="text" class="form-control" value="<?php echo $key['uf']; ?>" disabled>
+                        </div>
+                    </div><br/>
+                    <div class="row" style="padding-right: 30px">
+                        <label class="col-sm-2 text-right">Observação sobre o endereço</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" rows="4" disabled><?php echo $key['observacao']?></textarea>
+                        </div>
+                    </div><br/>
+                </form>
+    </div>
 <?php
+                }
             }
         }
+    } else {
 ?>
 
-</div>
+    <div class="row" style="padding: 50px;">
+        <div class="col-sm-6" >
+            <div class="table-responsive box-relatorio">
+                <table class="bk" width="100%" id="tabela">
+                    <legend class="legend">Ultimos Pontos Cadastrados</legend>
 
-<?php } else { ?>
+<?php               $buscaProdutos = HomeController::getLastLightPoints();
+                    $i = 1;
+                    foreach ((array) $buscaProdutos as $result) {
+?>
+                    <tr>
+                        <td class="tdPers">#<?php echo $i++; ?></td>
+                        <td class="tdPers"><?php echo $result['logradouro']; ?></td>
+                    </tr>
+<?php               }
+?>
+                </table>
+            </div>
+        </div>
 
-	<div class="col-sm-9"> 
+        <div class="col-sm-6" >
+            <div class="table-responsive box-relatorio">
+                <table class="bk" width="100%">
+                    <legend class="legend">Ultimos Usuarios Cadastrados</legend>
 
-	<h1 class="legend" style="font-size: 30px;">Sistema de Gerenciamento de Iluminação Publica</h1>
-		<div class="col-sm-4" style="min-height: 300px;">
-			<div class="box-relatorio">
-				<legend class="legend">Grafico das Funcionalidades</legend>
-				<a href="graficoDasFuncionalidades.php"><img src="graficoDasFuncionalidades.php" width="100%"></a>
-			</div>
-		</div>
-
-		<div class="col-sm-4" style="min-height: 300px;">
-			<div class="table-responsive box-relatorio">
-				<table class="bk" width="100%" id="tabela">
-					<legend class="legend">Ultimos Pontos Cadastrados</legend>
-<?php
-					$buscaProdutos = $dtibd->executarQuery("select","SELECT * FROM pontoiluminacao order by id desc Limit 5");
-					foreach ((array) $buscaProdutos as $result) {
+<?php               $buscarUsuario = HomeController::getLastUserName();
+                    $i = 1;
+                    foreach ($buscarUsuario as $result) {
 ?>
                         <tr>
-                            <td class="tdPers"><?php echo $result['logradouro']; ?></td>
+                            <td class="tdPers">#<?php echo $i++; ?></td>
+                            <td class="tdPers"><?php echo $result['usuario']; ?></td>
                         </tr>
-<?php
-						}
+<?php               }
 ?>
-				</table>
-			</div>
-		</div>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding: 0px 50px 50px 50px ;">
 
-		<div class="col-sm-4" style="min-height: 300px;">
-			<div class="table-responsive box-relatorio">		
-				<table class="bk" width="100%">
-					<legend class="legend">Ultimos Usuarios Cadastrados</legend>
+        <div class="bk col-sm-6">
+            <legend class="legend" style="padding: 20px">Grafico das Componentes</legend>
+            <img src="grafico-funcionalidades.php" style="width: 100%;">
+        </div>
+        <div class="bk col-sm-6" >
+            <legend class="legend" style="padding: 20px">Grafico das Componentes</legend>
+            <img src="grafico-componentes.php" style="width: 100%;">
+        </div>
+    </div>
+    <div class="row" style="padding: 0px 50px 50px 50px ;">
+        <div class="bk col-sm-6" >
+            <legend class="legend" style="padding: 20px">Grafico das Ocorrências</legend>
+            <img src="grafico-ocorrencias.php" style="width: 100%;">
+        </div>
+        <div class="bk col-sm-6" >
+            <legend class="legend" style="padding: 20px">Grafico das Manutenções</legend>
+            <img src="grafico-manutencao.php" style="width: 100%;">
+        </div>
+    </div>
 <?php
-					$buscarUsuario = $dtibd->executarQuery("select","SELECT * FROM usuario order by id desc Limit 5");
-					foreach ($buscarUsuario as $result) {	
+    }
 ?>
-
-						<tr>
-							<td class="tdPers"><?php echo $result['usuario']; ?></td>
-						</tr>
-<?php
-						}
-?>
-				</table>
-			</div>
-		</div>
-
-		<hr noshade="noshade">
-
-		<div class="col-sm-4">
-			<a href="graficopizza.php"><img src="graficopizza.php" style="width: 100%;"></a>
-		</div>
-
-		<div class="col-sm-4">
-			<a href="graficoStatus.php"><img src="graficoStatus.php" style="width: 100%;"></a>
-		</div>
-
-		<div class="col-sm-4">
-			<a href="graficoManutencao.php"><img src="graficoManutencao.php" style="width: 100%;"></a>
-		</div>
-	</div>
-</div>
-
-<?php } ?>

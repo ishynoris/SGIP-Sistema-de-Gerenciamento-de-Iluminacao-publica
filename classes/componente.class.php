@@ -20,7 +20,7 @@ class componente{
 
     public function cadastrarComponente(){
     	try{
-    		$dtibd = new DTIDb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
+    		$dtibd = new Dtidb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
 			
 			$dtibd->executarQuery("insert","
 			INSERT INTO componentes (marca,fabricante,numeroSerie,tipoComponente,quantidade,dataFabricante)
@@ -41,7 +41,7 @@ class componente{
 
     public function editarComponente($id){
 		try{
-    		$dtibd = new DTIDb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
+    		$dtibd = new Dtidb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
 			
 			$dtibd->executarQuery("update","
 				UPDATE componentes SET

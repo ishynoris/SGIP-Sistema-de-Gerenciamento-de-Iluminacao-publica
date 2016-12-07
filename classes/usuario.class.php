@@ -6,7 +6,8 @@ class Usuario{
 
 	const ADMIN = 0;
 	const TECNICO = 1;
-	const USUARIO = 2;
+    const USUARIO = 2;
+    const OPERADOR = 3;
 
 	private $id;
 	private $Usuario;
@@ -43,7 +44,7 @@ class Usuario{
 	
 	public function saveDB($idEndereco, $dtibd)
     {
-        $this->prepareData();
+        $this->encriptyData();
 
 		try{
 
@@ -62,9 +63,6 @@ class Usuario{
                     ":id_endereco"=>$idEndereco
 			));
 
-			var_dump($this);
-			echo "<br><br>";
-
 			return $this->id;
 
     	} catch (PDOException $e){
@@ -74,7 +72,7 @@ class Usuario{
         return false;
 	}
 
-	private function prepareData()
+	private function encriptyData()
     {
         $this->Usuario = addslashes($this->Usuario);
         $this->Login = md5(addslashes($this->Login));

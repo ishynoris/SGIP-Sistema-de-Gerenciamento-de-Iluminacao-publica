@@ -1,24 +1,14 @@
 <?php
-    include 'function.php';
-    include 'classes/conecta_bancoAdmin.php';
-	$error = '';
 
-    if(isset($_POST['enviar'])){
-        
-		$error = logarNoSistema($_POST['edtLogin'], $_POST['edtSenha']);
-		if ($error == LOGIN_SENHA_VALIDO){
-			header("Location: home.php");
-			exit;
-		}
-			
-    } else if(isset($_POST['cadastro'])){
-		
-		header("Location: novo-cadastro.php"); 
-		
-	} else if(isset($_POST['novaSenha'])){
-		
-		header("Location: recuperar-senha.php");
-	}
+    include './controller/IndexController.class.php';
+
+    $controller = new IndexController();
+	$error = $controller->triggerInput($controller->getInputAction());
+
+    if ($error == IndexController::LOGIN_SENHA_VALIDO){
+        header("Location: home.php");
+        exit;
+    }
 ?>
 <!DOCTYPE HTML>
 
@@ -38,7 +28,7 @@
 </head>
 
 <body>
-		<section class="container">
+    <section class="container">
 		<div class="wrapper" style="padding: 80px">
 			<img src="demos/logo.png">
 		</div>
@@ -54,13 +44,13 @@
 					</div><br>
 				
 					<input type="submit" class="btn btn-primary btn-lg btn-block btnLogin"  
-									value="Entrar" name="enviar" style="margin-bottom: 20px;"/>
+									value="Entrar" name="<?php echo IndexController::BTN_SEND?>" style="margin-bottom: 20px;"/>
 					<div class="btn-group btn-group-justified" role="group" aria-label="...">
 						<div class="btn-group" role="group">
-							<input type="submit" class="btn btn-info btn-lg" value="Novo cadastro" name="cadastro"/>
+							<input type="submit" class="btn btn-info btn-lg" name="<?php echo IndexController::BTN_REGISTER?>" value="Novo cadastro" />
 						</div>
 						<div class="btn-group" role="group">
-							<input type="submit" class="btn btn-default btn-lg" value="Esqueci a senha" name="novaSenha"/>
+							<input type="submit" class="btn btn-default btn-lg" name="<?php echo IndexController::BTN_RECOVER?>" value="Recuperar a senha"/>
 						</div>
 					</div>
 				</form>
@@ -68,7 +58,7 @@
 		</article>
 	</section>
 <?php 
-	if ($error == LOGIN_SENHA_NULL || $error == LOGIN_SENHA_INVALIDO){ 
+	if ($error == IndexController::LOGIN_SENHA_NULL || $error == IndexController::LOGIN_SENHA_INVALIDO){
 ?>
 		<div style="padding-top:50px;">
 			<div class="wrapper alert alert-danger" role="alert"><?php echo $error;?></div>
