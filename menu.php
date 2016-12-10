@@ -1,19 +1,21 @@
 <?php
-
 	require('./inc/Config.inc.php');
 	if(!isset($_SESSION)){
 		header("Location: 404.php");
 		exit;
 	}
 
-	const HOME = "Pagina inicial";
-	const CAD_OCORRENCIA = "Cadastrar nova ocorrência";
-	const PARQUE = "Parque de iluminação";
-	const CAD_PONTOS = "Cadastrar pontos de iluminação";
-	const MANUTENCAO = "Lista de manutenções cadastrdas";
-    const COMPONENTES = "Componentes";
-    const USUARIOS = "Lista de usaurios";
-	const RELATORIOS = "Relatorios";
+
+    define("HOME", "Pagina inicial");
+    define("CAD_OCORRENCIA", "Cadastrar nova ocorrência");
+    define("PARQUE", "Parque de iluminação");
+    define("CAD_PONTOS", "Cadastrar pontos de iluminação");
+    define("MANUTENCAO", "Lista de manutenções cadastrdas");
+    define("COMPONENTES", "Componentes");
+    define("USUARIOS", "Lista de usaurios");
+    define("RELATORIOS", "Relatorios");
+    define("MEUS_DADOS", "Meus dados");
+    define("DESLOGAR", "Deslogar");
 ?>
 
 <script>
@@ -50,8 +52,7 @@
                         <span class="glyphicon glyphicon-menu-hamburger"></span>&nbsp;&nbsp;&nbsp;
                         MENU&nbsp;<span class="caret"></span>
                     </a>
-<?php
-                    if ($_SESSION['isAdmin'] == Usuario::ADMIN){
+<?php               if ($_SESSION['isAdmin'] == Usuario::ADMIN){
 ?>
                     <ul id="menus" class="dropdown-menu">
                         <li><a href="home.php"><i class="glyphicon glyphicon-home"></i>
@@ -121,9 +122,10 @@
                         <?php echo strtoupper($_SESSION['usuario'])?>&nbsp;<span class="caret"></span>
                     </a>
                     <ul id="menus" class="dropdown-menu">
-                        <li><a href="#"><span class="glyphicon glyphicon-map-marker"></span>&nbsp;&nbsp;&nbsp;Minhas ocorrências</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;&nbsp;Meus dados</a></li>
-                        <li><a href="deslogar.php"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;&nbsp;Desconectar</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;&nbsp;
+                                <?php echo MEUS_DADOS?></a></li>
+                        <li><a href="deslogar.php"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;&nbsp;
+                                <?php echo DESLOGAR; ?></a></li>
                     </ul>
                 </li>
             </ul>
