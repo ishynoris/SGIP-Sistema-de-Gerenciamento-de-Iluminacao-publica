@@ -7,6 +7,7 @@ include './classes/Ocorrencia.class.php';
 class NovaOcorrenciaController extends Controller
 {
 
+    const OCORRENCIA = "ocorrencia";
     const BTN_SAVE = "btn-save";
     const BTN_SEARCH = "btn-search";
     const PROTOCOL = "protocol";
@@ -83,18 +84,39 @@ class NovaOcorrenciaController extends Controller
         return $dtibd->executarQuery("select", $query, array(":protocolo" => $protocolo));
     }
 
-    public static function getFaultsByUserId($id)
+    public static function getByUserId($id)
     {
         $dtibd = new Dtidb(Dtidb::HOST, Dtidb::DB_NAME, Dtidb::USER_NAME, Dtidb::PASSWORD);
         $query = "SELECT id, protocolo, status, descricao, manutencao FROM ocorrencia WHERE id_usuario = :id";
         return $dtibd->executarQuery("select", $query, array(":id" => $id));
     }
 
-    public static function getFaultDetails($oid, $uid)
+    public static function getDetails($protocol, $uid)
     {
         $dtibd = new Dtidb(Dtidb::HOST, Dtidb::DB_NAME, Dtidb::USER_NAME, Dtidb::PASSWORD);
-        $query = "SELECT protocolo, status, descricao, manutencao FROM ocorrencia WHERE id = :oid and id_usuario = :uid";
-        return $dtibd->executarQuery("select", $query, array(":oid" => $oid, ":uid" => $uid));
+        $query = "SELECT u.usuario,
+                o.protocolo, o.manutencao, o.status, o.data_inicio, o.prazo, o.descricao, 
+                e.cep, e.logradouro, e.numPredialProx, e.complemento, e.bairro, e.cidade, e.uf, 
+                e.observacao
+                FROM ocorrencia as o 
+                INNER JOIN usuario as u on u.id = o.id_usuario 
+                INNER JOIN endereco as e on e.id = o.id_endereco
+                WHERE o.protocolo = :protocol and u.id = :uid LIMIT 1";
+        return $dtibd->executarQuery("select", $query, array(":protocol" => $protocol, ":uid" => $uid));
+    }
+
+    public static function delete($protocol, $uid){
+
+        $dtibd = new Dtidb(Dtidb::HOST, Dtidb::DB_NAME, Dtidb::USER_NAME, Dtidb::PASSWORD);
+
+        $query = "SELECT id_endereco FROM ocorrencia WHERE protocolo = :protocol";
+        $idEndereco = $dtibd->executarQuery("select", $query, array(":protocol"=>$protocol));
+
+            $query = "DELETE from endereco WHERE id = :idEndereco";
+        $dtibd->executarQuery("delete", $query, array(":idEndereco" => $idEndereco));
+
+        $query = "DELETE FROM ocorrencia WHERE protocolo = :protocol and id_usuario = :uid";
+        return $dtibd->executarQuery("delete", $query, array(":protocol" => $protocol, ":uid" => $uid));
     }
 }
 

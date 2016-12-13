@@ -4,8 +4,8 @@ include 'menu.php';
 include_once './controller/NovaOcorrenciaController.class.php';
 
 $protocol = '';
-if(isset($_GET['pid'])) {
-    $protocol = $_GET['pid'];
+if(isset($_GET['oid'])) {
+    $protocol = $_GET['oid'];
 }
 
 ?>
@@ -16,29 +16,19 @@ if(isset($_GET['pid'])) {
     }
 </style>
 
-<script>
-    function clearGet() {
-        $protocol = "";
-        window.history.pushState('Object', 'Categoria JavaScript', 'pesquisar-ocorrencia.php');
-    }
-</script>
-
-
 <div class="row">
-    <form class="bk clear line" method="post">
+    <form class="bk clear line" method="get">
         <legend style="padding-bottom:10px; margin-bottom: 50px">Pesquisar ocorrência&nbsp;&nbsp;&nbsp;<span
                     class="glyphicon glyphicon-search"></span></legend>
         <div class="form-group">
             <div class="row">
                 <label class="col-sm-2 text-right">Protocolo</label>
                 <div class="col-sm-3">
-                    <input type="text" id="protocol" name="<?php echo NovaOcorrenciaController::PROTOCOL ?>" class="form-control"
+                    <input type="text" id="protocol" name="oid" class="form-control"
                            placeholder="Digite aqui o número do protocolo" value="<?php echo $protocol?>">
                 </div>
                 <div class="col-sm-1">
-                    <button type="submit" onclick="clearGet()" name="<?php echo NovaOcorrenciaController::BTN_SEARCH ?>"
-                            class="btn btn-primary">Pesquisar
-                    </button>
+                    <button class="btn btn-primary">Pesquisar</button>
                 </div>
             </div>
         </div>
