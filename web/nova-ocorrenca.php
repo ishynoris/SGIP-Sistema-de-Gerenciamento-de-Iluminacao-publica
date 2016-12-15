@@ -52,7 +52,7 @@
 			<div class="bk line">
 				<form id="form" method="post">
                     <div class="form-group" >
-                        <legend style="padding-bottom:10px; margin-bottom: 50px"><span class="glyphicon glyphicon-plus"></span>
+                        <legend style="padding-bottom:10px;"><span class="glyphicon glyphicon-plus"></span>
                             &nbsp;&nbsp;&nbsp;Cadastrar nova ocorrência</legend>
                         <div class="row" style="margin-bottom: 50px">
                             <div style="padding-left: 30px;">
@@ -81,7 +81,7 @@
                                 </h4>
                             </div>
                         </div>
-                        <!-- PASSO DOIS ------------------------------------------------------------------->
+                        <!-- PASSO DOIS ----------------------------------------------------------------->
                         <div id="step-1" class="hide">
                             <div class="form-group.required">
 
@@ -116,8 +116,7 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- PASSO Tres ------------------------------------------------------------------->
+                        <!-- PASSO Tres ----------------------------------------------------------------->
                         <div id="step-2" class="hide">
                             <div class="form-group">
                                 <div class="row" style="padding-right: 30px">
@@ -145,7 +144,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- PASSO QUATRO ------------------------------------------------------------------->
+                        <!-- PASSO QUATRO --------------------------------------------------------------->
                         <div id="step-3" class="hide">
                             <div class="row" style="padding-right: 30px">
 
@@ -205,10 +204,9 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- PASSO CINCO ------------------------------------------------------------------->
+                        <!-- PASSO CINCO ---------------------------------------------------------------->
                         <div id="step-4" class="hide">
-                            <div class="alert alert-info" role="alert" style="padding: 40px; margin:0px 30px 30px 30px;">
+                            <div class="alert alert-info" role="alert" style="padding: 40px; margin:0px 30px 0px 30px;">
                                 Por favor, verifique todos os campos antes de prosseguir.
                             </div>
 
@@ -287,7 +285,7 @@
                                 </div>
                             </div><br/>
                         </div>
-                        <!-- MENU DE NAVEGAÇÃO------------------------------------------------------------------------------->
+                        <!-- MENU DE NAVEGAÇÃO----------------------------------------------------------->
                         <div class="row" style="margin-top: 50px; padding-left: 100px; padding-right: 100px;">
                             <a href="javascript:back()" id="btn-back" class="btn btn-sm" style="float: left"> &laquo; Voltar</a>
                             <input type="submit" id="btn-save" name="<?php echo OcorrenciaController::BTN_SAVE?>" value="Registrar ocorrência" class="btn btn-sm btn-primary hide" style="float: right">

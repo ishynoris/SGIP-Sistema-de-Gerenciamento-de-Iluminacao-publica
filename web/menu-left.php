@@ -1,6 +1,6 @@
 <?php
     define("HOME", "Página inicial");
-    define("CAD_OCORRENCIA", "Cadastrar nova ocorrência");
+    define("OCORRENCIA", "Ocorrências");
     define("PARQUE", "Parque de iluminação");
     define("CAD_PONTOS", "Cadastrar pontos de iluminação");
     define("MANUTENCAO", "Lista de manutenções cadastrdas");
@@ -19,9 +19,8 @@
 <?php
                 if ($_SESSION['isAdmin'] == Usuario::ADMIN){
 ?>
-
-                    <li><a href="nova-ocorrenca.php"><i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i>
-                            <?php echo CAD_OCORRENCIA?></a></li>
+                    <li><a href="ocorrencia.php"><i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i>
+                            <?php echo OCORRENCIA?></a></li>
                     <li><a href="parquedeiluminacao.php"><i class="glyphicon glyphicon-globe" aria-hidden="true"></i>
                             <?php echo PARQUE?></a></li>
                     <li><a href="cadastroPonto.php"><i class="glyphicon glyphicon-flash" aria-hidden="true"></i>
@@ -48,15 +47,15 @@
 <?php
                 } else if ($_SESSION['isAdmin'] == Usuario::USUARIO){
 ?>
-                    <li ><a href="nova-ocorrenca.php"><i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i>
-                            <?php echo CAD_OCORRENCIA?></a></li>
+                    <li><a href="ocorrencia.php"><i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i>
+                            <?php echo OCORRENCIA?></a></li>
                     <li><a href="parquedeiluminacao.php"><i class="glyphicon glyphicon-globe" aria-hidden="true"></i>
                             <?php echo PARQUE?></a></li>
 <?php
                 } else if ($_SESSION['isAdmin'] == Usuario::OPERADOR){
 ?>
                         <li ><a href="nova-ocorrenca.php"><i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i>
-                                <?php echo CAD_OCORRENCIA?></a></li>
+                                <?php echo OCORRENCIA?></a></li>
                         <li><a href="parquedeiluminacao.php"><i class="glyphicon glyphicon-globe" aria-hidden="true"></i>
                                 <?php echo PARQUE?></a></li>
                         <li><a href="cadastroPonto.php"><i class="glyphicon glyphicon-flash" aria-hidden="true"></i>
