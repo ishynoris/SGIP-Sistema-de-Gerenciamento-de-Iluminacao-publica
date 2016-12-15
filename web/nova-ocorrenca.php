@@ -1,6 +1,6 @@
 <?php
 	include './header.php';
-    include './menu.php';
+    include './menu-top.php';
 	include './controller/NovaOcorrenciaController.class.php';
 
     if(!isset($_SESSION)){
@@ -21,6 +21,12 @@
 		-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/chosen.min.css">
+        <style>
+            .line{
+                padding: 30px;
+                margin: 70px 20px 0px 50px;
+            }
+        </style>
 
         <script src="http://digitalbush.com/wp-content/uploads/2014/10/jquery.maskedinput.js"></script>
         <script type="text/javascript" src="js/script.validar.mascaras.js"></script>
@@ -38,12 +44,16 @@
 		</script>
 	</head>
 	<body onLoad="start()">
-
-		<div class="row" style="padding-left:0;">
-			<div class="row" style="margin: 50px;">
-				<form id="form" class="bk clear" style="padding: 30px " method="post">
+        <div class="row">
+<?php
+            include 'menu-left.php';
+?>
+		    <div class="col-sm-10" >
+			<div class="bk line">
+				<form id="form" method="post">
                     <div class="form-group" >
-                        <legend style="padding-bottom:10px; margin-bottom: 50px">Cadastrar nova ocorrência&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></legend>
+                        <legend style="padding-bottom:10px; margin-bottom: 50px"><span class="glyphicon glyphicon-plus"></span>
+                            &nbsp;&nbsp;&nbsp;Cadastrar nova ocorrência</legend>
                         <div class="row" style="margin-bottom: 50px">
                             <div style="padding-left: 30px;">
                                 <ul class="nav nav-pills" id="menu-list">
@@ -331,5 +341,6 @@
 ?>
 			</div>
 		</div>
+        </div>
 	</body>
 </html>

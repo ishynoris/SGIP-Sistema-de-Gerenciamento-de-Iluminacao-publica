@@ -1,6 +1,6 @@
 <?php
 include './header.php';
-include './menu.php';
+include './menu-top.php';
 include_once './controller/NovaOcorrenciaController.class.php';
 
 $protocolo = $_GET['pid'];
