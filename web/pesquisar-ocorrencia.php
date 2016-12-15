@@ -1,7 +1,7 @@
 <?php
     include 'header.php';
     include 'menu-top.php';
-    include_once './controller/NovaOcorrenciaController.class.php';
+    include_once './controller/OcorrenciaController.class.php';
 
     $protocol = '';
     if(isset($_GET['pid'])) {
@@ -36,7 +36,7 @@
             </div>
         </form>
         <div >
-            <?php $controller = new NovaOcorrenciaController();
+            <?php $controller = new OcorrenciaController();
             $buscarOcorrencia = $controller->triggerInput($controller->getInputAction());
 
             if(!empty($protocol)){

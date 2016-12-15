@@ -3,23 +3,23 @@
 include_once './controller/Controller.class.php';
 include './controller/IndexController.class.php';
 
-class NovoCadastroController extends Controller {
+class CadastroController extends Controller {
 
     const BTN_SAVE = "btn-save";
     const BTN_BACK = "btn-back";
 
     function __construct()
     {
-        parent::__construct(array(NovoCadastroController::BTN_SAVE, NovoCadastroController::BTN_BACK));
+        parent::__construct(array(CadastroController::BTN_SAVE, CadastroController::BTN_BACK));
     }
 
     public function triggerInput($array)
     {
         switch ($array) {
-            case NovoCadastroController::BTN_SAVE:
+            case CadastroController::BTN_SAVE:
                 return $this->saveData();
                 break;
-            case NovoCadastroController::BTN_BACK:
+            case CadastroController::BTN_BACK:
                 header("Location: index.php");
                 exit;
                 break;

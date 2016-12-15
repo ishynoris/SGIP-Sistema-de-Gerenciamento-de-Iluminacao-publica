@@ -4,7 +4,7 @@ require './controller/Controller.class.php';
 include './classes/Endereco.class.php';
 include './classes/Ocorrencia.class.php';
 
-class NovaOcorrenciaController extends Controller
+class OcorrenciaController extends Controller
 {
 
     const OCORRENCIA = "ocorrencia";
@@ -14,16 +14,16 @@ class NovaOcorrenciaController extends Controller
 
     function __construct()
     {
-        parent::__construct(array(NovaOcorrenciaController::BTN_SAVE, NovaOcorrenciaController::BTN_SEARCH));
+        parent::__construct(array(OcorrenciaController::BTN_SAVE, OcorrenciaController::BTN_SEARCH));
     }
 
     public function triggerInput($actionPost)
     {
         switch ($actionPost) {
 
-            case NovaOcorrenciaController::BTN_SAVE: return $this->saveData();
-            case NovaOcorrenciaController::BTN_SEARCH:
-                $protocolo = $_POST[NovaOcorrenciaController::PROTOCOL];
+            case OcorrenciaController::BTN_SAVE: return $this->saveData();
+            case OcorrenciaController::BTN_SEARCH:
+                $protocolo = $_POST[OcorrenciaController::PROTOCOL];
                 return $this->getByProtocol($protocolo);
         }
     }

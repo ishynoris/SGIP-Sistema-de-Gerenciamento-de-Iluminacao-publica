@@ -1,7 +1,7 @@
 <?php
     include 'header.php';
     include 'menu-top.php';
-    include './controller/NovaOcorrenciaController.class.php';
+    include './controller/OcorrenciaController.class.php';
     include './controller/HomeController.class.php';
 
     $protocol = '';
@@ -53,7 +53,7 @@
 
                         <div class="col-sm-1">
                             <a target="_blank" id="pid" href="#">
-                                <button onclick="setGet()" type="submit" name="<?php echo NovaOcorrenciaController::BTN_SEARCH ?>" class="btn btn-primary" style="float: left">
+                                <button onclick="setGet()" type="submit" name="<?php echo OcorrenciaController::BTN_SEARCH ?>" class="btn btn-primary" style="float: left">
                                     <span class="glyphicon glyphicon-search"></span>
                                 </button>
                             </a>
@@ -78,7 +78,7 @@
 
                     <?php
                     $uid = $_SESSION['id'];
-                    $ocorrencias = NovaOcorrenciaController::getByUserId($uid);
+                    $ocorrencias = OcorrenciaController::getByUserId($uid);
                     foreach ($ocorrencias as $ocorrencia) {
                         ?>
                         <tr>

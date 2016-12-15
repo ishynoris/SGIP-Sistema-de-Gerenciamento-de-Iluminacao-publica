@@ -2,7 +2,7 @@
 
     include './header.php';
     include './menu-top.php';
-    include_once './controller/NovaOcorrenciaController.class.php';
+    include_once './controller/OcorrenciaController.class.php';
     $protocolo = $_GET['pid'];
     $uid = $_SESSION['id'];
 ?>
@@ -25,7 +25,7 @@
         <div class="row">
 <?php
             include 'menu-left.php';
-            $ocorrencia = NovaOcorrenciaController::getDetails($protocolo, $uid);
+            $ocorrencia = OcorrenciaController::getDetails($protocolo, $uid);
             if (isset($ocorrencia[0])){
 ?>
                 <div class="col-sm-10">

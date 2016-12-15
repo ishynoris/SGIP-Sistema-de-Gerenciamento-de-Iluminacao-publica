@@ -1,14 +1,14 @@
 <?php
 	include './header.php';
     include './menu-top.php';
-	include './controller/NovaOcorrenciaController.class.php';
+	include './controller/OcorrenciaController.class.php';
 
     if(!isset($_SESSION)){
         header("Location: home.php");
     }
 	$protocol = 2016 . rand(11111,99999);
 
-    $controller = new NovaOcorrenciaController();
+    $controller = new OcorrenciaController();
     $controller->triggerInput($controller->getInputAction());
 
 ?>
@@ -290,7 +290,7 @@
                         <!-- MENU DE NAVEGAÇÃO------------------------------------------------------------------------------->
                         <div class="row" style="margin-top: 50px; padding-left: 100px; padding-right: 100px;">
                             <a href="javascript:back()" id="btn-back" class="btn btn-sm" style="float: left"> &laquo; Voltar</a>
-                            <input type="submit" id="btn-save" name="<?php echo NovaOcorrenciaController::BTN_SAVE?>" value="Registrar ocorrência" class="btn btn-sm btn-primary hide" style="float: right">
+                            <input type="submit" id="btn-save" name="<?php echo OcorrenciaController::BTN_SAVE?>" value="Registrar ocorrência" class="btn btn-sm btn-primary hide" style="float: right">
                             <a href="javascript:next()" id="btn-next" class="btn btn-sm " style="float: right">Avançar &raquo;</a>
                         </div>
                     </div>

@@ -1,4 +1,5 @@
 <?php
+    define("HOME", "Página inicial");
     define("CAD_OCORRENCIA", "Cadastrar nova ocorrência");
     define("PARQUE", "Parque de iluminação");
     define("CAD_PONTOS", "Cadastrar pontos de iluminação");
@@ -13,6 +14,8 @@
             <div class="" style="clear: both; ">
                 <ul id="menu-content" class="menu-content out" style="padding-right: 10px;">
                     <li></li>
+                    <li><a href="home.php"><i class="glyphicon glyphicon-home" aria-hidden="true"></i>
+                            <?php echo HOME?></a></li>
 <?php
                 if ($_SESSION['isAdmin'] == Usuario::ADMIN){
 ?>
