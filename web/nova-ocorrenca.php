@@ -19,8 +19,7 @@
 			<meta http-equiv="Refresh" content="2; url=http://www.google.com.br">
 		</noscript>
 		-->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/chosen.min.css">
+        <link rel="stylesheet" type="text/css" href="css/chosen.min.css">
         <style>
             .line{
                 padding: 30px;
@@ -28,19 +27,14 @@
             }
         </style>
 
-        <script src="http://digitalbush.com/wp-content/uploads/2014/10/jquery.maskedinput.js"></script>
         <script type="text/javascript" src="js/script.validar.mascaras.js"></script>
         <script type="text/javascript" src="js/script.nova.ocorrencia.js"></script>
-        <script type="text/javascript" src="js/chosen.jquery.min.js"></script>
 
 		<script type="text/javascript">
 
-            $("document").ready(function() {
-                $('#cep-prev').mask('99.999-999');
+            $(document).ready(function($){
+                $("#cep-prev").mask("99.999-999");
             });
-			function addOcorrencia(){
-				alert("addOcorrencia");
-			};
 		</script>
 	</head>
 	<body onLoad="start()">
@@ -48,7 +42,7 @@
 <?php
             include 'menu-left.php';
 ?>
-		    <div class="col-sm-10" >
+            <div class="col-sm-10" >
 			<div class="bk line">
 				<form id="form" method="post">
                     <div class="form-group" >
@@ -57,11 +51,11 @@
                         <div class="row" style="margin-bottom: 50px">
                             <div style="padding-left: 30px;">
                                 <ul class="nav nav-pills" id="menu-list">
-                                    <li role="presentation" id="li-0" ><a href="">Apresentação</a></li>
-                                    <li role="presentation" id="li-1" ><a href="">Dados gerais</a></li>
-                                    <li role="presentation" id="li-2" ><a href="">Descrição</a></li>
-                                    <li role="presentation" id="li-3" ><a href="">Localização</a></li>
-                                    <li role="presentation" id="li-4" ><a href="">Concluir</a></li>
+                                    <li role="presentation" id="li-0"><a href="">Apresentação</a></li>
+                                    <li role="presentation" id="li-1"><a href="">Dados gerais</a></li>
+                                    <li role="presentation" id="li-2"><a href="">Descrição</a></li>
+                                    <li role="presentation" id="li-3"><a href="">Localização</a></li>
+                                    <li role="presentation" id="li-4"><a href="">Concluir</a></li>
                                 </ul>
                             </div>
                             <div class="progress" style="margin: 40px; margin-bottom: 20px">
@@ -70,26 +64,48 @@
                             </div>
                         </div>
 
-                        <!-- PASSO UM ------------------------------------------------------------------->
+                        <!-- PASSO UM ----------------------------------------------------------------- -->
                         <div id="step-0" class="hide" style="margin: 0px 30px 30px 30px;">
                             <div class="well well-lg">
                                 <h4>
                                 Este serviço tem como objetivo proporcionar ao cidadão de Ipatinga o encaminhamento de sua solicitação de reparos na iluminação pública (lâmpada apagada/quebrada e acesa durante o dia) de um determinado ponto de atendimento.
                                 <br/><br/>
-                                Se necessário você pode entrar em contato pelo telefone (79) 3214-6742 ou pelo e-mail comercial@unicoalimentos.com.br.
+                                Se necessário você pode entrar em contato pelo telefone (79) 3214-6742 ou pelo e-mail sac@viaretaluz.com.br.
                                 <br/>
                                 </h4>
                             </div>
                         </div>
-                        <!-- PASSO DOIS ----------------------------------------------------------------->
+                        <!-- PASSO DOIS --------------------------------------------------------------- -->
                         <div id="step-1" class="hide">
                             <div class="form-group.required">
 
                                 <div class="row"  style="padding-right: 30px">
                                     <label class="col-sm-2 text-right">Protocolo</label>
-                                    <div class="col-sm-10">
+                                    <div class="col-sm-4">
                                         <input type="text" class="form-control" value="<?php echo  $protocol ?>" disabled=true>
                                     </div>
+<?php
+                                if($_SESSION['isAdmin'] == Usuario::ATENDENTE){
+?>
+                                    <label class="col-sm-2 text-right">Prioridade</label>
+                                    <div class="col-sm-4">
+                                        <select id="prioridade-prev" >
+                                            <option class="form-control" value="<?php echo Ocorrencia::PRIO_ALTA?>">
+                                                <?php echo Ocorrencia::PRIO_ALTA?></option>
+                                            <option class="form-control" value="<?php echo Ocorrencia::PRIO_MEDIA?>" selected>
+                                                <?php echo Ocorrencia::PRIO_MEDIA?></option>
+                                            <option class="form-control" value="<?php echo Ocorrencia::PRIO_BAIXA?>">
+                                                <?php echo Ocorrencia::PRIO_BAIXA?></option>
+                                        </select>
+                                    </div>
+<?php                           } else {
+?>
+                                    <label class="col-sm-2 text-right hide">Prioridade</label>
+                                    <div class="col-sm-4" >
+                                        <input type="text" id="prioridade-prev" value="<?php echo Ocorrencia::PRIO_BAIXA?>" class="form-control hide" >
+                                    </div>
+<?php                           }
+?>
                                 </div><br/>
                                 <div class="row"  style="padding-right: 30px">
                                     <label class="col-sm-2 text-right">Nome</label>
@@ -116,20 +132,9 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- PASSO Tres ----------------------------------------------------------------->
+                        <!-- PASSO Tres --------------------------------------------------------------- -->
                         <div id="step-2" class="hide">
                             <div class="form-group">
-                                <div class="row" style="padding-right: 30px">
-                                    <label class="col-sm-2 text-right">Prioridade</label>
-                                    <div class="col-sm-10">
-
-                                        <select id="prioridade-prev">
-                                            <option class="form-control" value="2">BAIXA</option>
-                                            <option class="form-control" value="1" selected>MÉDIA</option>
-                                            <option class="form-control" value="0">ALTA</option>
-                                        </select>
-                                    </div>
-                                </div><br>
                                 <div class="row" style="padding-right: 30px">
                                     <label class="col-sm-2 text-right">Descrição do problema</label>
                                     <div class="col-sm-10" style="float: right">
@@ -144,7 +149,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- PASSO QUATRO --------------------------------------------------------------->
+                        <!-- PASSO QUATRO ------------------------------------------------------------- -->
                         <div id="step-3" class="hide">
                             <div class="row" style="padding-right: 30px">
 
@@ -205,11 +210,10 @@
                             </div>
                         </div>
                         <!-- PASSO CINCO ---------------------------------------------------------------->
-                        <div id="step-4" class="hide">
-                            <div class="alert alert-info" role="alert" style="padding: 40px; margin:0px 30px 0px 30px;">
+                        <div id="step-4" class="hide" >
+                            <div class="alert alert-info" role="alert" style="padding: 40px; margin:0px 30px 30px 30px;">
                                 Por favor, verifique todos os campos antes de prosseguir.
                             </div>
-
                             <div class="row"  style="padding-right: 30px">
                                 <label class="col-sm-2 text-right">Nome</label>
                                 <div class="col-sm-10">
@@ -219,15 +223,33 @@
 
                             <div class="row"  style="padding-right: 30px">
                                 <label class="col-sm-2 text-right">Protocolo</label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <input type="text" id="protocolo" name="protocolo" class="form-control" value="<?php echo $protocol?>" disabled>
                                 </div>
+<?php
+                            if($_SESSION['isAdmin'] == Usuario::TECNICO) {
+?>
+                                <label class="col-sm-2 text-right">Prioridade</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id="prioridade" name="prioridade" class="form-control" disabled>
+                                </div>
+<?php
+                            } else {
+?>
+                                <label class="col-sm-2 text-right hide">Prioridade</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id="prioridade" name="prioridade" class="form-control hide" disabled>
+                                </div>
+<?php
+                            }
+?>
+                            </div><br/>
+                            <div class="row"  style="padding-right: 30px">
                                 <label class="col-sm-2 text-right">Manutenção</label>
-                                <div class="col-sm-6">
+                                <div class="col-sm-10">
                                     <input type="text" id="manutencao" name="manutencao" class="form-control" disabled>
                                 </div>
                             </div><br/>
-
                             <div class="row" style="padding-right: 30px">
                                 <label class="col-sm-2 text-right">Descrição do problema</label>
                                 <div class="col-sm-10">
@@ -255,7 +277,6 @@
                                     <input type="text" id="numPredialProx" name="numPredialProx" class="form-control" disabled>
                                 </div>
                             </div><br/>
-
                             <div class="row" style="padding-right: 30px">
                                 <label class="col-sm-2 text-right">Complemento</label>
                                 <div class="col-sm-5">
@@ -266,7 +287,6 @@
                                     <input type="text" id="bairro" name="bairro" class="form-control" disabled>
                                 </div>
                             </div><br/>
-
                             <div class="row" style="padding-right: 30px">
                                     <label class="col-sm-2 text-right">Cidade</label>
                                 <div class="col-sm-6">
@@ -285,58 +305,15 @@
                                 </div>
                             </div><br/>
                         </div>
-                        <!-- MENU DE NAVEGAÇÃO----------------------------------------------------------->
-                        <div class="row" style="margin-top: 50px; padding-left: 100px; padding-right: 100px;">
-                            <a href="javascript:back()" id="btn-back" class="btn btn-sm" style="float: left"> &laquo; Voltar</a>
-                            <input type="submit" id="btn-save" name="<?php echo OcorrenciaController::BTN_SAVE?>" value="Registrar ocorrência" class="btn btn-sm btn-primary hide" style="float: right">
-                            <a href="javascript:next()" id="btn-next" class="btn btn-sm " style="float: right">Avançar &raquo;</a>
+                        <!-- MENU DE NAVEGAÇÃO--------------------------------------------------------- -->
+                        <div class="row" style="margin-top: 50px; padding: 0px 100px 0px 100px;">
+                            <!-- <button href="javascript:back()" id="btn-back" class="btn btn-lg" style="float: left"> &laquo; Voltar</button> -->
+                            <a href="javascript:back()" id="btn-back" class="btn btn-lg" style="float: left"> &laquo; Voltar</a>
+                            <input type="submit" id="btn-save" name="<?php echo OcorrenciaController::BTN_SAVE?>" value="Registrar ocorrência" class="btn btn-lg btn-primary hide" style="float: right">
+                            <a href="javascript:next()" id="btn-next" class="btn btn-lg" style="float: right">Avançar &raquo;</a>
                         </div>
                     </div>
-				</form><br/><br/><br/>
-<?php           if($_SESSION['isAdmin'] == Usuario::ADMIN) {
-?>
-				<button onclick="addOcorrencia()" class="btn btn-danger btn-lg" style="margin: 40px; float: right">Adicionar nova ocorrência</button>
-				<table id="tabela" class="bk table table-striped" width="100%">
-					<tr>
-						<th class="col-lg-1">Protocolo</th>
-						<th class="col-lg-1">Status</th>
-						<th class="col-lg-1">Data</th>
-						<th class="col-lg-1">Prazo</th>
-						<th class="col-lg-3">Nome do munícipe</th>
-						<th class="col-lg-5">Endereco da ocorrência</th>
-					</tr>
-					<tr>
-						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna1" placeholder="Filtrar por protocolo"/></th>
-						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna2" placeholder="Filtrar por status"/></th>
-						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna3" placeholder="Filtrar por data"/></th>
-						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna4" placeholder="Filtrar por prazo"/></th>
-						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna5" placeholder="Filtrar por municipe"/></th>
-						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "><input type="text"  style="border: 1px solid #fff;" class="form-control login-field" id="txtColuna6" placeholder="Filtrar por endereco"/></th>
-						<th style="background: #fff;color: #000;border: 1px solid #ccc;padding: 0px !important; "></th>
-					</tr>
-
-<?php               $buscarOcorrencia = $controller->getAll();
-                    $controller->getAll();
-
-					foreach ($buscarOcorrencia as $result)
-					{
-					    $endereco = $result['logradouro'] . " " . $result['numPredialProx']
-                            . ", " .$result['bairro'] . ". " . $result['cidade']
-                            . " - " . $result['uf'];
-?>
-						<tr>
-							<td class="tdPers"><?php echo $result['protocolo']; ?></td>
-							<td class="tdPers"><?php echo $result['status']; ?></td>
-							<td class="tdPers"><?php echo $result['data_inicio']; ?></td>
-							<td class="tdPers"><?php echo $result['prazo']; ?></td>
-							<td class="tdPers"><?php echo $result['usuario']; ?></td>
-							<td class="tdPers"><?php echo $endereco; ?></td>
-						</tr>
-<?php               }
-?>
-				</table>
-<?php           }
-?>
+				</form>
 			</div>
 		</div>
         </div>

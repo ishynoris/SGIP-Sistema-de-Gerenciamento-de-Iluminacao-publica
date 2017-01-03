@@ -30,7 +30,7 @@
                                placeholder="Digite aqui o número do protocolo" value="<?php echo $protocol?>">
                     </div>
                     <div class="col-sm-1">
-                        <button class="btn btn-primary">Pesquisar</button>
+                        <button class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
                     </div>
                 </div>
             </div>

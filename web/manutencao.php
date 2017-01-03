@@ -1,5 +1,6 @@
 <?php 
-	include 'header.php'; 
+	include 'header.php';
+    include 'menu-top.php';
 	include ('classes/manutencao.class.php');
 
 	if(isset($_POST['edtSalvar'])){
@@ -21,9 +22,7 @@
 <div class="row col-sm-12" style="padding-left:0;">
 
 <?php 
-	include 'menu.php'; 
-
-
+	include 'menu-left.php';
 	$resultado = $dtibd->executarQuery("select","SELECT * FROM pontoiluminacao");
 
 	foreach ($resultado as $key) {
@@ -37,82 +36,80 @@
 	}
 
 ?>
+    <div class="col-sm-10" style="margin-right: 0;margin-top: 20px">
+
+        <form action="" class="bk clear"  style="padding: 20px " method="POST">
+
+            <h1>Manutenção</h1>
+            <fieldset>
+                <div class="col-sm-12" style="margin: 0 auto">
+                    <div class="col-sm-12">
+                        <label>Ponto de Iluminação</label>
+                        <select name="pontoIluminacao" class="form-control " required >
+                            <option></option>
+                            <?php echo $option; ?>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label>Tecnico Responsavel</label><input type="text" name="nomeSolicitante" class="form-control " required /><br>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label>Contato</label><input type="text" name="contato" class="form-control " required /><br>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label>Email</label><input type="text" name="email" class="form-control " required /><br>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label>Tipo do Serviço</label>
+                        <select name="tipoServico" class="form-control " required >
+                            <option>Troca de Lampada</option>
+                            <option>Troca de Reator</option>
+                            <option>Troca de Base</option>
+                            <option>Troca de Relé</option>
+                            <option>Troca de Conector</option>
+                            <option>Troca de Fiação</option>
+                            <option>Troca de Braço</option>
+                            <option>Troca de Luminaria</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label>Prioridade</label>
+                        <select name="prioridade" class="form-control alinhaSelect" required >
+                            <option></option>
+                            <option>Normal</option>
+                            <option>Urgente</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label>Protocolo de Atendimento</label>
+                        <select name="ocorrencia" class="form-control " required >
+                            <option></option>
+                            <?php echo $ocorrencia; ?>
+                        </select>
+                    </div>
 
 
-<div class="col-sm-10" style="margin-right: 0;margin-top: 20px">
-	<form action="" class="bk clear"  style="padding: 20px " method="POST">
-		<h1>Manutenção</h1>
-		<fieldset>
-			<div class="col-sm-12" style="margin: 0 auto">
-				<div class="col-sm-12">
-					<label>Ponto de Iluminação</label>
-					<select name="pontoIluminacao" class="form-control " required >
-						<option></option>
-						<?php echo $option; ?>
-					</select>
-				</div>
-					
-				<div class="col-sm-4">
-					<label>Tecnico Responsavel</label><input type="text" name="nomeSolicitante" class="form-control " required /><br>
-				</div>
+                    <div class="col-sm-12">
+                        <label>Observação</label>
+                        <textarea name="observacao" class="form-control" placeholder="Descrever o serviço, ex:'queimado, curto, quebrado ou danificado'"></textarea>
+                    </div>
 
-				<div class="col-sm-4">
-					<label>Contato</label><input type="text" name="contato" class="form-control " required /><br>
-				</div>
+                    <div class="col-sm-12" style="padding-top: 20px;">
+                        <input type='submit' name='edtSalvar' style="float: right" value="Requerer Serviço" class="btn btn-primary col-sm-4">
+                    </div>
+                </div>
+            </fieldset>
 
-				<div class="col-sm-4">
-					<label>Email</label><input type="text" name="email" class="form-control " required /><br>
-				</div>
 
-				<div class="col-sm-4">
-					<label>Tipo do Serviço</label>
-					<select name="tipoServico" class="form-control " required >
-						<option>Troca de Lampada</option>
-						<option>Troca de Reator</option>
-						<option>Troca de Base</option>
-						<option>Troca de Relé</option>
-						<option>Troca de Conector</option>
-						<option>Troca de Fiação</option>
-						<option>Troca de Braço</option>
-						<option>Troca de Luminaria</option>
-					</select>
-				</div>
-
-				<div class="col-sm-4">
-					<label>Prioridade</label>
-					<select name="prioridade" class="form-control alinhaSelect" required >
-						<option></option>
-						<option>Normal</option>
-						<option>Urgente</option>
-					</select>
-				</div>
-
-				<div class="col-sm-4">
-					<label>Protocolo de Atendimento</label>
-					<select name="ocorrencia" class="form-control " required >
-						<option></option>
-						<?php echo $ocorrencia; ?>
-					</select>
-				</div>	
-
-				
-				<div class="col-sm-12">
-					<label>Observação</label>
-					<textarea name="observacao" class="form-control" placeholder="Descrever o serviço, ex:'queimado, curto, quebrado ou danificado'"></textarea>
-				</div>			
-
-				<div class="col-sm-12" style="padding-top: 20px;">
-					<input type='submit' name='edtSalvar' style="float: right" value="Requerer Serviço" class="btn btn-primary col-sm-4">
-				</div>
-			</div>
-		</fieldset>
-
-		
-	</form>
-
-	<br>
-
-	<table class="bk" id="tabela" border="0" cellspacing="0" width="100%" >
+        </form>
+        <br>
+        <table class="bk" id="tabela" border="0" cellspacing="0" width="100%" >
 		<tr>
 			<th>Tecnico Responsavel</th>
 			<th>Tipo do Serviço</th>
@@ -147,8 +144,7 @@
 		}
 	?>
 	</table>
-
-</div>
+    </div>
 </div>
 
 <?php

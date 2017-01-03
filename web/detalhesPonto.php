@@ -86,7 +86,7 @@
 				<input type="text" name="numeroDaPlaca" class="form-control " value="<?php echo $result['potenciaLampada']; ?>" readonly/><br>	
 			</div>
 
-			<a href="parquedeiluminacao.php" class="btn btn-primary">Voltar</a>	
+			<a href="parque-de-iluminacao.php" class="btn btn-primary">Voltar</a>
 		</div>
 	</div>
 

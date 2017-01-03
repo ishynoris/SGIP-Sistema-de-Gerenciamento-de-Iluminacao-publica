@@ -7,7 +7,7 @@ class Usuario{
 	const ADMIN = 0;
 	const TECNICO = 1;
     const USUARIO = 2;
-    const OPERADOR = 3;
+    const ATENDENTE = 3;
 
 	private $id;
 	private $Usuario;

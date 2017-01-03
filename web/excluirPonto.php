@@ -8,5 +8,5 @@
 	$dtibd->executarQuery("delete","DELETE FROM pontoiluminacao WHERE id = $id");
 	$dtibd->executarQuery("delete","DELETE FROM pontosmapa WHERE address = '$logradouro'");
 
-	header("location: parquedeiluminacao.php");
+	header("location: parque-de-iluminacao.php");
 ?>

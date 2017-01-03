@@ -72,7 +72,7 @@ function clearField(id){
 }
 
 function verifyPass(el){
-	
+
 	root = el.parentElement;
 	if(el.value == ''){
 		
@@ -85,10 +85,11 @@ function verifyPass(el){
 }
 
 function isMatchPassword(){
-	var pass = document.getElementById("senha").value;
-	var confirmPass = document.getElementById("conf-senha").value;
-	
-	// if(pass == ''){
-		
-	// }
+
+	alert("oi1");
+	rootPass = document.getElementById("senha").offsetParent;
+    alert("oi2");
+    rootConfirm = document.getElementById("conf-senha").parentElement;
+    alert("oi3");
+    alert(rootPass.classList);
 }

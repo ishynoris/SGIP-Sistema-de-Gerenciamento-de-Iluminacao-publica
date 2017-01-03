@@ -5,10 +5,16 @@ class Ocorrencia{
     const ABERTA = "ABERTA";
     const MANUTENCAO = "EM MANUTENÇÃO";
     const FECHADA = "FECHADA";
+    const ATRASADA = "ATRASADA";
 
-    const PRIO_ALTA = 0;
-    const PRIO_MEDIA = 1;
-    const PRIO_BAIXA = 2;
+    const PRIO_ALTA = "ALTA";
+    const PRIO_MEDIA = "MÉDIA";
+    const PRIO_BAIXA = "BAIXA";
+
+    const V_PRIO_ALTA = 0;
+    const V_PRIO_MEDIA = 1;
+    const V_PRIO_BAIXA = 2;
+    const V_PRIO_ATRASADA = 3;
 
     private $id;
 	private $status;

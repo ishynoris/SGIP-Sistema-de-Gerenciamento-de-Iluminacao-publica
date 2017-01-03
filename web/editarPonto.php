@@ -1,6 +1,6 @@
 <?php 
 	include ('classes/pontoIluminacao.class.php');
-	$id = $_GET['id'];
+	$pid = $_GET['pid'];
 
 	if(isset($_POST['edtEditar'])){
 		$pontoiluminacao = new pontoiluminacao;
@@ -17,17 +17,18 @@
 		$pontoiluminacao->potenciaLampada = $_POST['potenciaLampada'];
 		$pontoiluminacao->editarPI($id);
 
-		header("location: parquedeiluminacao.php");
+		header("location: parque-de-iluminacao.php");
 	}
 
 
 	include 'header.php'; 
+	include 'menu-top.php';
 ?>
 
 <div class="row col-sm-12" style="padding-left:0;">
 
 <?php 
-	include 'menu.php'; 
+	include 'menu-left.php'; 
 
 	$buscar = $dtibd->executarQuery("select","SELECT * FROM pontoiluminacao p JOIN caracteristicaspontoiluminacao cpi on cpi.idPontoIluminacao = p.id
 	WHERE p.id = $id");

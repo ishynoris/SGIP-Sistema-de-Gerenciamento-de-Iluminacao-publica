@@ -13,6 +13,15 @@
             margin: 70px 20px 0px 50px;
         }
     </style>
+
+    <script>
+        $("document").ready(function(){
+
+            $("#inicio").mask("99/99/9999");
+            $("#prazo").mask("99/99/9999");
+            $("#cep").mask("99.999-999");
+        });
+    </script>
 <?php
     if(empty($protocolo) || empty($uid)){
 
@@ -62,12 +71,12 @@
                         </div>
                         <label class="col-sm-2 text-right">Data de registro</label>
                         <div class="col-sm-2">
-                            <input type="text" class="form-control" value="<?php echo $ocorrencia[0]['data_inicio']; ?>"
+                            <input type="text" id="inicio" class="form-control" value="<?php echo $ocorrencia[0]['data_inicio']; ?>"
                                    disabled>
                         </div>
                         <label class="col-sm-2 text-right">Prazo final</label>
                         <div class="col-sm-2">
-                            <input type="text" class="form-control" value="<?php echo $ocorrencia[0]['prazo']; ?>" disabled>
+                            <input type="text" id="prazo" class="form-control" value="<?php echo $ocorrencia[0]['prazo']; ?>" disabled>
                         </div>
                     </div>
                     <br/>
@@ -84,7 +93,7 @@
                     <div class="row" style="padding-right: 30px">
                         <label class="col-sm-2 text-right">CEP</label>
                         <div class="col-sm-2">
-                            <input type="text" class="form-control" value="<?php echo $ocorrencia[0]['cep']; ?>" disabled>
+                            <input type="text" id="cep" class="form-control" value="<?php echo $ocorrencia[0]['cep']; ?>" disabled>
                         </div>
                         <label class="col-sm-2 text-right">Logradouro</label>
                         <div class="col-sm-6">

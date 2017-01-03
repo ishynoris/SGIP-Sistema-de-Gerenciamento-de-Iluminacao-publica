@@ -1,14 +1,15 @@
 <?php
-	require('./inc/Config.inc.php');
-	if(!isset($_SESSION)){
-		header("Location: 404.php");
-		exit;
-	}
+require('./inc/Config.inc.php');
 
-    define("MEUS_DADOS", "Meus dados");
-    define("DESLOGAR", "Deslogar");
+if(!isset($_SESSION)){
+    header("Location: 404.php");
+    exit;
+}
+
+define("MEUS_DADOS", "Meus dados");
+define("DESLOGAR", "Deslogar");
 ?>
-
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
 
     $(function(){
@@ -27,7 +28,6 @@
     <div class="" >
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header" >
-
             <a href="home.php">
                 <img src="demos/logo-ico.png" class="navbar-brand" hspace="20px" >
             </a>

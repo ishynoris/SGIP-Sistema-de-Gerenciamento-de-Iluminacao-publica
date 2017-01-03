@@ -2,7 +2,7 @@
 // Refatore or don't change ids
 
 function validateCPF(cpf){
-	
+
 	var exp = /\.|\-/g
 	var cpf = cpf.toString().replace(exp, ""); 
 	var digitoDigitado = eval(cpf.charAt(9)+cpf.charAt(10));

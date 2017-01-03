@@ -1,5 +1,6 @@
 <?php
 	require('./inc/Config.inc.php');
+	include 'header.php';
 	include 'controller/CadastroController.class.php';
 	
 	$controller = new CadastroController();
@@ -13,17 +14,9 @@
 
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="css/adminStyle.css">
-	 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="css/chosen.min.css">
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script src="http://digitalbush.com/wp-content/uploads/2014/10/jquery.maskedinput.js"></script>
 
         <script type="text/javascript" src="js/script.validar.mascaras.js"></script>
         <script type="text/javascript" src="js/script.novo.cadastro.js"></script>
-        <script type="text/javascript" src="js/chosen.jquery.min.js"></script>
 
         <script>
             $("document").ready(function(){
@@ -31,6 +24,7 @@
                 $("#cpf").mask("999.999.999-99");
                 $("#nascimento").mask("99/99/9999");
                 $("#cep").mask("99.999-999");
+                $("#email").mask("");
                 $("#telefone").mask("(99) 9999-9999?9")
                 $("#telefone").focusout(function (event) {
                     var target, phone, element;
@@ -54,9 +48,8 @@
 
 				<div id="form-novo-cadastro" class="form-group">
 
-				    <legend style="padding-bottom: 10px; margin-bottom: 50px">
-                        Novo cadastro&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span>
-                    </legend>
+                    <legend style="padding-bottom:10px;"><span class="glyphicon glyphicon-plus"></span>
+                        &nbsp;&nbsp;&nbsp;Novo cadastro</legend>
 				
 					<div class="row">
 						<label class="col-sm-2 text-right">Tipo de usuário</label>
@@ -94,7 +87,7 @@
 					<div class="row">	
 						<label class="col-sm-2 text-right">E-mail</label>
 						<div class="col-sm-5">
-							<input type="text" name="email" class="form-control">
+							<input type="text" id="email" name="email" class="form-control">
 						</div>
 						<label class="col-sm-2 text-right">Telefone</label>
 						<div class="col-sm-3">

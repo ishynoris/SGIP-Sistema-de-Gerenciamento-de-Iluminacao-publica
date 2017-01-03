@@ -30,16 +30,19 @@ class OcorrenciaController extends Controller
 
     private function saveData()
     {
-
         $dtibd = new Dtidb(Dtidb::HOST, Dtidb::DB_NAME, Dtidb::USER_NAME, Dtidb::PASSWORD);
 
         $endereco = new Endereco($_POST['cep'], $_POST['logradouro'], $_POST["numPredialProx"], $_POST['complemento'],
-            $_POST['bairro'], $_POST['cidade'], $_POST['uf'], $_POST['observacao']);
+                    $_POST['bairro'], $_POST['cidade'], $_POST['uf'], $_POST['observacao']);
         $idEndereco = $endereco->saveDB($dtibd);
 
-        $rural = ($_POST['rural'] == "SIM");
-        $ocorrencia = new Ocorrencia(Ocorrencia::ABERTA, date('d/m/Y'), date('d/m/Y', strtotime(' + 5 days')),
-            $_POST['protocolo'], $_POST['manutencao'], Ocorrencia::PRIO_MEDIA, $_POST['descricao'], $rural);
+        $prioridade = OcorrenciaController::getPriority();
+        $prazo = preg_replace('/\//', "", OcorrenciaController::getDeadLine());
+        $inicio = preg_replace('/\//', "", date('d/m/Y'));
+        $rural = $this->isRural();
+
+        $ocorrencia = new Ocorrencia(Ocorrencia::ABERTA, $inicio, $prazo, $_POST['protocolo'],
+                    $_POST['manutencao'], $prioridade, $_POST['descricao'], $rural);
         $idOcorrencia = $ocorrencia->saveDB($_SESSION['id'], $idEndereco, $dtibd);
 
         if ($idOcorrencia) {
@@ -59,7 +62,6 @@ class OcorrenciaController extends Controller
 
     public function getAll()
     {
-
         $dtibd = new Dtidb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
         $query = "SELECT o.protocolo, o.status, o.data_inicio, o.prazo, u.usuario, e.logradouro, 
                     e.numPredialProx, e.bairro, e.cidade, e.uf 
@@ -71,7 +73,6 @@ class OcorrenciaController extends Controller
 
     public function getByProtocol($protocolo)
     {
-
         $dtibd = new Dtidb(Dtidb::HOST, Dtidb::DB_NAME, Dtidb::USER_NAME, Dtidb::PASSWORD);
         $query = "SELECT u.usuario,
                 o.protocolo, o.manutencao, o.status, o.data_inicio, o.prazo, o.descricao, 
@@ -87,8 +88,15 @@ class OcorrenciaController extends Controller
     public static function getByUserId($id)
     {
         $dtibd = new Dtidb(Dtidb::HOST, Dtidb::DB_NAME, Dtidb::USER_NAME, Dtidb::PASSWORD);
-        $query = "SELECT id, protocolo, status, descricao, manutencao FROM ocorrencia WHERE id_usuario = :id";
+        $query = "SELECT protocolo, status, descricao, manutencao, prioridade FROM ocorrencia WHERE id_usuario = :id";
         return $dtibd->executarQuery("select", $query, array(":id" => $id));
+    }
+
+    public static function getAllOpen()
+    {
+        $dtibd = new Dtidb(Dtidb::HOST, Dtidb::DB_NAME, Dtidb::USER_NAME, Dtidb::PASSWORD);
+        $query = "SELECT protocolo, status, descricao, manutencao, prioridade FROM ocorrencia ";
+        return $dtibd->executarQuery("select", $query);
     }
 
     public static function getDetails($protocol, $uid)
@@ -117,6 +125,36 @@ class OcorrenciaController extends Controller
 
         $query = "DELETE FROM ocorrencia WHERE protocolo = :protocol and id_usuario = :uid";
         return $dtibd->executarQuery("delete", $query, array(":protocol" => $protocol, ":uid" => $uid));
+    }
+
+    private function isRural(){
+        return $_POST['rural'] == "SIM";
+    }
+
+    public static function getPriority(){
+        switch ($_POST['prioridade']){
+            case Ocorrencia::PRIO_ALTA: return Ocorrencia::V_PRIO_ALTA;
+            case Ocorrencia::PRIO_MEDIA: return Ocorrencia::V_PRIO_MEDIA;
+            case Ocorrencia::PRIO_BAIXA: return Ocorrencia::V_PRIO_BAIXA;
+            case Ocorrencia::PRIO_ARASADO: return Ocorrencia::V_PRIO_ATRASADA;
+        }
+    }
+
+    public static function getDeadLine(){
+        switch ($_POST['prioridade']){
+            case Ocorrencia::PRIO_ALTA: return date('d/m/Y', strtotime(' + 2 days'));
+            case Ocorrencia::PRIO_MEDIA: return date('d/m/Y', strtotime(' + 5 days'));
+            case Ocorrencia::PRIO_BAIXA: return date('d/m/Y', strtotime(' + 7 days'));
+        }
+    }
+
+    public static function getStatus($value){
+        switch ($value){
+            case 0: return date('d/m/Y', strtotime(' + 2 days'));
+            case 1: return date('d/m/Y', strtotime(' + 5 days'));
+            case 2: return date('d/m/Y', strtotime(' + 7 days'));
+            case 3: return date('d/m/Y', strtotime(' + 7 days'));
+        }
     }
 }
 
