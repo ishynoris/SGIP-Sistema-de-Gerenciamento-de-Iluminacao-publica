@@ -22,7 +22,7 @@ $protocol = '';
         function confirmDelete(protocolo) {
 
             if(confirm("Você realmente deseja remover essa ocorrência?\nEssa remoção é irreversível.")){
-                location.href = "remover-ocorrencia.php?pid=" + protocolo;
+                location.href = "excluir-ocorrencia.php?pid=" + protocolo;
             }
         }
     </script>
@@ -81,15 +81,18 @@ $protocol = '';
             <div class="col-sm-6">
                 <div class="table-responsive box-relatorio">
                     <table class="bk" width="100%" id="tabela">
-                        <legend class="legend">Ultimos Pontos Cadastrados</legend>
+                        <legend class="legend">Ultimos Pontos de iluminação Cadastrados</legend>
 
                         <?php $lightPoints = HomeController::getLastLightPoints();
                         $i = 1;
+                        // logradouro, numPredialProx. bairro, cidade - UF
                         foreach ((array)$lightPoints as $lightPoint) {
+                            $address = $lightPoint['logradouro'] .', '. $lightPoint['numPredialProx'] .'. '. 
+                                        $lightPoint['bairro'] .', '. $lightPoint['cidade'] .' - '. $lightPoint['uf'];
                             ?>
                             <tr>
                                 <td class="tdPers">#<?php echo $i++; ?></td>
-                                <td class="tdPers"><?php echo $lightPoint['logradouro']; ?></td>
+                                <td class="tdPers"><?php echo $address; ?></td>
                             </tr>
                         <?php }
                         ?>

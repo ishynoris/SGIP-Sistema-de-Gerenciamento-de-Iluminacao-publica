@@ -1,150 +1,76 @@
 <?php
 include 'conecta_bancoAdmin.php';
 
-class pontoiluminacao{
+class Pontoiluminacao{
 
+	private $table = "pontoiluminacao";
 
-	private $bairro;
-	private $logradouro;
-	private $numPredialProx;
-	private $statusConservacao;
-	private $numeroDaPlaca;
+	const S_BOM = "BOM";
+	const S_RAZOAVEL = "RAZOÁVEL";
+	const S_RUIM = "RUIM";
 
-	private $tamanhoDoPoste;
-	private $refrator;
-	private $tipoReator;
-	private $potenciaDoReator;
-	private $modeloBraco;
-	private $modeloLuminaria;
-	private $potenciaLuminaria;
-	private $tipoLampada;
-	private $potenciaLampada;
+	const V_BOM = 0;
+	const V_RAZOAVEL = 1;
+	const V_RUIM = 2;
 
-	private $tipoPoste;
-	private $modeloReator;
-	private $imagem;
-	private $observacoes;
+	private $conservacao; //
+	private $numero;//
+	private $imagem;//
 
-	public function __set($atrib, $value){
-      	$this->$atrib = $value;
-  	}
+	public function __construct($conservacao, $numero)
+	{
+		$this->conservacao = $conservacao;
+		$this->numero = $numero;
+	}
 
-    public function __get($atrib){
-        return $this->$atrib;
-    }   
-
-    public function pontosmapa($lat,$lng,$type)
-    {
-    	try{
-    		$dtibd = new Dtidb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
-			
-			$dtibd->executarQuery("insert","INSERT INTO pontosmapa(name,address,lat,lng,type) 
-								VALUES(:name,:address,:lat,:lng,:type)",
-				array(
-					":name"=>$this->logradouro,
-					":address"=>$this->logradouro,
-					":lat"=>$lat,
-					":lng"=>$lng,
-					"type"=>$type
-			));
-    	}catch(PDOException $e){
-			echo "Erro ao Inserir: " . $e->getMessage() . "\n";
-        	die();
-		}
-    }
-
-    public function salvarCaracteristicasPontoIluminacao($id)
-    {
-    	try{
-	    	$dtibd = new Dtidb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
-
-	    	$dtibd->executarQuery("insert",
-			"INSERT INTO caracteristicaspontoiluminacao (tamanhoDoPoste,refrator,tipoReator,potenciaDoReator,
-			modeloBraco,modeloLuminaria,potenciaLuminaria,tipoLampada,potenciaLampada,tipoPoste,modeloReator,imagem,observacoes,idPontoIluminacao) 
-			VALUES (:tamanhoDoPoste,:refrator,:tipoReator,:potenciaDoReator,:modeloBraco,
-			:modeloLuminaria,:potenciaLuminaria,:tipoLampada,:potenciaLampada,:tipoPoste,:modeloReator,:imagem, :observacoes, :idPontoIluminacao)",
-
-			array(
-				":tamanhoDoPoste" => $this->tamanhoDoPoste,
-				":refrator" => $this->refrator,
-				":tipoReator" => $this->tipoReator,
-				":potenciaDoReator" => $this->potenciaDoReator,
-				":modeloBraco" => $this->modeloBraco,
-				":modeloLuminaria" => $this->modeloLuminaria,
-				":potenciaLuminaria" => $this->potenciaLuminaria,
-				":tipoLampada" => $this->tipoLampada,
-				":potenciaLampada" => $this->potenciaLampada,
-				":tipoPoste" => $this->tipoPoste,
-				":modeloReator" => $this->modeloReator,
-				":imagem" => $this->imagem,
-				":observacoes" => $this->observacoes,
-				":idPontoIluminacao" => $id				
-			));
-		}catch(PDOException $e){
-			echo "Erro ao Inserir: " . $e->getMessage() . "\n";
-        	die();
-		}
-    }
-
-	public function salvarPontoIluminacao()
+	public function saveDB($idEndereco, $dtibd)
 	{
 		try{
-			$dtibd = new Dtidb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
-						
-			$lastInsertId = $dtibd->executarQuery("insert",
-			"INSERT INTO pontoiluminacao(logradouro,statusConservacao,numeroDaPlaca)
-			 VALUES (:logradouro,:statusConservacao,:numeroDaPlaca)",
+			$query = "INSERT INTO $this->table (statusConservacao, numeroDaPlaca, id_endereco)
+						VALUES (:conservacao, :numero, :idEndereco)";
+			$values = array(":conservacao" => (int) $this->conservacao,
+							":numero" => $this->numero,
+							":idEndereco" => $idEndereco);
+			return $dtibd->executarQuery("insert", $query, $values);
 
-			array(
-				":logradouro" => $this->logradouro,
-				":statusConservacao" => $this->statusConservacao,
-				":numeroDaPlaca" => $this->numeroDaPlaca
-				
-			));
-
-			return $lastInsertId;
-
-		}catch(PDOException $e){
-			echo "Erro ao Inserir: " . $e->getMessage() . "\n";
+		} catch (PDOException $e){
+			echo "Erro ao Inserir: [placa={$this->numero}, endereco={$idEndereco}] " . $e->getMessage() . "\n";
         	die();
 		}
 	}
 
-	public function editarPI($id)
+	public function editDB($dtibd)
 	{
 		try{
-			$dtibd = new Dtidb("localhost", "viare024_sip", "viare024_sip", "iwd5QplD?$(9");
+			$query = "UPDATE $this->table SET statusConservacao = :statusConservacao
+					WHERE numeroDaPlaca = :numeroDaPlaca";
+			$values = array(":statusConservacao" => (int) $this->conservacao, 
+							":numeroDaPlaca" => $this->numero);
+			$dtibd->executarQuery("update", $query, $values);
 
-			$lastInsertId = $dtibd->executarQuery("update",
-			"UPDATE caracteristicaspontoiluminacao SET
-				tamanhoDoPoste = :tamanhoDoPoste,
-				refrator = :refrator,
-				tipoPoste = :tipoPoste,
-				modeloReator = :modeloReator,
-				tipoReator = :tipoReator,
-				potenciaDoReator = :potenciaDoReator,
-				modeloBraco = :modeloBraco,
-				modeloLuminaria = :modeloLuminaria,
-				potenciaLuminaria = :potenciaLuminaria,
-				tipoLampada = :tipoLampada,
-				potenciaLampada = :potenciaLampada WHERE idPontoIluminacao = $id",
-			array(
-				":tamanhoDoPoste" => $this->tamanhoDoPoste,
-				":refrator" => $this->refrator,
-				":tipoPoste" => $this->tipoPoste,
-				":modeloReator" => $this->modeloReator,
-				":tipoReator" => $this->tipoReator,
-				":potenciaDoReator" => $this->potenciaDoReator,
-				":modeloBraco" => $this->modeloBraco,
-				":modeloLuminaria" => $this->modeloLuminaria,
-				":potenciaLuminaria" => $this->potenciaLuminaria,
-				":tipoLampada" => $this->tipoLampada,
-				":potenciaLampada" => $this->potenciaLampada
-			));
-		}catch(PDOException $e){
-			echo "Erro ao Inserir: " . $e->getMessage() . "\n";
+		} catch (PDOException $e){
+			echo "Erro ao editar [placa={$this->numero}]: " . $e->getMessage() . "\n";
         	die();
 		}
+	}
+
+	public function delete($placa, $dtibd)
+	{	
+		try{
+			$query = "DELETE FROM $this->table WHERE numeroDaPlaca = :placa";
+			$values = array(":placa" => (int) $placa);
+			return $dtibd->executarQuery("delete", $query, $values);
+		} catch (PDOException $e){
+			echo "Erro ao excluir [placa={$placa}]: " . $e->getMessage() . "\n";
+        	die();
+		}
+	}
+
+	public function getIds($dtibd)
+	{
+		$query = "SELECT id, id_endereco FROM $this->table WHERE numeroDaPlaca = :numero";
+		$values = array(":numero" => $this->numero);
+		return $dtibd->executarQuery("select", $query, $values);
 	}
 }
 ?>

@@ -16,6 +16,9 @@
     <meta charset="utf-8">
 
     <!-- Estilos -->
+    
+    <link rel="shortcut icon" href="//esri.github.io/quickstart-map-js/images/favicon.ico">
+    
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/adminStyle.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">

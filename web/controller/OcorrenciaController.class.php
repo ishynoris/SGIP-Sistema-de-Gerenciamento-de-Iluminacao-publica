@@ -21,14 +21,14 @@ class OcorrenciaController extends Controller
     {
         switch ($actionPost) {
 
-            case OcorrenciaController::BTN_SAVE: return $this->saveData();
+            case OcorrenciaController::BTN_SAVE: return $this->save();
             case OcorrenciaController::BTN_SEARCH:
                 $protocolo = $_POST[OcorrenciaController::PROTOCOL];
                 return $this->getByProtocol($protocolo);
         }
     }
 
-    private function saveData()
+    private function save()
     {
         $dtibd = new Dtidb(Dtidb::HOST, Dtidb::DB_NAME, Dtidb::USER_NAME, Dtidb::PASSWORD);
 
@@ -36,6 +36,7 @@ class OcorrenciaController extends Controller
                     $_POST['bairro'], $_POST['cidade'], $_POST['uf'], $_POST['observacao']);
         $idEndereco = $endereco->saveDB($dtibd);
 
+        $idUsuario = $_SESSION['id'];
         $prioridade = OcorrenciaController::getPriority();
         $prazo = preg_replace('/\//', "", OcorrenciaController::getDeadLine());
         $inicio = preg_replace('/\//', "", date('d/m/Y'));
@@ -43,7 +44,7 @@ class OcorrenciaController extends Controller
 
         $ocorrencia = new Ocorrencia(Ocorrencia::ABERTA, $inicio, $prazo, $_POST['protocolo'],
                     $_POST['manutencao'], $prioridade, $_POST['descricao'], $rural);
-        $idOcorrencia = $ocorrencia->saveDB($_SESSION['id'], $idEndereco, $dtibd);
+        $idOcorrencia = $ocorrencia->saveDB($idUsuario, $idEndereco, $dtibd);
 
         if ($idOcorrencia) {
 
@@ -58,6 +59,20 @@ class OcorrenciaController extends Controller
 				alert('Ocorreu um erro ao cadastrar sua ocorrência. Se o erro persistir, por favor tente mais tarde');
 				</script>";
         }
+    }
+
+    public static function delete($protocol, $uid){
+
+        $dtibd = new Dtidb(Dtidb::HOST, Dtidb::DB_NAME, Dtidb::USER_NAME, Dtidb::PASSWORD);
+
+        $query = "SELECT id_endereco FROM ocorrencia WHERE protocolo = :protocol";
+        $idEndereco = $dtibd->executarQuery("select", $query, array(":protocol"=>$protocol));
+
+        $query = "DELETE from endereco WHERE id = :idEndereco";
+        $dtibd->executarQuery("delete", $query, array(":idEndereco" => $idEndereco));
+
+        $query = "DELETE FROM ocorrencia WHERE protocolo = :protocol and id_usuario = :uid";
+        return $dtibd->executarQuery("delete", $query, array(":protocol" => $protocol, ":uid" => $uid));
     }
 
     public function getAll()
@@ -113,20 +128,6 @@ class OcorrenciaController extends Controller
         return $dtibd->executarQuery("select", $query, array(":protocol" => $protocol, ":uid" => $uid));
     }
 
-    public static function delete($protocol, $uid){
-
-        $dtibd = new Dtidb(Dtidb::HOST, Dtidb::DB_NAME, Dtidb::USER_NAME, Dtidb::PASSWORD);
-
-        $query = "SELECT id_endereco FROM ocorrencia WHERE protocolo = :protocol";
-        $idEndereco = $dtibd->executarQuery("select", $query, array(":protocol"=>$protocol));
-
-            $query = "DELETE from endereco WHERE id = :idEndereco";
-        $dtibd->executarQuery("delete", $query, array(":idEndereco" => $idEndereco));
-
-        $query = "DELETE FROM ocorrencia WHERE protocolo = :protocol and id_usuario = :uid";
-        return $dtibd->executarQuery("delete", $query, array(":protocol" => $protocol, ":uid" => $uid));
-    }
-
     private function isRural(){
         return $_POST['rural'] == "SIM";
     }
@@ -150,12 +151,11 @@ class OcorrenciaController extends Controller
 
     public static function getStatus($value){
         switch ($value){
-            case 0: return date('d/m/Y', strtotime(' + 2 days'));
-            case 1: return date('d/m/Y', strtotime(' + 5 days'));
-            case 2: return date('d/m/Y', strtotime(' + 7 days'));
-            case 3: return date('d/m/Y', strtotime(' + 7 days'));
+            case Ocorrencia::V_PRIO_ALTA: return date('d/m/Y', strtotime(' + 2 days'));
+            case Ocorrencia::V_PRIO_MEDIA: return date('d/m/Y', strtotime(' + 5 days'));
+            case Ocorrencia::V_PRIO_BAIXA: return date('d/m/Y', strtotime(' + 7 days'));
+            case Ocorrencia::V_PRIO_ATRASADA: return date('d/m/Y', strtotime(' + 7 days')); //Acho que tá errado risos
         }
     }
 }
-
 ?>

@@ -13,9 +13,9 @@ abstract class Controller
 
     public function getInputAction(){
 
-        foreach ($this->array as $ïnput) {
-            if (isset($_POST[$ïnput])) {
-                return $ïnput;
+        foreach ($this->array as $input) {
+            if (isset($_POST[$input])) {
+                return $input;
             }
         }
     }

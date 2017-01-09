@@ -15,7 +15,7 @@ if(empty($protocolo) || empty($uid)){
     if ($uid == $_SESSION['id']) {
 
         $uid = $_SESSION['id'];
-        echo OcorrenciaController::delete($protocolo, $uid);
+        OcorrenciaController::delete($protocolo, $uid);
         echo "<script>
                 alert('A ocorrência foi removida. Você será redirecionado para a página inicial.');
                 location.href = 'home.php';

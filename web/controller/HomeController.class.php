@@ -5,7 +5,11 @@ class HomeController
     public static function getLastLightPoints()
     {
         $dtibd = new Dtidb(Dtidb::HOST, Dtidb::DB_NAME, Dtidb::USER_NAME, Dtidb::PASSWORD);
-        return $dtibd->executarQuery("select","SELECT logradouro FROM pontoiluminacao order by id desc Limit 10");
+        $query = "SELECT logradouro, numPredialProx, bairro, cidade, uf 
+                    FROM endereco AS e 
+                    INNER JOIN pontoiluminacao as pi 
+                    WHERE e.id = pi.id_endereco order by e.id desc Limit 10";
+        return $dtibd->executarQuery("select", $query);
     }
 
     public static function getLastUserName()

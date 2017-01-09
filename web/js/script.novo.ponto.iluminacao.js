@@ -31,7 +31,9 @@ $(document).ready(function(){
 //WHEN SUBMIT FORM
 $(function(){
     $("#form").submit(function() {
+        disabled("conservacao", false);
         disabled("tamanho", false);
+        disabled("numero", false);
         disabled("rele", false);
         disabled("t-poste", false);
         disabled("t-reator", false);
@@ -199,11 +201,13 @@ function hide(id, flag){
 }
 
 function updateProgressBar(value){
-    document.getElementById("progress-bar").style.width = value;
+    $("#progress-bar").css("width", value);
 }
 
 function fillFields(){
+    fillField("conservacao");
     fillField("tamanho");
+    fillField("numero");
     fillField("rele");
     fillField("t-poste");
     fillField("t-reator");
@@ -226,13 +230,12 @@ function fillFields(){
 }
 
 function fillField(id){
-    var value = document.getElementById(id + "-prev").value;
-    document.getElementById(id).value = value;
+    var value = $("#" + id + "-prev").val();
+    $("#" + id).val(value);
 }
 
 function disabled(id, flag){
-    el = document.getElementById(id);
-    el.disabled = flag;
-    el.readyOnly = !flag;
+    $("#" + id).prop("disabled", flag);
+    $("#" + id).prop("readyonly", !flag);
 }
 

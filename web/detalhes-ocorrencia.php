@@ -39,7 +39,7 @@
 ?>
                 <div class="col-sm-10">
                     <div class="bk line">
-                    <legend style="padding-bottom:10px; margin-bottom: 50px"><span class="glyphicon glyphicon-ok"></span>
+                    <legend style="padding-bottom:10px; margin-bottom: 50px"><span class="glyphicon glyphicon-info-sign"></span>
                         &nbsp;&nbsp;&nbsp;Ocorrencia encontrada
                     </legend>
 

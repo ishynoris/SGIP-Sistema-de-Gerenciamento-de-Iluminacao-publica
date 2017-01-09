@@ -3,42 +3,8 @@
 	include 'menu-top.php';
     include 'controller/PontoIluminacaoController.class.php';
 
-	if(isset($_POST['edtSalvar'])){		
-		$address = $_POST['logradouro'] . "," . $_POST['numPredialProx'] . " - " . $_POST['bairro'] . " " . $_POST['complemento'] . " ". $_POST['cidade'] . "/" . $_POST['uf'];
-		$address = str_replace(" ", "+", $address);
-		$region = "Brasil";	
-		$endereco = $_POST['logradouro'] . "," . $_POST['numPredialProx'] . " - " . $_POST['bairro'] . " " . $_POST['complemento'] . " " . $_POST['cidade'] . "/" . $_POST['uf'];
-		$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address&sensor=false&region=$region");
-		$json = json_decode($json);
-		$lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
-		$long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'};
-
-		// Inserção do Ponto de Iluminação
-		$pontoiluminacao = new pontoiluminacao;
-		$pontoiluminacao->logradouro = $endereco;
-		$pontoiluminacao->statusConservacao = $_POST['statusConservacao'];
-		$pontoiluminacao->numeroDaPlaca = $_POST['numeroDaPlaca'];
-		$utilmaIdInserida = $pontoiluminacao->salvarPontoIluminacao();
-
-		// Caracteristicas do Ponto Iluminacao
-		$pontoiluminacao->tamanhoDoPoste = $_POST['tamanhoDoPoste'];
-		$pontoiluminacao->refrator = $_POST['refrator'];
-		$pontoiluminacao->tipoPoste = $_POST['tipoPoste'];
-		$pontoiluminacao->modeloReator = $_POST['modeloReator'];
-		$pontoiluminacao->tipoReator = $_POST['tipoReator'];
-		$pontoiluminacao->potenciaDoReator = $_POST['potenciaDoReator'];
-		$pontoiluminacao->modeloBraco = $_POST['modeloBraco'];
-		$pontoiluminacao->modeloLuminaria = $_POST['modeloLuminaria'];
-		$pontoiluminacao->potenciaLuminaria = $_POST['potenciaLuminaria'];
-		$pontoiluminacao->tipoLampada = $_POST['tipoLampada'];
-		$pontoiluminacao->potenciaLampada = $_POST['potenciaLampada'];
-		$pontoiluminacao->imagem = "data/".$_FILES['arquivo']['name'];
-		$pontoiluminacao->observacoes = $_POST['edtObservacoes'];
-		$pontoiluminacao->salvarCaracteristicasPontoIluminacao($utilmaIdInserida);
-		
-		// Ponto no mapa
-		$pontoiluminacao->pontosmapa($lat,$long,"restaurant");
-	}
+    $pontoiluminacao = new PontoIluminacaoController();
+    $pontoiluminacao->triggerInput($pontoiluminacao->getInputAction());
 ?>
     <style>
         .line{
@@ -46,13 +12,11 @@
             margin: 70px 20px 0px 50px;
         }
     </style>
-
     <script type="text/javascript" src="js/script.novo.ponto.iluminacao.js"></script>
     
     <div class="row">
-
 <?php
-        include 'menu-left.php';
+    include 'menu-left.php';
 ?>
         <div class="col-sm-10" >
             <div class="bk line">
@@ -78,14 +42,24 @@
                         <!-- PASSO UM - DADOS GERAIS ------------------------------------------------------------ -->
                         <div id="step-0">
                             <div class="row" style="padding-right: 30px">
+                            <label class="col-sm-2 text-right">Status de conservação</label>
+                                <div class="col-sm-2" >
+                                    <select id="conservacao-prev" class="form-control" >
+                                        <option class="form-control" value="BOM" >BOM</option>
+                                        <option class="form-control" value="RAZOÁVEL" selected>RAZOÁVEL</option>
+                                        <option class="form-control" value="RUIM">RUIM</option>
+                                    </select>
+                                </div>
+                            </div><br/>
+                            <div class="row" style="padding-right: 30px">
 
                                 <label class="col-sm-2 text-right">Tamanho</label>
                                 <div class="col-sm-2" >
-                                    <input type="text" id="tamanho-prev" value="49503429" class="form-control" >
+                                    <input type="text" id="tamanho-prev" class="form-control" >
                                 </div>
-                                <label class="col-sm-2 text-right">Relé</label>
+                                <label class="col-sm-2 text-right">Numero</label>
                                 <div class="col-sm-2">
-                                    <input type="text" id="rele-prev" value="49503429" class="form-control" >
+                                    <input type="text" id="numero-prev" class="form-control" >
                                 </div>
                                 <label class="col-sm-2 text-right">Tipo do poste</label>
                                 <div class="col-sm-2">
@@ -96,28 +70,26 @@
                                 </div>
                             </div><br/>
                             <div class="row" style="padding-right: 30px">
-
-                                <label class="col-sm-2 text-right">Tipo do reator</label>
+                                
+                                <label class="col-sm-2 text-right">Relé</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="rele-prev" class="form-control" >
+                                </div>
+                                <label class="col-sm-2 text-right">Tipo da lâmpada</label>
                                 <div class="col-sm-2" >
-                                    <select id="t-reator-prev" class="form-control "/>
+                                    <select id="t-lampada-prev" class="form-control "/>
                                         <option class="form-control" value="VAPOR DE SODIO">VAPOR DE SÓDIO</option>
                                         <option class="form-control" value="VAPOR METALICO">VAPOR DE METÁLICO</option>
+                                        <option class="form-control" value="VAPOR DE MERCURIO">VAPOR DE MERCURIO</option>
+                                        <option class="form-control" value="LED">LED</option>
                                         <option class="form-control" value="MISTO">MISTO</option>
                                     </select>
                                 </div>
 
-                                <label class="col-sm-2 text-right">Modelo do reator</label>
+                                <label class="col-sm-2 text-right">Potência da lâmpada (W)</label>
                                 <div class="col-sm-2">
-                                    <select id="m-reator-prev" class="form-control "/>
-                                        <option class="form-control" value="INTERNO">INTERNO</option>
-                                        <option class="form-control" value="EXTERNO">EXTERNO</option>
-                                    </select>
-                                </div>
-
-                                <label class="col-sm-2 text-right">Potencia do reator</label>
-                                <div class="col-sm-2">
-                                    <select id="p-reator-prev" class="form-control "/>
-                                        <option class="form-control" value="70">70</option>
+                                    <select id="p-lampada-prev" class="form-control"/>
+                                        <option class="form-control" value="70">75</option>
                                         <option class="form-control" value="150">150</option>
                                         <option class="form-control" value="250">250</option>
                                         <option class="form-control" value="400">400</option>
@@ -125,7 +97,6 @@
                                 </div>
                             </div><br/>
                             <div class="row" style="padding-right: 30px">
-
                                 <label class="col-sm-2 text-right">Tipo da luminária</label>
                                 <div class="col-sm-2" >
                                     <select id="t-luminaria-prev" class="form-control "/>
@@ -144,41 +115,44 @@
                                 <label class="col-sm-2 text-right">Tamanho do braço (m)</label>
                                 <div class="col-sm-2">
                                     <select id="tam-braco-prev" class="form-control "/>
-                                        <option class="form-control" value="ABERTA">1,0</option>
-                                        <option class="form-control" value="FECHADA">2,5</option>
-                                        <option class="form-control" value="PETALA">3,0</option>
-                                        <option class="form-control" value="PETALA">5,0</option>
+                                        <option class="form-control" value="1,0">1,0</option>
+                                        <option class="form-control" value="2,5">2,5</option>
+                                        <option class="form-control" value="3,0">3,0</option>
+                                        <option class="form-control" value="5,0">5,0</option>
                                     </select>
                                 </div>
                             </div><br/>
                             <div class="row" style="padding-right: 30px">
 
-                                <label class="col-sm-2 text-right">Tipo da lâmpada</label>
-                                <div class="col-sm-3" >
-                                    <select id="t-lampada-prev" class="form-control "/>
+                                <label class="col-sm-2 text-right">Tipo do reator</label>
+                                <div class="col-sm-2" >
+                                    <select id="t-reator-prev" class="form-control "/>
                                         <option class="form-control" value="VAPOR DE SODIO">VAPOR DE SÓDIO</option>
                                         <option class="form-control" value="VAPOR METALICO">VAPOR DE METÁLICO</option>
-                                        <option class="form-control" value="VAPOR DE MERCURIO">VAPOR DE MERCURIO</option>
-                                        <option class="form-control" value="LED">LED</option>
                                         <option class="form-control" value="MISTO">MISTO</option>
                                     </select>
                                 </div>
-
-                                <label class="col-sm-4 text-right">Potência da lâmpada (W)</label>
-                                <div class="col-sm-3">
-                                    <select id="p-lampada-prev" class="form-control"/>
-                                        <option class="form-control" value="70">75</option>
+                                <label class="col-sm-2 text-right">Modelo do reator</label>
+                                <div class="col-sm-2">
+                                    <select id="m-reator-prev" class="form-control "/>
+                                        <option class="form-control" value="INTERNO">INTERNO</option>
+                                        <option class="form-control" value="EXTERNO">EXTERNO</option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-2 text-right">Potencia do reator</label>
+                                <div class="col-sm-2">
+                                    <select id="p-reator-prev" class="form-control "/>
+                                        <option class="form-control" value="70">70</option>
                                         <option class="form-control" value="150">150</option>
                                         <option class="form-control" value="250">250</option>
                                         <option class="form-control" value="400">400</option>
                                     </select>
                                 </div>
                             </div><br/>
-
                             <div class="row" style="padding-right: 30px">
                                 <label class="col-sm-2 text-right">Observação sobre o ponto de iluminação</label>
                                 <div class="col-sm-10" style="float: right">
-                                    <textarea id="obs-ponto-prev" class="form-control" rows="5">Observacao sobre novo ponto de iluminação</textarea>
+                                    <textarea id="obs-ponto-prev" class="form-control" rows="5"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -230,20 +204,29 @@
 
                                 <label class="col-sm-2 text-right">Observação sobre o endereço</label>
                                 <div class="col-sm-10" style="float: right">
-                                    <textarea id="obs-end-prev" class="form-control" rows="5">Observacao sobre o endereço da ocorrencia</textarea>
+                                    <textarea id="obs-end-prev" class="form-control" rows="5"></textarea>
                                 </div>
                             </div>
                         </div>
                         <!-- PASSO DOIS - CONFIRMAÇÃO ----------------------------------------------------------- -->
                         <div id="step-2">
+                            <div class="alert alert-info" role="alert" style="padding: 40px; margin:0px 30px 30px 30px;">
+                                Por favor, verifique todos os campos antes de prosseguir.
+                            </div>
+                            <div class="row" style="padding-right: 30px">
+                            <label class="col-sm-2 text-right">Status de conservação</label>
+                                <div class="col-sm-2" >
+                                    <input type="text" name="conservacao" id="conservacao" class="form-control" disabled>
+                                </div>
+                            </div><br/>
                             <div class="row" style="padding-right: 30px">
                                 <label class="col-sm-2 text-right">Tamanho</label>
                                 <div class="col-sm-2" >
                                     <input type="text" name="tamanho" id="tamanho" class="form-control" disabled>
                                 </div>
-                                <label class="col-sm-2 text-right">Relé</label>
+                                <label class="col-sm-2 text-right">Numero</label>
                                 <div class="col-sm-2">
-                                    <input type="text" name="rele" id="rele" class="form-control" disabled>
+                                    <input type="text" name="numero" id="numero" class="form-control" disabled>
                                 </div>
                                 <label class="col-sm-2 text-right">Tipo do poste</label>
                                 <div class="col-sm-2">
@@ -251,23 +234,20 @@
                                 </div>
                             </div><br/>
                             <div class="row" style="padding-right: 30px">
-                                <label class="col-sm-2 text-right">Tipo do reator</label>
+                                <label class="col-sm-2 text-right">Relé</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="rele" id="rele" class="form-control" disabled>
+                                </div>
+                                <label class="col-sm-2 text-right">Tipo da lâmpada</label>
                                 <div class="col-sm-2" >
-                                    <input type="text" name="t-reator" id="t-reator" class="form-control" disabled>
+                                    <input type="text" name="t-lampada" id="t-lampada" class="form-control" disabled>
                                 </div>
-
-                                <label class="col-sm-2 text-right">Modelo do reator</label>
+                                <label class="col-sm-2 text-right">Potência da lâmpada (W)</label>
                                 <div class="col-sm-2">
-                                    <input type="text" name="m-reator" id="m-reator" class="form-control" disabled>
-                                </div>
-
-                                <label class="col-sm-2 text-right">Potencia do reator</label>
-                                <div class="col-sm-2">
-                                    <input type="text" name="p-reator" id="p-reator" class="form-control" disabled>
+                                    <input type="text" name="p-lampada" id="p-lampada" class="form-control" disabled>
                                 </div>
                             </div><br/>
                             <div class="row" style="padding-right: 30px">
-
                                 <label class="col-sm-2 text-right">Tipo da luminária</label>
                                 <div class="col-sm-2" >
                                     <input type="text" name="t-luminaria" id="t-luminaria" class="form-control" disabled>
@@ -282,18 +262,19 @@
                                 </div>
                             </div><br/>
                             <div class="row" style="padding-right: 30px">
-
-                                <label class="col-sm-2 text-right">Tipo da lâmpada</label>
-                                <div class="col-sm-3" >
-                                    <input type="text" name="t-lampada" id="t-lampada" class="form-control" disabled>
+                                <label class="col-sm-2 text-right">Tipo do reator</label>
+                                <div class="col-sm-2" >
+                                    <input type="text" name="t-reator" id="t-reator" class="form-control" disabled>
                                 </div>
-
-                                <label class="col-sm-4 text-right">Potência da lâmpada (W)</label>
-                                <div class="col-sm-3">
-                                    <input type="text" name="p-lampada" id="p-lampada" class="form-control" disabled>
+                                <label class="col-sm-2 text-right">Modelo do reator</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="m-reator" id="m-reator" class="form-control" disabled>
+                                </div>
+                                <label class="col-sm-2 text-right">Potencia do reator</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="p-reator" id="p-reator" class="form-control" disabled>
                                 </div>
                             </div><br/>
-
                             <div class="row" style="padding-right: 30px">
                                 <label class="col-sm-2 text-right">Observação sobre o ponto de iluminação</label>
                                 <div class="col-sm-10" style="float: right">
@@ -316,7 +297,6 @@
                                     <input name="numPredialProx" id="numPredialProx" type="text" class="form-control" disabled>
                                 </div>
                             </div><br/>
-
                             <div class="row" style="padding-right: 30px">
                                 <label class="col-sm-2 text-right">Complemento</label>
                                 <div class="col-sm-5">
@@ -327,7 +307,6 @@
                                     <input type="text" name="bairro" id="bairro" class="form-control" disabled>
                                 </div>
                             </div><br/>
-
                             <div class="row" style="padding-right: 30px">
                                 <label class="col-sm-2 text-right">Cidade</label>
                                 <div class="col-sm-7">
@@ -338,9 +317,7 @@
                                     <input type="text" name="uf" id="uf" class="form-control" disabled>
                                 </div>
                             </div><br/>
-
                             <div class="row" style="padding-right: 30px">
-
                                 <label class="col-sm-2 text-right">Observação sobre o endereço</label>
                                 <div class="col-sm-10" style="float: right">
                                     <textarea name="obs-end" id="obs-end" class="form-control" rows="5" disabled></textarea>

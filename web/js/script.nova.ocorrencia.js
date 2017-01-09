@@ -2,18 +2,22 @@
 /*! Script usado no arquivo registarOcorrencia.php */
 
 $(function() {
-    // Bloqueia todas as abas do cabeçalho da página
+    
+});
+
+$(function(){
+
+	// Bloqueia todas as abas do cabeçalho da página
     $(".nav-pills li").addClass("block-button");
+
     // Aplica a biblioteca chosen em todos os selects
 	$("select").chosen({
 		width: "100%",
 		no_results_text: "Nenhum resulado encontrado para: "
 	});
-});
-
-$(function(){
+	//
     $("#form").submit(function() {
-    	alert("oi");
+		
 		disabled('cep', false);
 		disabled('logradouro', false);
 		disabled('numPredialProx', false);

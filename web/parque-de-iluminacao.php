@@ -36,7 +36,7 @@
                             <tr id="titulo" style="background-color: #2b669a; color: #FFFFFF;">
                                 <td class="tdPers col-lg-1"><strong>Placa</strong></td>
                                 <td class="tdPers col-lg-7"><strong>Logradouro</strong></td>
-                                <td classx="tdPers col-lg-1"><strong>Conservação</strong></td>
+                                <td class="tdPers col-lg-1"><strong>Conservação</strong></td>
                                 <td class="tdPers col-lg-1"><strong>Detalhes</strong></td>
 <?php                       if ($_SESSION['isAdmin'] == Usuario::ADMIN || $_SESSION['isAdmin'] == Usuario::TECNICO) {
 ?>
@@ -46,23 +46,31 @@
 ?>
                             </tr>
                             <tr>
-                                <th class="filter"><input type="text" id="txtColuna1" class="form-control" placeholder="Pesquisar placa"/></th>
-                                <th class="filter"><input type="text" id="txtColuna2" class="form-control" placeholder="Pesquisar logradouro"/></th>
-                                <th class="filter"><input type="text" id="txtColuna3" class="form-control" placeholder="Pesquisar status"/></th>
-                                <th class="filter"></th>
-                                <th class="filter"></th>
-                                <th class="filter"></th>
+                                <th class="filter col-lg-1"><input type="text" id="txtColuna1" class="form-control" placeholder="Pesquisar placa"/></th>
+                                <th class="filter col-lg-7"><input type="text" id="txtColuna2" class="form-control" placeholder="Pesquisar logradouro"/></th>
+                                <th class="filter col-lg-1"><input type="text" id="txtColuna3" class="form-control" placeholder="Pesquisar status"/></th>
+                                <th class="filter col-lg-1"></th>
+<?php                       if ($_SESSION['isAdmin'] == Usuario::ADMIN || $_SESSION['isAdmin'] == Usuario::TECNICO) {
+?>
+                                <th class="filter col-lg-1"></th>
+                                <th class="filter col-lg-1"></th>
+<?php                       }
+?>
                             </tr>
                         </thead>
 <?php
                         $pontos = PontoIluminacaoController::getAll();
                         foreach ($pontos as $ponto) {
+
+                            $address = $ponto['logradouro'] .', '. $ponto['numPredialProx'] .'. '. 
+                                        $ponto['bairro'] .', '. $ponto['cidade'] .' - '. $ponto['uf'];
+                            $status = PontoIluminacaoController::getStatus($ponto['statusConservacao']);
 ?>
                         <tbody>
                             <tr>
                                 <td class="tdPers col-lg-1"><?php echo $ponto['numeroDaPlaca'] ?></td>
-                                <td class="tdPers col-lg-7"><?php echo $ponto['logradouro'] ?></td>
-                                <td class="tdPers col-lg-1"><?php echo $ponto['statusConservacao'] ?></td>
+                                <td class="tdPers col-lg-7"><?php echo $address ?></td>
+                                <td class="tdPers col-lg-1"><?php echo $status ?></td>
                                 <td class="tdPers col-lg-1">
                                     <a href="detalhesPonto.php?pid=<?php echo $ponto['numeroDaPlaca']; ?>">
                                         <button class="btn btn-lg btn-info"><span class="glyphicon glyphicon-info-sign"></span></button>

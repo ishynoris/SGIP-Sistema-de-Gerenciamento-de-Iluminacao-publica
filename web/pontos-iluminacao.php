@@ -1,62 +1,36 @@
 <?php
-include 'header.php';
-include 'menu-top.php';
-include 'controller/PontoIluminacaoController.class.php';
-include 'classes/Usuario.class.php';
+    include 'header.php';
+    include 'menu-top.php';
+    include 'controller/PontoIluminacaoController.class.php';
+    include 'classes/Usuario.class.php';
 
-if(isset($_POST['edtSalvar'])){
-    $address = $_POST['logradouro'] . "," . $_POST['numPredialProx'] . " - " . $_POST['bairro'] . " " . $_POST['complemento'] . " ". $_POST['cidade'] . "/" . $_POST['uf'];
-    $address = str_replace(" ", "+", $address);
-    $region = "Brasil";
-    $endereco = $_POST['logradouro'] . "," . $_POST['numPredialProx'] . " - " . $_POST['bairro'] . " " . $_POST['complemento'] . " " . $_POST['cidade'] . "/" . $_POST['uf'];
-    $json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address&sensor=false&region=$region");
-    $json = json_decode($json);
-    $lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
-    $long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'};
-
-    // Inserção do Ponto de Iluminação
-    $pontoiluminacao = new pontoiluminacao;
-    $pontoiluminacao->logradouro = $endereco;
-    $pontoiluminacao->statusConservacao = $_POST['statusConservacao'];
-    $pontoiluminacao->numeroDaPlaca = $_POST['numeroDaPlaca'];
-    $utilmaIdInserida = $pontoiluminacao->salvarPontoIluminacao();
-
-    // Caracteristicas do Ponto Iluminacao
-    $pontoiluminacao->tamanhoDoPoste = $_POST['tamanhoDoPoste'];
-    $pontoiluminacao->refrator = $_POST['refrator'];
-    $pontoiluminacao->tipoPoste = $_POST['tipoPoste'];
-    $pontoiluminacao->modeloReator = $_POST['modeloReator'];
-    $pontoiluminacao->tipoReator = $_POST['tipoReator'];
-    $pontoiluminacao->potenciaDoReator = $_POST['potenciaDoReator'];
-    $pontoiluminacao->modeloBraco = $_POST['modeloBraco'];
-    $pontoiluminacao->modeloLuminaria = $_POST['modeloLuminaria'];
-    $pontoiluminacao->potenciaLuminaria = $_POST['potenciaLuminaria'];
-    $pontoiluminacao->tipoLampada = $_POST['tipoLampada'];
-    $pontoiluminacao->potenciaLampada = $_POST['potenciaLampada'];
-    $pontoiluminacao->imagem = "data/".$_FILES['arquivo']['name'];
-    $pontoiluminacao->observacoes = $_POST['edtObservacoes'];
-    $pontoiluminacao->salvarCaracteristicasPontoIluminacao($utilmaIdInserida);
-
-    // Ponto no mapa
-    $pontoiluminacao->pontosmapa($lat,$long,"restaurant");
-}
+    $controller = new PontoIluminacaoController();
 ?>
 
-<style>
-    .line{
-        padding: 30px;
-        margin: 70px 20px 0px 50px;
-    }
-    .filter{
-        background: #fff;
-        color: #000;
-        border: 1px solid #ccc;padding: 0px !important;
-    }
-</style>
+    <style>
+        .line{
+            padding: 30px;
+            margin: 70px 20px 0px 50px;
+        }
+        .filter{
+            background: #fff;
+            color: #000;
+            border: 1px solid #ccc;padding: 0px !important;
+        }
+    </style>
+
+    <script>
+        function confirmDelete(pid, sid){
+            if(confirm(pid + " " + sid + " Você realmente deseje apagar esse ponto de iluminação?\nEssa operação é permanente.")){
+                window.location.assign("./excluir-ponto.php?pid=" + pid + "&sid=" + sid);
+            }
+        }
+    </script>
+
 <div class="row">
-    <?php
+<?php
     include 'menu-left.php';
-    ?>
+?>
     <div class="col-sm-10">
         <div class="bk line" >
             <legend style="padding-bottom:10px; margin-bottom: 50px"><span
@@ -95,30 +69,34 @@ if(isset($_POST['edtSalvar'])){
                         </tr>
                         </thead>
 <?php
-                        $pontos = PontoIluminacaoController::getAll();
+                        $pontos = $controller->getAll();
                         foreach ($pontos as $ponto) {
+                            
+                            $address = $ponto['logradouro'] .', '. $ponto['numPredialProx'] .'. '. 
+                                        $ponto['bairro'] .', '. $ponto['cidade'] .' - '. $ponto['uf'];
 ?>
                             <tbody>
                             <tr>
                                 <td class="tdPers col-lg-1"><?php echo $ponto['numeroDaPlaca'] ?></td>
-                                <td class="tdPers col-lg-7"><?php echo $ponto['logradouro'] ?></td>
+                                <td class="tdPers col-lg-7"><?php echo $address ?></td>
                                 <td class="tdPers col-lg-1"><?php echo $ponto['statusConservacao'] ?></td>
                                 <td class="tdPers col-lg-1">
-                                    <a href="detalhesPonto.php?pid=<?php echo $ponto['numeroDaPlaca']; ?>">
+                                    <a href="detalhes-ponto.php?pid=<?php echo $ponto['numeroDaPlaca']; ?>">
                                         <button class="btn btn-lg btn-info"><span class="glyphicon glyphicon-info-sign"></span></button>
                                     </a>
                                 </td>
 <?php                       if ($_SESSION['isAdmin'] == Usuario::ADMIN || $_SESSION['isAdmin'] == Usuario::TECNICO) {
 ?>
                                 <td class="tdPers col-lg-1">
-                                    <a href="editarPonto.php?pid=<?php echo $ponto['numeroDaPlaca']; ?>">
+                                    <a href="editar-ponto.php?pid=<?php echo $ponto['numeroDaPlaca']; ?>">
                                         <button class="btn btn-lg btn-warning"><span class="glyphicon glyphicon-pencil"></span></button>
                                     </a>
                                 </td>
                                 <td class="tdPers col-lg-1">
-                                    <a href="excluirPonto.php?pid=<?php echo $ponto['numeroDaPlaca']; ?>&log=<?php echo urlencode($ponto['logradouro']); ?>">
-                                        <button class="btn btn-lg btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
-                                    </a>
+
+                                    <?php $uid = $ponto['numeroDaPlaca']; $sid = $ponto['statusConservacao'];?>
+                                    <button onclick='confirmDelete(<?php echo "{$uid}, {$sid}"; ?>)'
+                                        class="btn btn-lg btn-danger"> <span class="glyphicon glyphicon-trash"></span></button>
                                 </td>
 <?php                       }
 ?>

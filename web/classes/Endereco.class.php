@@ -1,7 +1,9 @@
 <?php
 
 class Endereco{
-    private $id;
+
+    private $table = "endereco";
+
     private $cep;
     private $logradouro;
     private $numPredialProx;
@@ -13,7 +15,6 @@ class Endereco{
 
     public function __construct($cep, $logradouro, $numPredialProx, $complemento, $bairro, $cidade, $uf, $observacao)
     {
-        $this->id = -1;
         $this->cep = $cep;
         $this->logradouro = $logradouro;
         $this->numPredialProx = $numPredialProx;
@@ -28,8 +29,8 @@ class Endereco{
 
         try{
 
-            $this->id = $dtibd->executarQuery("insert",
-                "INSERT INTO endereco (cep, logradouro, numPredialProx, complemento, bairro, cidade, uf, observacao) 
+            $id = $dtibd->executarQuery("insert",
+                "INSERT INTO $this->table (cep, logradouro, numPredialProx, complemento, bairro, cidade, uf, observacao) 
 			    VALUES (:cep, :logradouro, :numPredialProx, :complemento, :bairro, :cidade, :uf, :observacao)",
                 array(
                     ":cep"=>$this->cep,
@@ -42,12 +43,25 @@ class Endereco{
                     ":observacao"=>$this->observacao
                 ));
 
-            return $this->id;
+            return $id;
 
         } catch (PDOException $e){
             echo "Erro ao Inserir: " . $e->getMessage() . "\n";
             die();
         }
         return false;
+    }
+
+    public function delete($id, $dtibd)
+    {
+        try{
+            $query = "DELETE FROM endereco WHERE id = :id";
+            $values = array(":id" => $id);
+            return $dtibd->executarQuery("delete", $query, $values);
+
+		} catch (PDOException $e){
+			echo "Erro ao excluir [logradouro={$this->logradouro}, numero={$this->numPredialProx}, bairro={$this->bairro}]: " . $e->getMessage() . "\n";
+        	die();
+		}
     }
 }
