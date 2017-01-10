@@ -1,44 +1,73 @@
-<?php 
-   include ('classes/conecta_bancoAdmin.php');
-   $dtibd = new Dtidb(Dtidb::HOST, Dtidb::DB_NAME, Dtidb::USER_NAME, Dtidb::PASSWORD);
-   $query = $dtibd->executarQuery("select",
-      "SELECT pi.*, pm.lat, pm.lng, cpi.* 
-      FROM `pontoiluminacao` pi 
-      JOIN pontosmapa pm ON pm.address = pi.logradouro 
-      JOIN caracteristicaspontoiluminacao cpi on cpi.idPontoIluminacao = pi.id");
+<?php
+    include './classes/conecta_bancoAdmin.php';
+    include './controller/PontoIluminacaoController.class.php';
 
-   $result = "";
-   $result .= '{"type":"FeatureCollection",
-            "features":[';
-   foreach($query as $row){
-      $result .= '{
-         "type":"Feature",
-         "properties":{  
-            "Logradouro":"'. $row['logradouro'] .'",
-            "Estado de conservação":"'. $row['statusConservacao'] .'",
-            "Refrator":"'. $row['refrator'] .'",
-            "Tipo de Reator":"'. $row['tipoReator'] .'",
-            "Potencia do Reator":"'. $row['potenciaDoReator'] .'",
-            "Modelo do Braço":"'. $row['modeloBraco'] .'",
-            "Modelo Luminaria":"'. $row['modeloLuminaria'] .'",
-            "Tipo da Lampada":"'. $row['tipoLampada'] .'",
-            "Potencia da Lampada":"'. $row['potenciaLampada'] .'"           
-         },
-         "geometry":{  
-            "type":"Point",
-            "coordinates":[  
-               '. $row['lng'] .',
-               '. $row['lat'] .'               
-            ]
-         }
-      },
-    ';
-   }
-   $result .= ']}';
+    $controller = new PontoIluminacaoController();
+    $ids = $controller->getAllIds();
 
-   $replace = str_replace('} }, ] }', '} } ] }', trim($result));
+    $result = "{";
+    $result .= '"type" : "FeatureCollection",';
+    $result .= '"features" : [';
+    $i = 1;
 
-   echo $replace;
+    foreach($ids as $id)
+    {
+        $row = $controller->getDetails($id['id']);
+        $json = new PontoIluminacaoJson($controller);
+
+        if(!empty($row)){
+            $result .= '{';
+            $result .= '"type" : "Feature",';
+            $result .= $json->setProperties($row[0]) .",";
+            $result .= $json->setGeometry($row[0]);
+            $result .= "},";
+        }
+    }
+
+    $result .= ']}';
+    echo str_replace('} }, ] }', '} } ] }', trim($result));
+
+    class PontoIluminacaoJson
+    {
+        private $controller;
+
+        public function __construct($controller)
+        {
+            $this->controller = $controller;
+        }
+
+        public function setProperties($row)
+        {
+
+            $logradouro = $row['logradouro'] .', '. $row['numPredialProx'];
+            $conservacao = $this->controller->getStatus($row['statusConservacao']);
+
+            $property =  '"properties":{';
+            $property .= '"Logradouro" : "'. $logradouro .'",';
+            $property .= '"Estado de conservação" : "'. $conservacao .'",';
+            $property .= '"Rele" : "'. $row['rele'] .'",';
+            $property .= '"Tipo de Reator" : "'. $row['tipoReator'] .'",';
+            $property .= '"Potencia do Reator" : "'. $row['potenciaDoReator'] .'",';
+            $property .= '"Modelo do Braço" : "'. $row['modeloBraco'] .'",';
+            $property .= '"Modelo Luminaria" : "'. $row['modeloLuminaria'] .'",';
+            $property .= '"Tipo da Lampada" : "'. $row['tipoLampada'] .'",';
+            $property .= '"Potencia da Lampada" : "'. $row['potenciaLampada'] .'"';
+            $property .= "}";
+
+            return $property;
+        }
+
+        public function setGeometry($row)
+        {
+            $geometry = '"geometry":{';
+            $geometry .= '"type" : "Point",';
+            $geometry .= '"coordinates" : [';
+            $geometry .= $row['lng'] .','. $row['lat'];
+            $geometry .= ']}';
+
+            return $geometry;
+        }
+    }
 ?>
          
          

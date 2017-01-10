@@ -101,10 +101,14 @@ class PontoIluminacaoController extends Controller
         $pontoMapa = new PontoMapa($details[0]['logradouro'] .' '. $details[0]['numPredialProx'] .' '. $details[0]['bairro'] .' '. 
                     $details[0]['cidade'] .' - '. $details[0]['uf']);
 
-        echo 'Endereco: '. $endereco->delete($ids[0]['id_endereco'], $dtibd) .'<br>';
-        echo 'Características: '. $caracteristica->delete($ids[0]['id'], $dtibd) .'<br>';
-        echo 'Ponto no mapa: '. $pontoMapa->delete($ids[0]['id'], $dtibd) .'<br>';
-        echo 'Ponto de iluminacao: '. $pontoIluminacao->delete($placa, $dtibd) .'<br>';
+        $flagADS = $endereco->delete($ids[0]['id_endereco'], $dtibd);
+        $flagCHR = $caracteristica->delete($ids[0]['id'], $dtibd);
+        $flagPM = $pontoMapa->delete($ids[0]['id'], $dtibd);
+        $flagPI = $pontoIluminacao->delete($placa, $dtibd);
+
+        if($flagADS && $flagCHR && $flagPM && $flagPI){
+            echo "<script>window.location.assign('./home.php');</script>";
+        }   
     }
 
     public function back()
@@ -113,23 +117,32 @@ class PontoIluminacaoController extends Controller
         exit;
     }
 
-    public function getDetails($placa, $uid)
+    public function getAllIds(){
+        $dtibd = new Dtidb(Dtidb::HOST, Dtidb::DB_NAME, Dtidb::USER_NAME, Dtidb::PASSWORD);
+        $query = "SELECT id FROM pontoiluminacao";
+        return $dtibd->executarQuery("select", $query);
+
+    }
+
+    public function getDetails($id)
     {
         $dtibd = new Dtidb(Dtidb::HOST, Dtidb::DB_NAME, Dtidb::USER_NAME, Dtidb::PASSWORD);
-        $query = "SELECT pi.statusConservacao, pi.numeroDaPlaca, cpi.tamanhoDoPoste, cpi.rele, cpi.tipoReator, 
-                        cpi.potenciaDoReator, cpi.modeloBraco, cpi.modeloLuminaria, cpi.tipoLuminaria, cpi.tipoLampada, 
-                        cpi.potenciaLampada, cpi.tipoPoste, cpi.modeloReator, cpi.observacoes, 
-                        e.cep, e.logradouro, e.numPredialProx, e.bairro, e.cidade, e.uf, e.complemento, e.observacao
-                    FROM pontoiluminacao AS pi
-                    INNER JOIN caracteristicaspontoiluminacao AS cpi 
-                    INNER JOIN endereco AS e
-                    INNER JOIN usuario AS u
-                    WHERE e.id = pi.id_endereco 
-                        AND pi.id  = cpi.id_ponto_iluminacao
-                        AND pi.numeroDaPlaca = :placa
-                        AND u.id = :uid
-                    LIMIT 1";
-        $values = array(":placa" => $placa, ":uid" => $uid);
+        $query = "SELECT pi.statusConservacao, pi.numeroDaPlaca, 
+                    cpi.tamanhoDoPoste, cpi.rele, cpi.tipoReator, 
+                    cpi.potenciaDoReator, cpi.modeloBraco, cpi.modeloLuminaria, cpi.tipoLuminaria, 
+                    cpi.tipoLampada, cpi.potenciaLampada, cpi.tipoPoste, cpi.modeloReator, cpi.observacoes, 
+                    e.cep, e.logradouro, e.numPredialProx, e.bairro, e.cidade, e.uf, e.complemento, e.observacao,
+                    pm.lat, pm.lng
+                FROM pontoiluminacao AS pi
+                INNER JOIN caracteristicaspontoiluminacao AS cpi 
+                INNER JOIN endereco AS e
+                INNER JOIN pontosmapa AS pm
+                ON e.id = pi.id_endereco 
+                    AND pi.id  = :id
+                    AND cpi.id_ponto_iluminacao = pi.id
+                    AND pm.id_ponto = pi.id
+                LIMIT 1";
+        $values = array(":id" => $id);
         return $dtibd->executarQuery("select", $query, $values);
     }
 

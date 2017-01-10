@@ -22,8 +22,9 @@
 ?>
 		<div class="col-sm-10">
 			<div class="bk line" >
-				<legend style="padding-bottom:10px; margin-bottom: 50px"><span
-						class="glyphicon glyphicon-flash"></span>&nbsp;&nbsp;&nbsp;Pontos de iluminação</legend>		
+				<legend style="padding-bottom:10px; margin-bottom: 50px">
+					<span class="glyphicon glyphicon-flash"></span>&nbsp;&nbsp;&nbsp;Pontos de iluminação
+				</legend>		
 <?php 
 
 				if(empty($numero) || empty($conservacao) || empty($id)){
@@ -37,4 +38,3 @@
 ?>			</div>
 		</div>
 	</div>
-
