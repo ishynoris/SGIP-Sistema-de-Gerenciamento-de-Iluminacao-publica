@@ -5,16 +5,19 @@
     $controller = new PontoIluminacaoController();
     $ids = $controller->getAllIds();
 
+
     $result = "{";
     $result .= '"type" : "FeatureCollection",';
     $result .= '"features" : [';
-    $i = 1;
+
 
     foreach($ids as $id)
     {
-        $row = $controller->getDetails($id['id']);
+        
+        
+        $row = $controller->getDetailsById($id['id']);
         $json = new PontoIluminacaoJson($controller);
-
+        
         if(!empty($row)){
             $result .= '{';
             $result .= '"type" : "Feature",';
@@ -25,7 +28,8 @@
     }
 
     $result .= ']}';
-    echo str_replace('} }, ] }', '} } ] }', trim($result));
+    $replace = str_replace('}},]}', '}}]}', trim($result));
+    echo $replace;
 
     class PontoIluminacaoJson
     {
@@ -43,6 +47,7 @@
             $conservacao = $this->controller->getStatus($row['statusConservacao']);
 
             $property =  '"properties":{';
+            $property .= '"Numero da placa" : "'. $row['numeroDaPlaca'] .'",';
             $property .= '"Logradouro" : "'. $logradouro .'",';
             $property .= '"Estado de conservação" : "'. $conservacao .'",';
             $property .= '"Rele" : "'. $row['rele'] .'",';
@@ -69,5 +74,3 @@
         }
     }
 ?>
-         
-         

@@ -9,15 +9,49 @@ class PontoMapa{
     private $lat;
     private $lng;
 
-    function __construct($logradouro)
+    function __construct()
     {
-        $logradouro = urlencode($logradouro);
-        
-        $content = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$logradouro&region=$this->region");
-        $json = json_decode($content);
+        $nArgs = func_num_args();
+        $args = func_get_args();
 
-        $this->lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
-        $this->lng = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'};
+        if($nArgs < 1 || $nArgs > 2)
+        {
+            echo "A quantidade de parâmetros do construtor não é aceita.\n";
+            die;
+        } 
+        else 
+        {
+            $this->lat = 0;
+            $this->lng = 0;
+
+            if($nArgs == 1)
+            {   
+                $this->setAddress($args[0]);
+            } 
+            else 
+            {
+                $this->setLocation($args[0], $args[1]);
+            }
+        }
+    }
+
+    private function setAddress($address)
+    {
+        $address = urlencode($address);
+        
+        $content = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address&region=$this->region");
+        $json = json_decode($content);
+        if($json->{'results'} == "OK"){
+            
+            $this->lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
+            $this->lng = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'};
+        }
+    }
+
+    private function setLocation($lat, $lng)
+    {
+        $this->lat = $lat;
+        $this->lng = $lng;
     }
 
     public function saveDB($idPonto, $dtibd)

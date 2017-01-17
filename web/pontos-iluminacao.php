@@ -93,7 +93,6 @@
                                     </a>
                                 </td>
                                 <td class="tdPers col-lg-1">
-
                                     <?php $uid = $ponto['numeroDaPlaca']; $sid = $ponto['statusConservacao'];?>
                                     <button onclick='confirmDelete(<?php echo "{$uid}, {$sid}"; ?>)'
                                         class="btn btn-lg btn-danger"> <span class="glyphicon glyphicon-trash"></span></button>

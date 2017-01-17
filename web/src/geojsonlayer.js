@@ -54,7 +54,7 @@ define([
             this._setCorsSevers();
             this._setXhrDefaults(10000);
             // Manage drawing
-            this._maxDraw = options.maxdraw || 1000;  // default to 1000 graphics
+            this._maxDraw = options.maxdraw || 2000;  // default to 1000 graphics
             this._drawCount = 0;
             this._drawCountTotal = 0;
             // Extended public properties
@@ -288,8 +288,8 @@ define([
             var i,
                 feature,
                 graphic;
-            // Limit size of data that can be drawn
-            if (arcgisJson.length > this._maxDraw) {
+            //if (arcgisJson.length > this._maxDraw) { // Limit size of data that can be drawn
+            if(false){ //Removing limit. Return previous condition to apply  limit size of data
                 this._drawCountTotal = this._maxDraw;
                 console.warn("GeoJsonLayer Warning: Large dataset detected. Only drawing the first " + this._maxDraw + " features!");
             } else {

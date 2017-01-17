@@ -16,7 +16,6 @@ require(["esri/map",
 
         map.infoWindow.domNode.className += " light";
         map.on("load", function () {
-            console.log(json.php);
             addGeoJsonLayer("json.php");
         });
 

@@ -87,7 +87,7 @@ class PontoIluminacaoController extends Controller
         
         $pontoIluminacao = new PontoIluminacao($conservacao, $placa);
         $ids = $pontoIluminacao->getIds($dtibd);
-        $details = $this->getDetails($placa, $_SESSION['id']);
+        $details = $this->getDetails($placa);
        
         $endereco = new Endereco($details[0]['cep'], $details[0]['logradouro'], $details[0]['numPredialProx'], 
                     $details[0]['complemento'], $details[0]['bairro'], $details[0]['cidade'], $details[0]['uf'], 
@@ -124,11 +124,32 @@ class PontoIluminacaoController extends Controller
 
     }
 
-    public function getDetails($id)
+    public function getDetails($placa)
     {
         $dtibd = new Dtidb(Dtidb::HOST, Dtidb::DB_NAME, Dtidb::USER_NAME, Dtidb::PASSWORD);
-        $query = "SELECT pi.statusConservacao, pi.numeroDaPlaca, 
+        $query = "SELECT pi.statusConservacao, pi.numeroDaPlaca,
                     cpi.tamanhoDoPoste, cpi.rele, cpi.tipoReator, 
+                    cpi.potenciaDoReator, cpi.modeloBraco, cpi.modeloLuminaria, cpi.tipoLuminaria, 
+                    cpi.tipoLampada, cpi.potenciaLampada, cpi.tipoPoste, cpi.modeloReator, cpi.observacoes, 
+                    e.cep, e.logradouro, e.numPredialProx, e.bairro, e.cidade, e.uf, e.complemento, e.observacao,
+                    pm.lat, pm.lng
+                FROM pontoiluminacao AS pi
+                INNER JOIN caracteristicaspontoiluminacao AS cpi 
+                INNER JOIN endereco AS e
+                INNER JOIN pontosmapa AS pm
+                ON e.id = pi.id_endereco 
+                    AND pi.numeroDaPlaca  = :placa
+                    AND cpi.id_ponto_iluminacao = pi.id
+                    AND pm.id_ponto = pi.id
+                LIMIT 1";
+        $values = array(":placa" => $placa);
+        return $dtibd->executarQuery("select", $query, $values);
+    }
+
+    public function getDetailsById($id)
+    {
+        $dtibd = new Dtidb(Dtidb::HOST, Dtidb::DB_NAME, Dtidb::USER_NAME, Dtidb::PASSWORD);
+        $query = "SELECT pi.numeroDaPlaca, pi.statusConservacao, cpi.tamanhoDoPoste, cpi.rele, cpi.tipoReator, 
                     cpi.potenciaDoReator, cpi.modeloBraco, cpi.modeloLuminaria, cpi.tipoLuminaria, 
                     cpi.tipoLampada, cpi.potenciaLampada, cpi.tipoPoste, cpi.modeloReator, cpi.observacoes, 
                     e.cep, e.logradouro, e.numPredialProx, e.bairro, e.cidade, e.uf, e.complemento, e.observacao,

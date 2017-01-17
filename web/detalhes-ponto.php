@@ -23,7 +23,7 @@
 	include 'menu-left.php';
 
     $controller = new PontoIluminacaoController();
-	$pontoIluminacao = $controller->getDetails($placa, $uid);
+	$pontoIluminacao = $controller->getDetails($placa);
 ?>	
 		<div class="col-sm-10" >
 			<!-- Detalhes do ponto de iluminação -->
@@ -45,7 +45,7 @@
 					</div>
 					<label class="col-sm-2 text-right">Numero</label>
 					<div class="col-sm-2">
-						<input type="text" value="<?php echo $pontoIluminacao[0]['numeroDaPlaca'] ?>" class="form-control" disabled>
+						<input type="text" value="<?php echo $placa ?>" class="form-control" disabled>
 					</div>
 					<label class="col-sm-2 text-right">Tipo do poste</label>
 					<div class="col-sm-2">
